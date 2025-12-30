@@ -21,7 +21,7 @@ The project is a single solution with multiple modules:
     +-- src
     |  +-- core
     |  |  +-- Env0.Core          # Shared contracts only (no behavior)
-    |  +-- act1                  # Maintenance (process/status)
+    |  +-- act1                  # Maintenance (process/status loop)
     |  +-- act2                  # Records / bureaucratic interpretation
     |  +-- act3                  # Terminal / config inspection & patching
     |  +-- act4                  # Placeholder

@@ -8,14 +8,13 @@ the repo, it should be reflected in README.md.
 
 ## Roadmap
 
-- Implement Act 1.
 - Implement Act 4.
 - Complete consolidation of Act 2 and Act 3 into the shared Core/Runner architecture
   (including retiring the standalone Act 2 console entry point).
 
 ---
 
-## Act 1 — Maintenance (Planned)
+## Act 1 - Maintenance (In Progress)
 
 ### Purpose
 Act 1 establishes compliance through repetition: the player performs procedural work
@@ -30,7 +29,6 @@ becomes self-sustaining.
 - Only two accepted commands:
   - `process`
   - `status`
-- Command history must be available (mechanically important).
 - Any other input must return an error that reasserts the allowed commands.
 
 ### Experience Constraints
