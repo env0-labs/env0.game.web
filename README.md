@@ -21,7 +21,7 @@ The project is a single solution with multiple modules:
     +-- src
     |  +-- core
     |  |  +-- Env0.Core          # Shared contracts only (no behavior)
-    |  +-- act1                  # Placeholder
+    |  +-- act1                  # Maintenance (process/status)
     |  +-- act2                  # Records / bureaucratic interpretation
     |  +-- act3                  # Terminal / config inspection & patching
     |  +-- act4                  # Placeholder
@@ -49,7 +49,7 @@ Each `actX` folder contains a self-contained module that:
 
 Current status:
 
-- Act 1: placeholder folder exists
+- Act 1: module (`Act1Module`) exists and is wired to the runner
 - Act 2: module (`Act2Module`) exists and is wired to the runner; a
   standalone console `Program.cs` also exists
 - Act 3: module (`Act3Module`) exists; includes a standalone playground
@@ -169,7 +169,7 @@ Everything works.
 
 Active development.
 
-- Act 1: placeholder folder
+- Act 1: module wired to runner (process/status)
 - Act 2: module wired to runner; standalone console entry present
 - Act 3: module wired to runner; tests and playground present
 - Act 4: placeholder folder

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Env0.Act3;
 using Env0.Core;
+using env0.act1;
 using env0.act2;
 
 namespace Env0.Runner
@@ -13,7 +14,7 @@ namespace Env0.Runner
             while (true)
             {
                 Console.WriteLine("Select an act to launch:");
-                Console.WriteLine("  1) Act 1 (placeholder)");
+                Console.WriteLine("  1) Act 1");
                 Console.WriteLine("  2) Act 2");
                 Console.WriteLine("  3) Act 3");
                 Console.WriteLine("  4) Act 4 (placeholder)");
@@ -36,7 +37,7 @@ namespace Env0.Runner
                 switch (input)
                 {
                     case "1":
-                        Console.WriteLine("Act 1 runner is a placeholder for now.");
+                        RunModule(new Act1Module());
                         break;
                     case "2":
                         RunModule(new Act2Module());

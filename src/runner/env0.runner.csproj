@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\core\Env0.Core\Env0.Core.csproj" />
+    <ProjectReference Include="..\act1\env0.act1.csproj" />
     <ProjectReference Include="..\act2\env0.act2.csproj" />
     <ProjectReference Include="..\act3\env0.act3\Env0.Act3.csproj" />
   </ItemGroup>
