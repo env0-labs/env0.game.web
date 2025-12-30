@@ -1,0 +1,16 @@
+C:\Users\ewan\Desktop\env0\env0.terminal\Env0.Terminal\bin\Debug\net8.0\Config\Jsons\BootConfig.json
+C:\Users\ewan\Desktop\env0\env0.terminal\Env0.Terminal\bin\Debug\net8.0\Config\Jsons\Devices.json
+C:\Users\ewan\Desktop\env0\env0.terminal\Env0.Terminal\bin\Debug\net8.0\Config\Jsons\UserConfig.json
+C:\Users\ewan\Desktop\env0\env0.terminal\Env0.Terminal\bin\Debug\net8.0\Env0.Terminal.deps.json
+C:\Users\ewan\Desktop\env0\env0.terminal\Env0.Terminal\bin\Debug\net8.0\Env0.Terminal.dll
+C:\Users\ewan\Desktop\env0\env0.terminal\Env0.Terminal\bin\Debug\net8.0\Env0.Terminal.pdb
+C:\Users\ewan\Desktop\env0\env0.terminal\Env0.Terminal\obj\Debug\net8.0\Env0.Terminal.csproj.AssemblyReference.cache
+C:\Users\ewan\Desktop\env0\env0.terminal\Env0.Terminal\obj\Debug\net8.0\Env0.Terminal.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ewan\Desktop\env0\env0.terminal\Env0.Terminal\obj\Debug\net8.0\Env0.Terminal.AssemblyInfoInputs.cache
+C:\Users\ewan\Desktop\env0\env0.terminal\Env0.Terminal\obj\Debug\net8.0\Env0.Terminal.AssemblyInfo.cs
+C:\Users\ewan\Desktop\env0\env0.terminal\Env0.Terminal\obj\Debug\net8.0\Env0.Terminal.csproj.CoreCompileInputs.cache
+C:\Users\ewan\Desktop\env0\env0.terminal\Env0.Terminal\obj\Debug\net8.0\Env0.Terminal.sourcelink.json
+C:\Users\ewan\Desktop\env0\env0.terminal\Env0.Terminal\obj\Debug\net8.0\Env0.Terminal.dll
+C:\Users\ewan\Desktop\env0\env0.terminal\Env0.Terminal\obj\Debug\net8.0\refint\Env0.Terminal.dll
+C:\Users\ewan\Desktop\env0\env0.terminal\Env0.Terminal\obj\Debug\net8.0\Env0.Terminal.pdb
+C:\Users\ewan\Desktop\env0\env0.terminal\Env0.Terminal\obj\Debug\net8.0\ref\Env0.Terminal.dll

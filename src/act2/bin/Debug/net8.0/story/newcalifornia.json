@@ -1,0 +1,887 @@
+{
+  "startSceneId": "wake_bus_wreck",
+  "scenes": [
+    {
+      "id": "wake_bus_wreck",
+      "text": "You wake in a sand-choked bus wreck half-buried beside a cracked highway. The sky is a bleached sheet. Your mouth tastes like pennies and old regret. A hand-painted sign nearby points west: DUSTHAVEN 2 MI.",
+      "choices": [
+        {
+          "number": 1,
+          "text": "Search the bus seats",
+          "requiresNone": ["searchedBus"],
+          "disabledReason": "You already tore through the bus.",
+          "resultText": "You find a torn satchel with a half-full canteen and a bent ID card that isn't yours.",
+          "effects": [
+            { "type": "SetFlag", "value": "searchedBus" },
+            { "type": "SetFlag", "value": "hasCanteen" },
+            { "type": "SetFlag", "value": "foundBentID" }
+          ]
+        },
+        {
+          "number": 2,
+          "text": "Check the driver's cabin",
+          "requiresNone": ["searchedCabin"],
+          "disabledReason": "Nothing left but dust and bad memories.",
+          "resultText": "Under the dash you find a small brass token stamped with a tower icon.",
+          "effects": [
+            { "type": "SetFlag", "value": "searchedCabin" },
+            { "type": "SetFlag", "value": "hasTowerToken" }
+          ]
+        },
+        {
+          "number": 3,
+          "text": "Follow the sign toward Dusthaven",
+          "effects": [{ "type": "GotoScene", "value": "dusthaven_gate" }]
+        },
+        {
+          "number": 4,
+          "text": "Walk east down the highway instead",
+          "effects": [{ "type": "GotoScene", "value": "highway_east" }]
+        }
+      ]
+    },
+
+    {
+      "id": "highway_east",
+      "text": "The highway east is quieter. Too quiet. A collapsed billboard looms over a shallow ravine. Wind makes the metal sing.",
+      "choices": [
+        {
+          "number": 1,
+          "text": "Search the collapsed billboard wreckage",
+          "requiresNone": ["searchedBillboard"],
+          "disabledReason": "You already picked it clean.",
+          "resultText": "You find a cracked handheld radio with a missing backplate. It flickers once, then dies.",
+          "effects": [
+            { "type": "SetFlag", "value": "searchedBillboard" },
+            { "type": "SetFlag", "value": "hasBrokenRadio" }
+          ]
+        },
+        {
+          "number": 2,
+          "text": "Return west toward Dusthaven",
+          "effects": [{ "type": "GotoScene", "value": "wake_bus_wreck" }]
+        }
+      ]
+    },
+
+    {
+      "id": "dusthaven_gate",
+      "text": "Dusthaven's gate is a welded mess of shipping container walls and scrap plating. A bored guard leans on a rifle like it's a personal insult.",
+      "choices": [
+        {
+          "number": 1,
+          "text": "Talk your way in",
+          "requiresNone": ["enteredDusthaven"],
+          "disabledReason": "You're already inside.",
+          "resultText": "The guard squints at you, decides you're probably not worth the trouble, and waves you through.",
+          "effects": [
+            { "type": "SetFlag", "value": "enteredDusthaven" },
+            { "type": "GotoScene", "value": "dusthaven_square_main" }
+          ]
+        },
+        {
+          "number": 2,
+          "text": "Ask about work",
+          "requiresNone": ["askedAboutWorkGate"],
+          "disabledReason": "You already got the short version: everyone wants something.",
+          "resultText": "\"Work?\" The guard laughs once. \"Go to the Square. Council posts bounties. Doc pays for supplies. Don't touch the water tower.\"",
+          "effects": [{ "type": "SetFlag", "value": "askedAboutWorkGate" }]
+        },
+        {
+          "number": 3,
+          "text": "Turn back toward the highway",
+          "effects": [{ "type": "GotoScene", "value": "wake_bus_wreck" }]
+        }
+      ]
+    },
+
+    {
+      "id": "dusthaven_square_main",
+      "text": "Dusthaven's main square is a sunburnt patchwork of stalls and scavenged awnings. A notice board creaks in the wind. People watch you like you're an investment with a poor return.",
+      "choices": [
+        { "number": 1, "text": "Read the notice board", "effects": [{ "type": "GotoScene", "value": "notice_board" }] },
+        { "number": 2, "text": "Visit the clinic", "effects": [{ "type": "GotoScene", "value": "clinic_front" }] },
+        { "number": 3, "text": "Step into the saloon", "effects": [{ "type": "GotoScene", "value": "saloon" }] },
+        { "number": 4, "text": "Head to the market stalls", "effects": [{ "type": "GotoScene", "value": "market" }] },
+        { "number": 5, "text": "Walk toward the sheriff's station", "effects": [{ "type": "GotoScene", "value": "sheriff_station" }] },
+        { "number": 6, "text": "Take the narrow lane marked 'QUARTER'", "effects": [{ "type": "GotoScene", "value": "ghoul_quarter_gate" }] },
+        { "number": 7, "text": "Follow the road toward the water tower", "effects": [{ "type": "GotoScene", "value": "water_tower_road" }] },
+        { "number": 8, "text": "Leave town toward the outskirts", "effects": [{ "type": "GotoScene", "value": "outskirts_crossroads" }] },
+        { "number": 9, "text": "Go to the council hall", "effects": [{ "type": "GotoScene", "value": "council_hall" }] },
+        { "number": 10, "text": "Decide what to do next", "effects": [{ "type": "GotoScene", "value": "square_after_investigation" }] }
+      ]
+    },
+
+    {
+      "id": "notice_board",
+      "text": "The notice board is a collage of handwriting and desperation. A few postings stand out.",
+      "choices": [
+        {
+          "number": 1,
+          "text": "Take 'MISSING SUPPLY RUNNER' posting",
+          "requiresNone": ["tookMissingRunnerJob"],
+          "disabledReason": "You already took that job.",
+          "resultText": "You pocket the posting. It mentions a runner last seen near the old radio shack.",
+          "effects": [
+            { "type": "SetFlag", "value": "tookMissingRunnerJob" },
+            { "type": "SetFlag", "value": "jobRadioShack" }
+          ]
+        },
+        {
+          "number": 2,
+          "text": "Take 'RATS IN THE SEWER' posting",
+          "requiresNone": ["tookSewerJob"],
+          "disabledReason": "You already took that job.",
+          "resultText": "You pocket the posting. 'Rats' is probably not literal. It never is.",
+          "effects": [
+            { "type": "SetFlag", "value": "tookSewerJob" },
+            { "type": "SetFlag", "value": "jobSewer" }
+          ]
+        },
+        {
+          "number": 3,
+          "text": "Take 'WATER TOWER SABOTAGE' posting",
+          "requiresNone": ["tookWaterJob"],
+          "disabledReason": "You already took that job.",
+          "resultText": "You pocket the posting. It’s unsigned. That’s either secrecy or cowardice.",
+          "effects": [
+            { "type": "SetFlag", "value": "tookWaterJob" },
+            { "type": "SetFlag", "value": "jobWaterTower" }
+          ]
+        },
+        { "number": 4, "text": "Return to the square", "effects": [{ "type": "GotoScene", "value": "dusthaven_square_main" }] }
+      ]
+    },
+
+    {
+      "id": "clinic_front",
+      "text": "The clinic is an old classroom with the desks ripped out. A faded diagram of a human skeleton still smiles on the wall like it has a joke you won't enjoy.",
+      "choices": [
+        { "number": 1, "text": "Speak to the doctor", "effects": [{ "type": "GotoScene", "value": "clinic_doc" }] },
+        {
+          "number": 2,
+          "text": "Search the supply cabinet",
+          "requiresAll": ["clinicAccessGranted"],
+          "disabledReason": "A sharp glance from the doc says 'touch that and lose fingers.'",
+          "resultText": "You find antiseptic wipes and a sealed vial marked RAD-BIND.",
+          "effects": [
+            { "type": "SetFlag", "value": "searchedClinicCabinet" },
+            { "type": "SetFlag", "value": "hasRadBind" }
+          ]
+        },
+        { "number": 3, "text": "Return to the square", "effects": [{ "type": "GotoScene", "value": "dusthaven_square_main" }] }
+      ]
+    },
+
+    {
+      "id": "clinic_doc",
+      "text": "Doctor Sallow looks exhausted in the way only someone trying to keep a town alive can. \"You're new,\" they say. \"That means you either brought trouble, or you're useful.\"",
+      "choices": [
+        {
+          "number": 1,
+          "text": "Ask about the water situation",
+          "requiresNone": ["learnedWaterTrouble"],
+          "disabledReason": "You already got the grim briefing.",
+          "resultText": "\"Filters are failing. Tower pump is temperamental. Someone keeps 'adjusting' the intake valves. If the tower goes, Dusthaven dies.\"",
+          "effects": [{ "type": "SetFlag", "value": "learnedWaterTrouble" }]
+        },
+        {
+          "number": 2,
+          "text": "Offer to help if paid",
+          "requiresNone": ["clinicAccessGranted"],
+          "disabledReason": "You already made your deal.",
+          "resultText": "\"Bring me medical scrap, sealed chems, anything sterile,\" the doc says. \"Do that and you can take one vial from my cabinet.\"",
+          "effects": [
+            { "type": "SetFlag", "value": "clinicAccessGranted" },
+            { "type": "SetFlag", "value": "jobMedicalScrap" }
+          ]
+        },
+        {
+          "number": 3,
+          "text": "Ask about ghouls in town",
+          "requiresNone": ["learnedGhoulTension"],
+          "disabledReason": "You already asked.",
+          "resultText": "\"They live in the Quarter. Mostly keep to themselves. People blame them for everything from stolen caps to bad dreams.\"",
+          "effects": [{ "type": "SetFlag", "value": "learnedGhoulTension" }]
+        },
+        { "number": 4, "text": "Return to the clinic front", "effects": [{ "type": "GotoScene", "value": "clinic_front" }] }
+      ]
+    },
+
+    {
+      "id": "saloon",
+      "text": "The saloon smells like dust, cheap spirits, and someone else's problem. A battered jukebox sits in the corner like a dead pet.",
+      "choices": [
+        { "number": 1, "text": "Talk to the bartender", "effects": [{ "type": "GotoScene", "value": "saloon_bartender" }] },
+        {
+          "number": 2,
+          "text": "Sit near the back booth and listen",
+          "requiresNone": ["overheardSaloon"],
+          "disabledReason": "You already picked up the gossip.",
+          "resultText": "You overhear talk of a radio signal at night from the old shack, and someone mentioning a 'vault door' in the hills.",
+          "effects": [
+            { "type": "SetFlag", "value": "overheardSaloon" },
+            { "type": "SetFlag", "value": "heardRadioRumor" },
+            { "type": "SetFlag", "value": "heardVaultRumor" }
+          ]
+        },
+        { "number": 3, "text": "Return to the square", "effects": [{ "type": "GotoScene", "value": "dusthaven_square_main" }] }
+      ]
+    },
+
+    {
+      "id": "saloon_bartender",
+      "text": "\"Name's Jory,\" the bartender says, polishing a glass that will never be clean. \"If you're here to start a fight, get in line.\"",
+      "choices": [
+        {
+          "number": 1,
+          "text": "Ask about the sheriff",
+          "requiresNone": ["learnedAboutSheriff"],
+          "disabledReason": "You already got the read.",
+          "resultText": "\"Sheriff Vale? Keeps the peace, mostly. Council leans on him. He leans back when he's sober.\"",
+          "effects": [{ "type": "SetFlag", "value": "learnedAboutSheriff" }]
+        },
+        {
+          "number": 2,
+          "text": "Ask about the Ghoul Quarter",
+          "requiresNone": ["learnedQuarterLayout"],
+          "disabledReason": "You already asked.",
+          "resultText": "\"Quarter's gated. Old storm drains under it. Folks say the ghouls use 'em. Folks say a lot.\"",
+          "effects": [{ "type": "SetFlag", "value": "learnedQuarterLayout" }]
+        },
+        {
+          "number": 3,
+          "text": "Buy a drink and keep quiet",
+          "requiresNone": ["boughtDrink"],
+          "disabledReason": "Your liver has standards, apparently.",
+          "resultText": "The drink tastes like regret and copper. You feel slightly less like dying, which is apparently the premium service.",
+          "effects": [{ "type": "SetFlag", "value": "boughtDrink" }]
+        },
+        { "number": 4, "text": "Return to the saloon", "effects": [{ "type": "GotoScene", "value": "saloon" }] }
+      ]
+    },
+
+    {
+      "id": "market",
+      "text": "Stalls of scrap, jerky, and pre-war junk. A trader displays items like they're holy relics: wires, batteries, a box of sealed bandages.",
+      "choices": [
+        { "number": 1, "text": "Talk to the trader", "effects": [{ "type": "GotoScene", "value": "market_trader" }] },
+        {
+          "number": 2,
+          "text": "Pocket something small while nobody looks",
+          "requiresNone": ["stoleAtMarket"],
+          "disabledReason": "You've already tried your luck here.",
+          "resultText": "You snag a small bundle of sterile gauze. You also catch someone's eye. Great.",
+          "effects": [
+            { "type": "SetFlag", "value": "stoleAtMarket" },
+            { "type": "SetFlag", "value": "hasSterileGauze" },
+            { "type": "SetFlag", "value": "marketSuspicion" }
+          ]
+        },
+        { "number": 3, "text": "Return to the square", "effects": [{ "type": "GotoScene", "value": "dusthaven_square_main" }] }
+      ]
+    },
+
+    {
+      "id": "market_trader",
+      "text": "\"Caps, bullets, favors,\" the trader says. \"Or stories. Stories are worthless but I like them.\"",
+      "choices": [
+        {
+          "number": 1,
+          "text": "Ask about the radio shack",
+          "requiresNone": ["learnedRadioShackDirections"],
+          "disabledReason": "You already got directions.",
+          "resultText": "\"Two miles south. Look for the antenna like a dead tree. Watch for scav gangs.\"",
+          "effects": [{ "type": "SetFlag", "value": "learnedRadioShackDirections" }]
+        },
+        {
+          "number": 2,
+          "text": "Ask about buying a weapon",
+          "requiresNone": ["hasPipePistol"],
+          "disabledReason": "You already have a weapon from here.",
+          "resultText": "The trader slides you a pipe pistol. \"Not pretty. Usually works. Don't point it at me.\"",
+          "effects": [{ "type": "SetFlag", "value": "hasPipePistol" }]
+        },
+        {
+          "number": 3,
+          "text": "Ask about the tower token",
+          "requiresAll": ["hasTowerToken"],
+          "disabledReason": "You don't have anything like that.",
+          "resultText": "The trader's eyes narrow. \"Tower token? Council issues those to tower techs. Or used to.\"",
+          "effects": [{ "type": "SetFlag", "value": "towerTokenNotedByTrader" }]
+        },
+        { "number": 4, "text": "Return to the market", "effects": [{ "type": "GotoScene", "value": "market" }] }
+      ]
+    },
+
+    {
+      "id": "sheriff_station",
+      "text": "A squat building with sandbags and a faded badge painted on the door. Inside, the air is cooler, which feels suspiciously like mercy.",
+      "choices": [
+        { "number": 1, "text": "Speak to Sheriff Vale", "effects": [{ "type": "GotoScene", "value": "sheriff_vale" }] },
+        {
+          "number": 2,
+          "text": "Look at the holding cells",
+          "requiresNone": ["sawHoldingCells"],
+          "disabledReason": "You've already looked.",
+          "resultText": "Empty cells. Old blood stains. Someone scratched 'WATER IS GOD' into the wall.",
+          "effects": [{ "type": "SetFlag", "value": "sawHoldingCells" }]
+        },
+        { "number": 3, "text": "Return to the square", "effects": [{ "type": "GotoScene", "value": "dusthaven_square_main" }] }
+      ]
+    },
+
+    {
+      "id": "sheriff_vale",
+      "text": "Sheriff Vale has a face like weathered leather and a voice like a door that needs oil. \"You lost?\" he asks. \"Or looking to be found?\"",
+      "choices": [
+        {
+          "number": 1,
+          "text": "Offer help with the sewer problem",
+          "requiresAll": ["jobSewer"],
+          "disabledReason": "You don't have a posting for that.",
+          "resultText": "\"Good,\" Vale says. \"Bring proof the sewer threat is handled. And don't die in there. Paperwork.\"",
+          "effects": [{ "type": "SetFlag", "value": "sheriffBlessedSewer" }]
+        },
+        {
+          "number": 2,
+          "text": "Ask about the water tower sabotage",
+          "requiresAll": ["jobWaterTower"],
+          "disabledReason": "You don't have a posting for that.",
+          "resultText": "Vale's jaw tightens. \"Council says ghouls did it. Quarter says Council did it. I say someone wants a riot.\"",
+          "effects": [{ "type": "SetFlag", "value": "learnedWaterPolitics" }]
+        },
+        {
+          "number": 3,
+          "text": "Ask for a basic baton for protection",
+          "requiresNone": ["hasBaton"],
+          "disabledReason": "You already have one.",
+          "resultText": "Vale tosses you a short baton. \"Don't make me regret that.\"",
+          "effects": [{ "type": "SetFlag", "value": "hasBaton" }]
+        },
+        { "number": 4, "text": "Return to the station", "effects": [{ "type": "GotoScene", "value": "sheriff_station" }] }
+      ]
+    },
+
+    {
+      "id": "ghoul_quarter_gate",
+      "text": "A narrow lane ends at a welded gate. A sign reads: QUARTER. Beneath it, in smaller letters: DON'T START WHAT YOU CAN'T FINISH.",
+      "choices": [
+        {
+          "number": 1,
+          "text": "Ask to enter peacefully",
+          "requiresNone": ["enteredQuarter"],
+          "disabledReason": "You're already inside.",
+          "resultText": "A voice from behind the bars: \"Peace costs extra.\" After a pause, the gate opens.",
+          "effects": [
+            { "type": "SetFlag", "value": "enteredQuarter" },
+            { "type": "GotoScene", "value": "ghoul_quarter_street" }
+          ]
+        },
+        {
+          "number": 2,
+          "text": "Threaten the gate guard",
+          "requiresAll": ["hasPipePistol"],
+          "disabledReason": "You don't have enough leverage for that.",
+          "resultText": "Someone laughs. The gate stays closed. A second later, you hear a rifle being chambered. You reconsider your life choices.",
+          "effects": [{ "type": "SetFlag", "value": "quarterHostileFirstImpression" }]
+        },
+        { "number": 3, "text": "Return to the square", "effects": [{ "type": "GotoScene", "value": "dusthaven_square_main" }] }
+      ]
+    },
+
+    {
+      "id": "ghoul_quarter_street",
+      "text": "The Quarter is tighter, dimmer, and oddly orderly. Faces here are scarred by radiation and time. A few people stop and stare like you're a tourist in a cemetery.",
+      "choices": [
+        { "number": 1, "text": "Speak to the Quarter foreman", "effects": [{ "type": "GotoScene", "value": "ghoul_foreman" }] },
+        {
+          "number": 2,
+          "text": "Look for the storm drain entrance",
+          "requiresAll": ["learnedQuarterLayout"],
+          "disabledReason": "You don't know where to look yet.",
+          "effects": [{ "type": "GotoScene", "value": "storm_drain_entrance" }]
+        },
+        { "number": 3, "text": "Return to the gate", "effects": [{ "type": "GotoScene", "value": "ghoul_quarter_gate" }] }
+      ]
+    },
+
+    {
+      "id": "ghoul_foreman",
+      "text": "A ghoul with a cracked hard-hat and a voice like gravel introduces himself as Foreman Rusk. \"You're new meat,\" he says. \"Try not to rot faster than the rest of us.\"",
+      "choices": [
+        {
+          "number": 1,
+          "text": "Ask about the water tower accusations",
+          "requiresNone": ["ghoulsDenyWaterSabotage"],
+          "disabledReason": "You already asked.",
+          "resultText": "\"We didn't touch the tower,\" Rusk says. \"But Council needs a scapegoat. Same old story. Different apocalypse.\"",
+          "effects": [{ "type": "SetFlag", "value": "ghoulsDenyWaterSabotage" }]
+        },
+        {
+          "number": 2,
+          "text": "Offer to investigate and report back",
+          "requiresNone": ["promisedRuskHelp"],
+          "disabledReason": "You already made that promise.",
+          "resultText": "Rusk nods once. \"Bring me proof. And if the sewer's involved, watch your ankles.\"",
+          "effects": [{ "type": "SetFlag", "value": "promisedRuskHelp" }]
+        },
+        {
+          "number": 3,
+          "text": "Ask about the storm drains",
+          "requiresNone": ["learnedDrainAccess"],
+          "disabledReason": "You already got the warning.",
+          "resultText": "\"Drains run under half the town,\" Rusk says. \"Some are collapsed. Some... aren't. If you go down there, take a light.\"",
+          "effects": [{ "type": "SetFlag", "value": "learnedDrainAccess" }]
+        },
+        { "number": 4, "text": "Return to the Quarter street", "effects": [{ "type": "GotoScene", "value": "ghoul_quarter_street" }] }
+      ]
+    },
+
+    {
+      "id": "water_tower_road",
+      "text": "A cracked asphalt road leads toward a skeletal water tower. Faded 'KEEP OUT' signs flap like warnings nobody enforces.",
+      "choices": [
+        { "number": 1, "text": "Approach the water tower", "effects": [{ "type": "GotoScene", "value": "water_tower_base" }] },
+        { "number": 2, "text": "Return to the square", "effects": [{ "type": "GotoScene", "value": "dusthaven_square_main" }] }
+      ]
+    },
+
+    {
+      "id": "water_tower_base",
+      "text": "At the base of the tower, a locked maintenance hatch sits beneath a control panel. You hear a faint, irregular clunk from inside, like something trying to breathe.",
+      "choices": [
+        {
+          "number": 1,
+          "text": "Use the tower token on the control panel",
+          "requiresAll": ["hasTowerToken"],
+          "disabledReason": "You don't have anything that fits.",
+          "resultText": "The token clicks into place. The panel lights up weakly and displays a blinking message: INTAKE VALVE: MANUAL OVERRIDE.",
+          "effects": [
+            { "type": "SetFlag", "value": "towerPanelUnlocked" },
+            { "type": "SetFlag", "value": "learnedIntakeOverride" }
+          ]
+        },
+        {
+          "number": 2,
+          "text": "Force the maintenance hatch",
+          "requiresAll": ["hasCrowbar"],
+          "disabledReason": "You need something to pry it open.",
+          "resultText": "You wrench the hatch open. The smell that escapes is metallic and wrong. Inside: a small filter unit with a cracked seal.",
+          "effects": [
+            { "type": "SetFlag", "value": "forcedTowerHatch" },
+            { "type": "SetFlag", "value": "foundCrackedFilter" }
+          ]
+        },
+        { "number": 3, "text": "Return to the road", "effects": [{ "type": "GotoScene", "value": "water_tower_road" }] }
+      ]
+    },
+
+    {
+      "id": "outskirts_crossroads",
+      "text": "A dusty crossroads outside town. Signs point toward: RADIO SHACK (S), SCRAPYARD (N), HILLS (W), SEWER ACCESS (E).",
+      "choices": [
+        { "number": 1, "text": "Head south to the old radio shack", "effects": [{ "type": "GotoScene", "value": "radio_shack_exterior" }] },
+        { "number": 2, "text": "Head north to the scrapyard", "effects": [{ "type": "GotoScene", "value": "scrapyard_gate" }] },
+        { "number": 3, "text": "Head west into the hills", "effects": [{ "type": "GotoScene", "value": "hills_trailhead" }] },
+        { "number": 4, "text": "Head east toward the sewer access", "effects": [{ "type": "GotoScene", "value": "sewer_access" }] },
+        { "number": 5, "text": "Return to Dusthaven", "effects": [{ "type": "GotoScene", "value": "dusthaven_square_main" }] }
+      ]
+    },
+
+    {
+      "id": "radio_shack_exterior",
+      "text": "The radio shack squats in the sand like a forgotten guilt. A tall antenna leans at an angle that feels personal. The door is ajar.",
+      "choices": [
+        { "number": 1, "text": "Enter the radio shack", "effects": [{ "type": "GotoScene", "value": "radio_shack_interior" }] },
+        {
+          "number": 2,
+          "text": "Search around the exterior",
+          "requiresNone": ["searchedRadioExterior"],
+          "disabledReason": "You've already searched outside.",
+          "resultText": "You find fresh boot prints. Not yours. Also, a small strip of medical tape stuck to a fence post.",
+          "effects": [
+            { "type": "SetFlag", "value": "searchedRadioExterior" },
+            { "type": "SetFlag", "value": "foundBootPrints" },
+            { "type": "SetFlag", "value": "foundMedicalTape" }
+          ]
+        },
+        { "number": 3, "text": "Return to the crossroads", "effects": [{ "type": "GotoScene", "value": "outskirts_crossroads" }] }
+      ]
+    },
+
+    {
+      "id": "radio_shack_interior",
+      "text": "Inside: dust, dead equipment, and a faint hum from a power cell that should not be working. A runner's satchel lies torn open on the floor.",
+      "choices": [
+        {
+          "number": 1,
+          "text": "Inspect the torn satchel",
+          "requiresNone": ["inspectedRunnerSatchel"],
+          "disabledReason": "You already checked it.",
+          "resultText": "It's a town runner's satchel. The contents are gone. A blood smear leads behind the equipment rack.",
+          "effects": [
+            { "type": "SetFlag", "value": "inspectedRunnerSatchel" },
+            { "type": "SetFlag", "value": "confirmedRunnerHere" }
+          ]
+        },
+        {
+          "number": 2,
+          "text": "Follow the blood smear behind the rack",
+          "requiresAll": ["inspectedRunnerSatchel"],
+          "disabledReason": "You haven't found anything to follow yet.",
+          "resultText": "Behind the rack you find the runner, alive but barely. They press a sealed canister into your hand and whisper: \"Tower... intake... not them...\"",
+          "effects": [
+            { "type": "SetFlag", "value": "foundRunnerAlive" },
+            { "type": "SetFlag", "value": "hasSealedCanister" },
+            { "type": "SetFlag", "value": "learnedNotGhouls" }
+          ]
+        },
+        {
+          "number": 3,
+          "text": "Try to power the transmitter",
+          "requiresAll": ["hasBrokenRadio"],
+          "disabledReason": "You don't have any radio equipment to integrate.",
+          "resultText": "You jury-rig your broken radio to the transmitter. It squeals, then stabilizes. A voice repeats coordinates and the phrase: \"SILO 7\".",
+          "effects": [
+            { "type": "SetFlag", "value": "poweredTransmitter" },
+            { "type": "SetFlag", "value": "heardSilo7" }
+          ]
+        },
+        { "number": 4, "text": "Return outside", "effects": [{ "type": "GotoScene", "value": "radio_shack_exterior" }] }
+      ]
+    },
+
+    {
+      "id": "scrapyard_gate",
+      "text": "A scrapyard ringed with jagged metal. A scav kid watches from a perch. \"Entry's not free,\" they shout.",
+      "choices": [
+        {
+          "number": 1,
+          "text": "Offer medical gauze as trade",
+          "requiresAll": ["hasSterileGauze"],
+          "disabledReason": "You don't have anything like that.",
+          "resultText": "The kid snatches the gauze like it’s treasure. \"Fine. One item. No whining.\"",
+          "effects": [
+            { "type": "SetFlag", "value": "scrapyardAccess" },
+            { "type": "GotoScene", "value": "scrapyard_interior" }
+          ]
+        },
+        {
+          "number": 2,
+          "text": "Try to sneak in",
+          "requiresNone": ["triedSneakScrapyard"],
+          "disabledReason": "You already tried that.",
+          "resultText": "A bottle shatters near your feet. \"Nice try,\" the kid says. \"Pay or leave.\"",
+          "effects": [{ "type": "SetFlag", "value": "triedSneakScrapyard" }]
+        },
+        { "number": 3, "text": "Return to the crossroads", "effects": [{ "type": "GotoScene", "value": "outskirts_crossroads" }] }
+      ]
+    },
+
+    {
+      "id": "scrapyard_interior",
+      "text": "Mountains of twisted pre-war metal. Something moves between the heaps. A small locked tool locker sits half-buried.",
+      "choices": [
+        {
+          "number": 1,
+          "text": "Open the tool locker with the rusty key",
+          "requiresAll": ["hasRustyKey"],
+          "disabledReason": "You don't have a key that fits.",
+          "resultText": "The rusty key grinds but turns. Inside: a crowbar, a flashlight, and a sealed pack of antiseptic wipes.",
+          "effects": [
+            { "type": "SetFlag", "value": "openedToolLocker" },
+            { "type": "SetFlag", "value": "hasCrowbar" },
+            { "type": "SetFlag", "value": "hasFlashlight" },
+            { "type": "SetFlag", "value": "hasAntisepticWipes" }
+          ]
+        },
+        {
+          "number": 2,
+          "text": "Search the heaps for medical scrap",
+          "requiresNone": ["searchedScrapyardMedical"],
+          "disabledReason": "You've already searched the obvious spots.",
+          "resultText": "You find sealed tubing and a sterilized clamp in a preserved kit. Lucky. Or cursed.",
+          "effects": [
+            { "type": "SetFlag", "value": "searchedScrapyardMedical" },
+            { "type": "SetFlag", "value": "hasMedicalScrap" }
+          ]
+        },
+        { "number": 3, "text": "Leave the scrapyard", "effects": [{ "type": "GotoScene", "value": "outskirts_crossroads" }] }
+      ]
+    },
+
+    {
+      "id": "sewer_access",
+      "text": "A concrete culvert entrance half-collapsed. The air coming out is damp and smells like old pennies. A ladder descends into darkness.",
+      "choices": [
+        {
+          "number": 1,
+          "text": "Climb down into the sewer",
+          "requiresAll": ["hasFlashlight"],
+          "disabledReason": "Going down there without a light is how people become stories.",
+          "effects": [{ "type": "GotoScene", "value": "sewer_tunnel" }]
+        },
+        { "number": 2, "text": "Return to the crossroads", "effects": [{ "type": "GotoScene", "value": "outskirts_crossroads" }] }
+      ]
+    },
+
+    {
+      "id": "sewer_tunnel",
+      "text": "The tunnel is knee-deep in foul water. Your flashlight beam catches movement. Not rats. People. And they are trying very hard to be quiet.",
+      "choices": [
+        {
+          "number": 1,
+          "text": "Confront the figures",
+          "requiresNone": ["sewerConfronted"],
+          "disabledReason": "You've already made contact.",
+          "resultText": "They raise their hands. Not raiders. Townfolk. \"We maintain the intake,\" one whispers. \"Council pays. Quarter takes the blame.\"",
+          "effects": [
+            { "type": "SetFlag", "value": "sewerConfronted" },
+            { "type": "SetFlag", "value": "learnedCouncilPlot" }
+          ]
+        },
+        {
+          "number": 2,
+          "text": "Follow the tunnel toward the Quarter drains",
+          "requiresAll": ["learnedDrainAccess"],
+          "disabledReason": "You don't know where the drain junction is.",
+          "effects": [{ "type": "GotoScene", "value": "storm_drain_entrance" }]
+        },
+        {
+          "number": 3,
+          "text": "Follow the tunnel toward the tower intake",
+          "requiresAll": ["learnedIntakeOverride"],
+          "disabledReason": "You don't know what you're looking for.",
+          "effects": [{ "type": "GotoScene", "value": "tower_intake_room" }]
+        },
+        { "number": 4, "text": "Climb back out", "effects": [{ "type": "GotoScene", "value": "sewer_access" }] }
+      ]
+    },
+
+    {
+      "id": "storm_drain_entrance",
+      "text": "A grated opening into the Quarter's drain network. The grate has been moved recently. Faint voices echo somewhere ahead.",
+      "choices": [
+        { "number": 1, "text": "Enter the drains under the Quarter", "effects": [{ "type": "GotoScene", "value": "quarter_drains" }] },
+        { "number": 2, "text": "Return to the Quarter street", "effects": [{ "type": "GotoScene", "value": "ghoul_quarter_street" }] }
+      ]
+    },
+
+    {
+      "id": "quarter_drains",
+      "text": "The drains are cramped and old. You find a stash: stolen tools, a council seal stamp, and a map marking the tower intake room.",
+      "choices": [
+        {
+          "number": 1,
+          "text": "Take the council seal stamp",
+          "requiresNone": ["tookSealStamp"],
+          "disabledReason": "You already took it.",
+          "resultText": "You pocket the stamp. It feels heavier than it should, like guilt made physical.",
+          "effects": [{ "type": "SetFlag", "value": "tookSealStamp" }]
+        },
+        {
+          "number": 2,
+          "text": "Take the intake room map",
+          "requiresNone": ["tookIntakeMap"],
+          "disabledReason": "You already took it.",
+          "resultText": "You take the map. Now you know exactly where the town's lifeline can be strangled.",
+          "effects": [
+            { "type": "SetFlag", "value": "tookIntakeMap" },
+            { "type": "SetFlag", "value": "knowsIntakeLocation" }
+          ]
+        },
+        { "number": 3, "text": "Return to the storm drain entrance", "effects": [{ "type": "GotoScene", "value": "storm_drain_entrance" }] }
+      ]
+    },
+
+    {
+      "id": "tower_intake_room",
+      "text": "A cramped maintenance chamber beneath the water tower. Valves, pipes, and a jury-rigged bypass line. Someone has installed a sabotage lever labeled: \"QUARTER.\"",
+      "choices": [
+        {
+          "number": 1,
+          "text": "Remove the sabotage lever and preserve it as evidence",
+          "requiresNone": ["tookSabotageLever"],
+          "disabledReason": "You already took it.",
+          "resultText": "You unbolt the lever assembly. The label was glued on recently. Cheap glue. Cheap lie.",
+          "effects": [
+            { "type": "SetFlag", "value": "tookSabotageLever" },
+            { "type": "SetFlag", "value": "hasEvidenceLever" }
+          ]
+        },
+        {
+          "number": 2,
+          "text": "Fix the cracked filter seal using medical scrap",
+          "requiresAll": ["foundCrackedFilter", "hasMedicalScrap"],
+          "disabledReason": "You lack the parts or haven't found the problem yet.",
+          "resultText": "You patch the seal as best you can. The clunking smooths into a steady pump rhythm. Water will flow longer now.",
+          "effects": [{ "type": "SetFlag", "value": "towerTemporarilyStabilized" }]
+        },
+        {
+          "number": 3,
+          "text": "Set the intake valves to full override",
+          "requiresAll": ["towerPanelUnlocked"],
+          "disabledReason": "You haven't unlocked the panel access.",
+          "resultText": "You force the intake to full override. The system groans. It will work, but it might burn out sooner.",
+          "effects": [{ "type": "SetFlag", "value": "intakeForcedOverride" }]
+        },
+        { "number": 4, "text": "Return to the sewer tunnel", "effects": [{ "type": "GotoScene", "value": "sewer_tunnel" }] }
+      ]
+    },
+
+    {
+      "id": "hills_trailhead",
+      "text": "A rocky trail into sun-blasted hills. Old warning pylons line the path. One is marked with faded text: SILO 7.",
+      "choices": [
+        {
+          "number": 1,
+          "text": "Follow the pylons deeper into the hills",
+          "requiresAll": ["heardSilo7"],
+          "disabledReason": "You don't know why you'd go hunting random pylons yet.",
+          "effects": [{ "type": "GotoScene", "value": "silo_entrance" }]
+        },
+        { "number": 2, "text": "Return to the crossroads", "effects": [{ "type": "GotoScene", "value": "outskirts_crossroads" }] }
+      ]
+    },
+
+    {
+      "id": "silo_entrance",
+      "text": "A reinforced bunker door half-buried in stone. A keypad sits beside it, dead. A manual lock is set into the frame with a tower icon.",
+      "choices": [
+        {
+          "number": 1,
+          "text": "Use the tower token on the manual lock",
+          "requiresAll": ["hasTowerToken"],
+          "disabledReason": "You don't have the right keying.",
+          "resultText": "The token fits. The lock clicks. The door shudders open with a sigh like something waking up angry.",
+          "effects": [
+            { "type": "SetFlag", "value": "openedSilo" },
+            { "type": "GotoScene", "value": "silo_corridor" }
+          ]
+        },
+        { "number": 2, "text": "Return to the trailhead", "effects": [{ "type": "GotoScene", "value": "hills_trailhead" }] }
+      ]
+    },
+
+    {
+      "id": "silo_corridor",
+      "text": "A concrete corridor lined with old equipment racks. A terminal screen flickers with a single line: WATER PURITY MODULE: OFFLINE.",
+      "choices": [
+        {
+          "number": 1,
+          "text": "Search the racks for a module",
+          "requiresNone": ["searchedSiloRacks"],
+          "disabledReason": "You've already searched the obvious storage.",
+          "resultText": "You find a sealed metal module labeled PURITY CORE. It's heavy. It also looks expensive, which is always a sign of impending trouble.",
+          "effects": [
+            { "type": "SetFlag", "value": "searchedSiloRacks" },
+            { "type": "SetFlag", "value": "hasPurityCore" }
+          ]
+        },
+        { "number": 2, "text": "Return outside", "effects": [{ "type": "GotoScene", "value": "silo_entrance" }] }
+      ]
+    },
+
+    {
+      "id": "council_hall",
+      "text": "Dusthaven's council hall is a reinforced trailer with a big table and small souls. Councilor Marr smiles like a trap. \"You found something,\" they say.",
+      "choices": [
+        {
+          "number": 1,
+          "text": "Confront the council with evidence of sabotage",
+          "requiresAll": ["hasEvidenceLever"],
+          "disabledReason": "You don't have anything solid to accuse them with.",
+          "resultText": "Marr's smile slips. For a second, the room goes cold. \"Careful,\" they say. \"Accusations get people killed.\"",
+          "effects": [
+            { "type": "SetFlag", "value": "confrontedCouncil" },
+            { "type": "SetFlag", "value": "councilThreatenedYou" }
+          ]
+        },
+        {
+          "number": 2,
+          "text": "Hand over the Purity Core in exchange for protection",
+          "requiresAll": ["hasPurityCore"],
+          "disabledReason": "You don't have a core to bargain with.",
+          "resultText": "Marr takes the module and nods to the guards. \"Dusthaven appreciates your... contribution.\" You are escorted out politely, which is never a good sign.",
+          "effects": [
+            { "type": "SetFlag", "value": "gaveCoreToCouncil" },
+            { "type": "GotoScene", "value": "ending_council_control" }
+          ]
+        },
+        { "number": 3, "text": "Leave the council hall", "effects": [{ "type": "GotoScene", "value": "dusthaven_square_main" }] }
+      ]
+    },
+
+    {
+      "id": "square_after_investigation",
+      "text": "The square feels tighter. People have heard something. Maybe about you. Maybe about the water. Dusthaven runs on rumors like it runs on filtration: poorly.",
+      "choices": [
+        { "number": 1, "text": "Go to the council hall", "effects": [{ "type": "GotoScene", "value": "council_hall" }] },
+        { "number": 2, "text": "Report to Sheriff Vale", "effects": [{ "type": "GotoScene", "value": "report_sheriff" }] },
+        { "number": 3, "text": "Report to Foreman Rusk in the Quarter", "effects": [{ "type": "GotoScene", "value": "report_rusk" }] },
+        { "number": 4, "text": "Slip out of town with whatever you have", "effects": [{ "type": "GotoScene", "value": "ending_walk_away" }] },
+        { "number": 5, "text": "Return to the square", "effects": [{ "type": "GotoScene", "value": "dusthaven_square_main" }] }
+      ]
+    },
+
+    {
+      "id": "report_sheriff",
+      "text": "Sheriff Vale listens without interrupting. When you finish, he rubs his eyes like he's trying to erase the world.",
+      "choices": [
+        {
+          "number": 1,
+          "text": "Show Vale the sabotage lever evidence",
+          "requiresAll": ["hasEvidenceLever"],
+          "disabledReason": "You don't have anything to show him.",
+          "resultText": "Vale exhales. \"Council wanted a riot they could 'solve'.\" He looks at you. \"You want to finish this?\"",
+          "effects": [{ "type": "SetFlag", "value": "valeOnYourSide" }]
+        },
+        {
+          "number": 2,
+          "text": "Ask Vale to back you publicly against the council",
+          "requiresAll": ["valeOnYourSide"],
+          "disabledReason": "You haven't earned that level of trust yet.",
+          "resultText": "Vale nods once. \"Then we do it clean. We show the town. We keep the Quarter safe.\"",
+          "effects": [
+            { "type": "SetFlag", "value": "publicAccusationPlan" },
+            { "type": "GotoScene", "value": "ending_town_reckoning" }
+          ]
+        },
+        { "number": 3, "text": "Return to the square", "effects": [{ "type": "GotoScene", "value": "dusthaven_square_main" }] }
+      ]
+    },
+
+    {
+      "id": "report_rusk",
+      "text": "Rusk stares at you with eyes that have seen too many 'accidents' that weren't. \"Talk,\" he says.",
+      "choices": [
+        {
+          "number": 1,
+          "text": "Tell Rusk the council staged the sabotage",
+          "requiresAll": ["learnedCouncilPlot"],
+          "disabledReason": "You don't actually know that for sure.",
+          "resultText": "Rusk's jaw tightens. \"Then they want us dead or gone.\" He spits. \"You bring proof, we bring bodies.\"",
+          "effects": [{ "type": "SetFlag", "value": "ruskPreparedToAct" }]
+        },
+        {
+          "number": 2,
+          "text": "Give Rusk the Purity Core to stabilize the Quarter's own filters",
+          "requiresAll": ["hasPurityCore"],
+          "disabledReason": "You don't have a core to give.",
+          "resultText": "Rusk takes it carefully, like it's a bomb. \"This changes things,\" he says. \"Now we can survive without begging.\"",
+          "effects": [
+            { "type": "SetFlag", "value": "gaveCoreToQuarter" },
+            { "type": "GotoScene", "value": "ending_quarter_independence" }
+          ]
+        },
+        { "number": 3, "text": "Return to the Quarter street", "effects": [{ "type": "GotoScene", "value": "ghoul_quarter_street" }] }
+      ]
+    },
+
+    { "id": "ending_town_reckoning", "text": "With Vale beside you and evidence in hand, the square becomes a courtroom. The council tries to spin. The Quarter doesn't flinch. Dusthaven doesn't heal, but it stops lying. For now.", "isEnd": true, "choices": [] },
+    { "id": "ending_council_control", "text": "The Purity Core makes the water run clean. The council takes credit. The Quarter takes blame. You live, technically. Dusthaven thrives, politically. The truth is buried where it always ends up: under someone else's feet.", "isEnd": true, "choices": [] },
+    { "id": "ending_quarter_independence", "text": "The Quarter stabilizes its own water. The council loses leverage. Dusthaven becomes two towns sharing one wall and a mutual hatred of compromise. You are remembered as either a liberator or an arsonist. Both are partly true.", "isEnd": true, "choices": [] },
+    { "id": "ending_walk_away", "text": "You leave Dusthaven with the desert wind at your back. Maybe the town burns. Maybe it survives. In the wasteland, morality is mostly a story people tell themselves so they can sleep.", "isEnd": true, "choices": [] }
+  ]
+}

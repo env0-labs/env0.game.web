@@ -1,0 +1,126 @@
+{
+  "Root": {
+    "tutorial.txt": {
+      "type": "file",
+      "content": "Welcome to env0.terminal!\n\nYou are in a simulated terminal. Try these commands:\n\n- ls                  : List files/directories in the current folder\n- cd [dir]            : Change directory (cd .. to go up, cd / for root)\n- cat [file]          : View a file’s contents\n- read [file]         : Paginated view for long files\n- help                : List all available commands\n- ssh [host]          : Connect to another device (if you know one)\n- exit                : Exit SSH (or quit if at base terminal)\n\nOther tips:\n- Tab/arrow keys for history and editing (if supported by your UI)\n- Files with strange or corrupted contents are intentional.\n- Explore, poke around, and try breaking things!\n\nIf you’re lost, cd /home/user, read the notes, and explore /secrets for hidden content. Good luck!"
+    },
+    "filesystem_1.txt": {
+      "type": "file",
+      "content": "Player SBC — Standard Home System\nYou’re on the main SBC terminal. This system is haunted. There are secrets here."
+    },
+    "home": {
+      "user": {
+        "notes.txt": {
+          "type": "file",
+          "content": "Welcome home!\n- Try cd /secrets\n- There are odd logs in /log\n- If you find any .bin files, open at your own risk.\n- To reboot: try not to. The last person who did isn’t here anymore."
+        },
+        "todo.txt": {
+          "type": "file",
+          "content": "1. Read tutorial.txt\n2. Find the ghost file\n3. Do NOT open /system/old/curse.hex\n4. Report anomalies in /log/system.log"
+        },
+        "ghostmail": {
+          "type": "file",
+          "content": "From: ??\nSubject: they are watching\n\nstop digging. it sees you now."
+        }
+      }
+    },
+    "secrets": {
+      "void": {
+        "oblivion": {
+          "abyss": {
+            "echo.txt": {
+              "type": "file",
+              "content": "You stare into the abyss.\nThe abyss echoes back: > Who are you, really?"
+            }
+          },
+          "scrambled.log": {
+            "type": "file",
+            "content": "2025-05-23T03:03:03Z SYSTEM EVENT: ☠☠☠DATA LOSS DETECTED☠☠☠\nContent unreadable: 53 63 72 61 6d 62 6c 65 64 20 62 79 74 65 73"
+          }
+        },
+        "arcana.txt": {
+          "type": "file",
+          "content": "The great secret: echo back what you see and you’ll go deeper.\nBut sometimes, there’s nothing to echo."
+        },
+        "ghosts.txt": {
+          "type": "file",
+          "content": "Specters in the shell:\n- /system/old/curse.hex\n- /log/ghosts.log\n- ~/.bash_history (not found)\n\nIf you see this file, so do they."
+        }
+      }
+    },
+    "log": {
+      "boot.log": {
+        "type": "file",
+        "content": "Boot successful at 2025-05-23T09:12:00Z\nPrevious boot: abnormal, 2025-05-23T03:03:03Z"
+      },
+      "system.log": {
+        "type": "file",
+        "content": "WARN: Unexpected process detected at 03:03:03Z\nINFO: User ewan logged in\nALERT: /secrets/void accessed"
+      },
+      "ghosts.log": {
+        "type": "file",
+        "content": "👻👻👻 ghost file begins 👻👻👻\nUser: ewan\nLast seen: never\nMessage: sometimes they talk back."
+      }
+    },
+    "etc": {
+      "hostname.txt": {
+        "type": "file",
+        "content": "sbc.node.zero"
+      },
+      "motd": {
+        "type": "file",
+        "content": "Welcome to your haunted SBC. Type help for survival tips."
+      }
+    },
+    "system": {
+      "old": {
+        "curse.hex": {
+          "type": "file",
+          "content": "43 55 52 53 45 44 0A 53 59 53 54 45 4D 20 46 41 49 4C 45 44 2E\nDo not attempt to repair."
+        },
+        "manifest.txt": {
+          "type": "file",
+          "content": "This directory predates you.\n\nlast updated: unknown\ncontains: remnants, corrupted logs, echoes"
+        },
+        "remnants": {
+          "scrap1.txt": {
+            "type": "file",
+            "content": "nothing left but echoes."
+          },
+          "scrap2.txt": {
+            "type": "file",
+            "content": "try catting everything in /secrets/void/oblivion"
+          }
+        }
+      },
+      "bin": {
+        "autorun.sh": {
+          "type": "file",
+          "content": "#!/bin/sh\n# Do not run.\necho \"This is not a real shell.\""
+        }
+      }
+    },
+    "docs": {
+      "manual.txt": {
+        "type": "file",
+        "content": "User Manual (Partial)\n\nFor advanced users only. Most pages are missing."
+      },
+      "networking": {
+        "howto-ssh.txt": {
+          "type": "file",
+          "content": "To connect to another machine:\n1. Get the hostname (see 'nmap')\n2. ssh [hostname]\n3. Enter username and password\n\nRemember: some devices are best left alone."
+        }
+      }
+    },
+    "tmp": {
+      "joke.txt": {
+        "type": "file",
+        "content": "Why do ghosts love terminals? Because they can haunt every session."
+      },
+      "debug.log": {
+        "type": "file",
+        "content": "DEBUG: The cake is a lie."
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+
+            {
+              "root": {
+                "home": {
+                  "user": {
+                    "tutorial.txt": {
+                      "type": "file",
+                      "content": "Welcome!"
+                    }
+                  }
+                }
+              }
+            }

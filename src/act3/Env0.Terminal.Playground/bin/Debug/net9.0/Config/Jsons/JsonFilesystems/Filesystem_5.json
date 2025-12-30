@@ -1,0 +1,32 @@
+{
+  "root": {
+    "filesystem_5.txt": {
+      "type": "file",
+      "content": "Lab Machine\nUsed by the science team for experiments and side projects."
+    },
+    "home": {
+      "labrat": {
+        "notes.txt": {
+          "type": "file",
+          "content": "Reminder: Check sample #14 for contamination."
+        },
+        "data.bin": {
+          "type": "file",
+          "content": "BINARY_EXPERIMENTAL_DATA"
+        }
+      }
+    },
+    "projects": {
+      "chaos_simulator.sh": {
+        "type": "file",
+        "content": "#!/bin/sh\n# Unstable, do not run unsupervised"
+      }
+    },
+    "tmp": {
+      "deleteme.log": {
+        "type": "file",
+        "content": "Temporary log for batch runs"
+      }
+    }
+  }
+}

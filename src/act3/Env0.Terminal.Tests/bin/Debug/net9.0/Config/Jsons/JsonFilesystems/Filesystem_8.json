@@ -1,0 +1,32 @@
+{
+  "root": {
+    "filesystem_8.txt": {
+      "type": "file",
+      "content": "HR Workstation\nPersonal files, onboarding docs, and questionable diary entries."
+    },
+    "home": {
+      "hr": {
+        "diary.txt": {
+          "type": "file",
+          "content": "Day 58: Still hate Mondays."
+        },
+        "resume.doc": {
+          "type": "file",
+          "content": "Curriculum Vitae — Confidential"
+        }
+      }
+    },
+    "docs": {
+      "onboarding.txt": {
+        "type": "file",
+        "content": "Welcome to the company. Please ignore the rumors."
+      }
+    },
+    "log": {
+      "email.log": {
+        "type": "file",
+        "content": "2025-05-10: Sent resignation email. (Unsent.)"
+      }
+    }
+  }
+}

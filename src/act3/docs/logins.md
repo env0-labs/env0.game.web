@@ -1,0 +1,22 @@
+|     IP         |      Hostname           |   Username   |   Password     |
+|:--------------:|:----------------------:|:------------:|:--------------:|
+| 10.10.10.1     | workstation.node.zero   | alice        | wonderland     |
+| 10.10.10.2     | forgotten.server        | sysforgot    | dec4y          |
+| 10.10.10.3     | corp.admin              | ceo          | 4cc3$$         |
+| 10.10.10.4     | printer.office1         | spooler      | p@perj@m       |
+| 10.10.10.5     | labpc.chem              | labrat       | ch3m1cals      |
+| 10.10.10.6     | router.core             | netadmin     | r0ut3me        |
+| 10.10.10.7     | corrupt.node            | unknown      | ???            |
+| 10.10.10.8     | hrworkstation.npc       | hrbot        | onboarding     |
+| 10.10.10.9     | oldresearch.ws          | legacy       | t1meC@psule    |
+| 10.10.10.10    | iot.sensor01            | sensei       | iot@home       |
+| 10.10.10.11    | workstation2.node.zero  | bob          | builder        |
+| 10.10.10.12    | forgotten2.server       | ghost        | lostfiles      |
+| 10.10.10.13    | corp2.admin             | cto          | s3cur3!        |
+| 10.10.10.14    | printer2.office2        | spooler2     | trayempty      |
+| 10.10.10.15    | labpc2.chem             | pipette      | testtubes      |
+| 10.10.10.16    | router2.core            | networker    | subnetmask     |
+| 10.10.10.17    | corrupt2.node           | null         | 0000           |
+| 10.10.10.18    | hrworkstation2.npc      | hrguest      | handbooks      |
+| 10.10.10.19    | oldresearch2.ws         | researcher   | dustybooks     |
+| 10.10.10.20    | iot2.sensor01           | monitor      | datafeed       |

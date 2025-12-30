@@ -1,0 +1,26 @@
+{
+  "root": {
+    "filesystem_10.txt": {
+      "type": "file",
+      "content": "IoT Sensor Device\nCollects and uploads environmental data. Not designed for humans."
+    },
+    "sensor": {
+      "data.bin": {
+        "type": "file",
+        "content": "BINARY_SENSOR_STREAM"
+      }
+    },
+    "config": {
+      "settings.cfg": {
+        "type": "file",
+        "content": "interval=10s\nthreshold=0.5"
+      }
+    },
+    "log": {
+      "status.log": {
+        "type": "file",
+        "content": "Last reading: OK"
+      }
+    }
+  }
+}

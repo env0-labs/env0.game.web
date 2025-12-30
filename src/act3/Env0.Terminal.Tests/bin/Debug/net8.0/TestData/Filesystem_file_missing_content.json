@@ -1,0 +1,8 @@
+
+                {
+                    "root": {
+                        "etc": {
+                            "hostname.txt": { "type": "file" }
+                        }
+                    }
+                }

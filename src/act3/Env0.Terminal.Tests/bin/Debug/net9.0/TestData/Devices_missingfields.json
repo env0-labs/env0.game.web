@@ -1,0 +1,15 @@
+
+            [
+                {
+                    "ip": "",
+                    "hostname": "",
+                    "mac": "",
+                    "username": "",
+                    "password": "",
+                    "filesystem": "",
+                    "motd": "",
+                    "description": "",
+                    "ports": [],
+                    "interfaces": []
+                }
+            ]

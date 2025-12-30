@@ -1,0 +1,274 @@
+{
+  "startSceneId": "bedroom_wake",
+  "scenes": [
+    {
+      "id": "bedroom_wake",
+      "text": "You wake in a hospital bed, though it sits awkwardly in a bedroom. The sheets are clean, the walls unfamiliar. You do not recognise this place.",
+      "choices": [
+        {
+          "number": 1,
+          "text": "Search the tea chest",
+          "requiresNone": ["searchedTeaChest"],
+          "disabledReason": "You already checked the tea chest.",
+          "resultText": "Beneath old leaves and dust inside the tea chest, you find a small rusty key.",
+          "effects": [
+            { "type": "SetFlag", "value": "searchedTeaChest" },
+            { "type": "SetFlag", "value": "hasRustyKey" }
+          ]
+        },
+        {
+          "number": 2,
+          "text": "Open the chest of drawers",
+          "requiresNone": ["searchedDrawers"],
+          "disabledReason": "You already searched the drawers.",
+          "resultText": "Inside the drawers you find a hat. You put it on without really thinking about it.",
+          "effects": [
+            { "type": "SetFlag", "value": "searchedDrawers" },
+            { "type": "SetFlag", "value": "wearingHat" }
+          ]
+        },
+        {
+          "number": 3,
+          "text": "Leave the room into the hallway",
+          "effects": [
+            { "type": "GotoScene", "value": "hallway_upstairs" }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "hallway_upstairs",
+      "text": "The hallway is long and narrow. Stairs descend at the far end. Two doors sit on the right wall, one on the left.",
+      "choices": [
+        {
+          "number": 1,
+          "text": "Open the first door on the right",
+          "effects": [
+            { "type": "GotoScene", "value": "dark_room" }
+          ]
+        },
+        {
+          "number": 2,
+          "text": "Open the second door on the right",
+          "effects": [
+            { "type": "GotoScene", "value": "linen_cupboard" }
+          ]
+        },
+        {
+          "number": 3,
+          "text": "Open the door on the left",
+          "effects": [
+            { "type": "GotoScene", "value": "bathroom" }
+          ]
+        },
+        {
+          "number": 4,
+          "text": "Go downstairs",
+          "effects": [
+            { "type": "GotoScene", "value": "foyer" }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "dark_room",
+      "text": "The room beyond the door is pitch black. You cannot see anything at all.",
+      "choices": [
+        {
+          "number": 1,
+          "text": "Feel for a light switch",
+          "resultText": "Your fingers brush a switch. The light flickers on.",
+          "effects": [
+            { "type": "GotoScene", "value": "dark_room_lit" }
+          ]
+        },
+        {
+          "number": 2,
+          "text": "Return to the hallway",
+          "effects": [
+            { "type": "GotoScene", "value": "hallway_upstairs" }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "dark_room_lit",
+      "text": "The room is small. A bed sits against the wall, and a nightstand rests beside it.",
+      "choices": [
+        {
+          "number": 1,
+          "text": "Search the bed",
+          "requiresNone": ["searchedBed"],
+          "disabledReason": "There is nothing else to find there.",
+          "resultText": "You find nothing but cold sheets and an uneasy feeling.",
+          "effects": [
+            { "type": "SetFlag", "value": "searchedBed" }
+          ]
+        },
+        {
+          "number": 2,
+          "text": "Check the nightstand",
+          "requiresNone": ["readNote"],
+          "disabledReason": "You already read the note.",
+          "resultText": "Inside the drawer is a folded note. It reads: \"You should never have come here.\"",
+          "effects": [
+            { "type": "SetFlag", "value": "readNote" }
+          ]
+        },
+        {
+          "number": 3,
+          "text": "Return to the hallway",
+          "effects": [
+            { "type": "GotoScene", "value": "hallway_upstairs" }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "linen_cupboard",
+      "text": "A narrow linen cupboard. Four shelves line the walls.",
+      "choices": [
+        {
+          "number": 1,
+          "text": "Search the shelves",
+          "requiresNone": ["searchedLinen"],
+          "disabledReason": "You already searched every shelf.",
+          "resultText": "You find nothing of interest. Everything is neatly folded and useless.",
+          "effects": [
+            { "type": "SetFlag", "value": "searchedLinen" }
+          ]
+        },
+        {
+          "number": 2,
+          "text": "Return to the hallway",
+          "effects": [
+            { "type": "GotoScene", "value": "hallway_upstairs" }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "bathroom",
+      "text": "A clean bathroom. The mirror above the sink reflects you poorly.",
+      "choices": [
+        {
+          "number": 1,
+          "text": "Inspect the mirror",
+          "requiresNone": ["tookPills"],
+          "disabledReason": "You already took the pill bottle.",
+          "resultText": "Behind the mirror you find a small pill bottle. You take it.",
+          "effects": [
+            { "type": "SetFlag", "value": "tookPills" }
+          ]
+        },
+        {
+          "number": 2,
+          "text": "Return to the hallway",
+          "effects": [
+            { "type": "GotoScene", "value": "hallway_upstairs" }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "foyer",
+      "text": "The foyer opens wide. A heavy front door stands ahead. Doors lead left and right.",
+      "choices": [
+        {
+          "number": 1,
+          "text": "Try the front door",
+          "requiresAll": ["hasFrontDoorKey"],
+          "disabledReason": "The door is locked. This keyhole does not match the rusty key.",
+          "effects": [
+            { "type": "GotoScene", "value": "ending" }
+          ]
+        },
+        {
+          "number": 2,
+          "text": "Enter the garage",
+          "effects": [
+            { "type": "GotoScene", "value": "garage" }
+          ]
+        },
+        {
+          "number": 3,
+          "text": "Enter the kitchen",
+          "effects": [
+            { "type": "GotoScene", "value": "kitchen" }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "garage",
+      "text": "A quiet garage. A car sits idle. A toolbox rests nearby.",
+      "choices": [
+        {
+          "number": 1,
+          "text": "Search the toolbox",
+          "requiresNone": ["hasCrowbar"],
+          "disabledReason": "You already took the crowbar.",
+          "resultText": "Inside the toolbox you find a heavy crowbar.",
+          "effects": [
+            { "type": "SetFlag", "value": "hasCrowbar" }
+          ]
+        },
+        {
+          "number": 2,
+          "text": "Search the car",
+          "requiresNone": ["searchedCar"],
+          "disabledReason": "There is nothing else in the car.",
+          "resultText": "The car is empty. It hasn’t been used in a long time.",
+          "effects": [
+            { "type": "SetFlag", "value": "searchedCar" }
+          ]
+        },
+        {
+          "number": 3,
+          "text": "Return to the foyer",
+          "effects": [
+            { "type": "GotoScene", "value": "foyer" }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "kitchen",
+      "text": "The kitchen is tidy but cold. A strange mark stains the floor near the corner.",
+      "choices": [
+        {
+          "number": 1,
+          "text": "Inspect the strange mark",
+          "requiresAll": ["hasCrowbar"],
+          "disabledReason": "You need something to pry the floorboard up.",
+          "resultText": "You pry up the loose board. Beneath it is a clean, heavy key.",
+          "effects": [
+            { "type": "SetFlag", "value": "hasFrontDoorKey" }
+          ]
+        },
+        {
+          "number": 2,
+          "text": "Return to the foyer",
+          "effects": [
+            { "type": "GotoScene", "value": "foyer" }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "ending",
+      "text": "The front door opens. Cool air rushes in as you step outside.",
+      "isEnd": true,
+      "choices": []
+    }
+  ]
+}

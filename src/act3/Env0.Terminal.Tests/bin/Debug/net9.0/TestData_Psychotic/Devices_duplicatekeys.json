@@ -1,0 +1,4 @@
+
+            [
+                { "ip": "10.10.10.1", "hostname": "host", "mac": "00:11:22:33:44:55", "username": "admin", "password": "pass", "filesystem": "fs.json", "motd": "hi", "description": "", "ports": ["22"], "interfaces": [ { "name": "eth0", "ip": "10.10.10.1", "subnet": "255.255.255.0", "mac": "00:11:22:33:44:55" }, { "name": "eth0", "ip": "10.10.10.2", "subnet": "255.255.255.0", "mac": "00:11:22:33:44:56" } ] }
+            ]

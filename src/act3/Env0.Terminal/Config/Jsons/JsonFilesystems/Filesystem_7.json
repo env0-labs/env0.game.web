@@ -1,0 +1,26 @@
+{
+  "root": {
+    "filesystem_7.txt": {
+      "type": "file",
+      "content": "Corrupted System\nFilesystem is partially unreadable. Strange files everywhere."
+    },
+    "lost+found": {
+      "ghost1.bin": {
+        "type": "file",
+        "content": "!!!DATA CORRUPTED!!!"
+      }
+    },
+    "tmp": {
+      "corrupt.bin": {
+        "type": "file",
+        "content": "NOISE_NOISE_NOISE"
+      }
+    },
+    "system": {
+      "ghost.log": {
+        "type": "file",
+        "content": "System anomaly detected 00:00:00"
+      }
+    }
+  }
+}

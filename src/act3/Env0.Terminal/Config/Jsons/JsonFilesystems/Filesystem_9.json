@@ -1,0 +1,28 @@
+{
+  "root": {
+    "filesystem_9.txt": {
+      "type": "file",
+      "content": "Old Research Workstation\nRetired user, forgotten projects, and abandoned dreams."
+    },
+    "home": {
+      "olduser": {
+        "results.log": {
+          "type": "file",
+          "content": "Final experiment result: INCONCLUSIVE"
+        }
+      }
+    },
+    "old_code": {
+      "broken.py": {
+        "type": "file",
+        "content": "# Broken beyond repair"
+      }
+    },
+    "notes": {
+      "abandonware.txt": {
+        "type": "file",
+        "content": "If you found this, please close the lid and walk away."
+      }
+    }
+  }
+}

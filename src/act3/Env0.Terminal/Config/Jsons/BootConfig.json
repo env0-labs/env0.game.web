@@ -1,0 +1,9 @@
+{
+  "BootText": [
+    "Loading system...",
+    "Initializing hardware...",
+    "Mounting virtual drives...",
+    "Launching terminal...",
+    "Boot complete."
+  ]
+}

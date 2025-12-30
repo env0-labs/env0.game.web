@@ -1,0 +1,6 @@
+
+            {
+              "root": {
+                "home": ["should", "not", "be", "an", "array"]
+              }
+            }

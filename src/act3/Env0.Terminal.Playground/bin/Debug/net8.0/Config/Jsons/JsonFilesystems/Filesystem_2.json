@@ -1,0 +1,34 @@
+{
+  "root": {
+    "filesystem_2.txt": {
+      "type": "file",
+      "content": "Old Forgotten Server\nThis system hasn't been used in years. It's dusty and full of ancient files no one's touched in a decade."
+    },
+    "backup": {
+      "decade_old": {
+        "archive.log": {
+          "type": "file",
+          "content": "Archive completed 2013-07-16. No further updates."
+        }
+      }
+    },
+    "log": {
+      "restore.log": {
+        "type": "file",
+        "content": "Restore operation failed — disk full?"
+      },
+      "error.log": {
+        "type": "file",
+        "content": "12/06/14: fsck found errors. No action taken."
+      }
+    },
+    "readme.txt": {
+      "type": "file",
+      "content": "If you're reading this, you must really be lost."
+    },
+    "lost+found": {
+      "type": "file",
+      "content": "Corrupted directory contents — cannot display."
+    }
+  }
+}

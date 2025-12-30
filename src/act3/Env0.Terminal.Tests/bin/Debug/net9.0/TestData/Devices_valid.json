@@ -1,0 +1,17 @@
+
+            [
+                {
+                    "ip": "10.10.10.1",
+                    "hostname": "workstation.node.zero",
+                    "mac": "00:11:22:33:44:55",
+                    "username": "admin",
+                    "password": "pass",
+                    "filesystem": "Filesystem_1.json",
+                    "motd": "Welcome!",
+                    "description": "Test Device",
+                    "ports": ["22"],
+                    "interfaces": [
+                        { "name": "eth0", "ip": "10.10.10.1", "subnet": "255.255.255.0", "mac": "00:11:22:33:44:55" }
+                    ]
+                }
+            ]

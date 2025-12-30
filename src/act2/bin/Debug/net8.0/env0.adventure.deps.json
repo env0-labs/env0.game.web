@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "env0.adventure/1.0.0": {
+        "runtime": {
+          "env0.adventure.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "env0.adventure/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

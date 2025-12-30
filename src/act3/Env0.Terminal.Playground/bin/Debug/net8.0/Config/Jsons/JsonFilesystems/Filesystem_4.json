@@ -1,0 +1,30 @@
+{
+  "root": {
+    "filesystem_4.txt": {
+      "type": "file",
+      "content": "Printer Device\nThis is not a real computer. Spool files and configs only."
+    },
+    "spool": {
+      "print1.bin": {
+        "type": "file",
+        "content": "RAW_PRINT_DATA_1"
+      },
+      "print2.bin": {
+        "type": "file",
+        "content": "RAW_PRINT_DATA_2"
+      }
+    },
+    "config": {
+      "printer.cfg": {
+        "type": "file",
+        "content": "model=HL-L2350DW\nip=10.10.10.45"
+      }
+    },
+    "log": {
+      "maintenance.log": {
+        "type": "file",
+        "content": "2025-05-01: Paper jam cleared."
+      }
+    }
+  }
+}

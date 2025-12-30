@@ -1,0 +1,402 @@
+[
+  {
+    "ip": "10.10.10.1",
+    "subnet": "255.255.255.0",
+    "hostname": "workstation.node.zero",
+    "mac": "00:11:22:33:44:01",
+    "username": "admin",
+    "password": "pass",
+    "filesystem": "Filesystem_1.json",
+    "motd": "Welcome to workstation.node.zero",
+    "description": "Primary user workstation",
+    "ports": ["22", "80"],
+    "interfaces": [
+      {
+        "name": "eth0",
+        "ip": "10.10.10.1",
+        "subnet": "255.255.255.0",
+        "mac": "00:11:22:33:44:01"
+      }
+    ]
+  },
+  {
+    "ip": "10.10.10.2",
+    "subnet": "255.255.255.0",
+    "hostname": "forgotten.server",
+    "mac": "00:11:22:33:44:02",
+    "username": "admin",
+    "password": "pass",
+    "filesystem": "Filesystem_2.json",
+    "motd": "Welcome to forgotten.server",
+    "description": "Old forgotten server, never decommissioned.",
+    "ports": ["22"],
+    "interfaces": [
+      {
+        "name": "eth0",
+        "ip": "10.10.10.2",
+        "subnet": "255.255.255.0",
+        "mac": "00:11:22:33:44:02"
+      }
+    ]
+  },
+  {
+    "ip": "10.10.10.3",
+    "subnet": "255.255.255.0",
+    "hostname": "corp.admin",
+    "mac": "00:11:22:33:44:03",
+    "username": "admin",
+    "password": "pass",
+    "filesystem": "Filesystem_3.json",
+    "motd": "Corporate server — authorized users only.",
+    "description": "Central admin and audit server.",
+    "ports": ["22", "443"],
+    "interfaces": [
+      {
+        "name": "eth0",
+        "ip": "10.10.10.3",
+        "subnet": "255.255.255.0",
+        "mac": "00:11:22:33:44:03"
+      }
+    ]
+  },
+  {
+    "ip": "10.10.10.4",
+    "subnet": "255.255.255.0",
+    "hostname": "printer.office1",
+    "mac": "00:11:22:33:44:04",
+    "username": "admin",
+    "password": "pass",
+    "filesystem": "Filesystem_4.json",
+    "motd": "Network printer device.",
+    "description": "Shared printer for office 1.",
+    "ports": ["9100"],
+    "interfaces": [
+      {
+        "name": "eth0",
+        "ip": "10.10.10.4",
+        "subnet": "255.255.255.0",
+        "mac": "00:11:22:33:44:04"
+      }
+    ]
+  },
+  {
+    "ip": "10.10.10.5",
+    "subnet": "255.255.255.0",
+    "hostname": "labpc.chem",
+    "mac": "00:11:22:33:44:05",
+    "username": "admin",
+    "password": "pass",
+    "filesystem": "Filesystem_5.json",
+    "motd": "Laboratory workstation.",
+    "description": "Chemistry lab PC.",
+    "ports": ["22"],
+    "interfaces": [
+      {
+        "name": "eth0",
+        "ip": "10.10.10.5",
+        "subnet": "255.255.255.0",
+        "mac": "00:11:22:33:44:05"
+      }
+    ]
+  },
+  {
+    "ip": "10.10.10.6",
+    "subnet": "255.255.255.0",
+    "hostname": "router.core",
+    "mac": "00:11:22:33:44:06",
+    "username": "admin",
+    "password": "pass",
+    "filesystem": "Filesystem_6.json",
+    "motd": "Core network router.",
+    "description": "Main subnet router.",
+    "ports": ["22"],
+    "interfaces": [
+      {
+        "name": "eth0",
+        "ip": "10.10.10.6",
+        "subnet": "255.255.255.0",
+        "mac": "00:11:22:33:44:06"
+      }
+    ]
+  },
+  {
+    "ip": "10.10.10.7",
+    "subnet": "255.255.255.0",
+    "hostname": "corrupt.node",
+    "mac": "00:11:22:33:44:07",
+    "username": "admin",
+    "password": "pass",
+    "filesystem": "Filesystem_7.json",
+    "motd": "Warning: System corruption detected.",
+    "description": "Compromised/corrupted node.",
+    "ports": ["22"],
+    "interfaces": [
+      {
+        "name": "eth0",
+        "ip": "10.10.10.7",
+        "subnet": "255.255.255.0",
+        "mac": "00:11:22:33:44:07"
+      }
+    ]
+  },
+  {
+    "ip": "10.10.10.8",
+    "subnet": "255.255.255.0",
+    "hostname": "hrworkstation.npc",
+    "mac": "00:11:22:33:44:08",
+    "username": "admin",
+    "password": "pass",
+    "filesystem": "Filesystem_8.json",
+    "motd": "HR department machine.",
+    "description": "HR department NPC’s machine.",
+    "ports": ["22", "445"],
+    "interfaces": [
+      {
+        "name": "eth0",
+        "ip": "10.10.10.8",
+        "subnet": "255.255.255.0",
+        "mac": "00:11:22:33:44:08"
+      }
+    ]
+  },
+  {
+    "ip": "10.10.10.9",
+    "subnet": "255.255.255.0",
+    "hostname": "oldresearch.ws",
+    "mac": "00:11:22:33:44:09",
+    "username": "admin",
+    "password": "pass",
+    "filesystem": "Filesystem_9.json",
+    "motd": "Research workstation (retired).",
+    "description": "Retired research station.",
+    "ports": ["22"],
+    "interfaces": [
+      {
+        "name": "eth0",
+        "ip": "10.10.10.9",
+        "subnet": "255.255.255.0",
+        "mac": "00:11:22:33:44:09"
+      }
+    ]
+  },
+  {
+    "ip": "10.10.10.10",
+    "subnet": "255.255.255.0",
+    "hostname": "iot.sensor01",
+    "mac": "00:11:22:33:44:10",
+    "username": "admin",
+    "password": "pass",
+    "filesystem": "Filesystem_10.json",
+    "motd": "IoT sensor device.",
+    "description": "Environmental IoT sensor.",
+    "ports": ["22", "1883"],
+    "interfaces": [
+      {
+        "name": "eth0",
+        "ip": "10.10.10.10",
+        "subnet": "255.255.255.0",
+        "mac": "00:11:22:33:44:10"
+      }
+    ]
+  },
+  {
+    "ip": "10.10.10.11",
+    "subnet": "255.255.255.0",
+    "hostname": "workstation2.node.zero",
+    "mac": "00:11:22:33:44:11",
+    "username": "admin",
+    "password": "pass",
+    "filesystem": "Filesystem_1.json",
+    "motd": "Secondary user workstation.",
+    "description": "Spare user workstation.",
+    "ports": ["22", "80"],
+    "interfaces": [
+      {
+        "name": "eth0",
+        "ip": "10.10.10.11",
+        "subnet": "255.255.255.0",
+        "mac": "00:11:22:33:44:11"
+      }
+    ]
+  },
+  {
+    "ip": "10.10.10.12",
+    "subnet": "255.255.255.0",
+    "hostname": "forgotten2.server",
+    "mac": "00:11:22:33:44:12",
+    "username": "admin",
+    "password": "pass",
+    "filesystem": "Filesystem_2.json",
+    "motd": "Welcome to forgotten2.server",
+    "description": "Old forgotten server, cold backup.",
+    "ports": ["22"],
+    "interfaces": [
+      {
+        "name": "eth0",
+        "ip": "10.10.10.12",
+        "subnet": "255.255.255.0",
+        "mac": "00:11:22:33:44:12"
+      }
+    ]
+  },
+  {
+    "ip": "10.10.10.13",
+    "subnet": "255.255.255.0",
+    "hostname": "corp2.admin",
+    "mac": "00:11:22:33:44:13",
+    "username": "admin",
+    "password": "pass",
+    "filesystem": "Filesystem_3.json",
+    "motd": "Corporate backup server.",
+    "description": "Corp admin server (redundant).",
+    "ports": ["22", "443"],
+    "interfaces": [
+      {
+        "name": "eth0",
+        "ip": "10.10.10.13",
+        "subnet": "255.255.255.0",
+        "mac": "00:11:22:33:44:13"
+      }
+    ]
+  },
+  {
+    "ip": "10.10.10.14",
+    "subnet": "255.255.255.0",
+    "hostname": "printer2.office2",
+    "mac": "00:11:22:33:44:14",
+    "username": "admin",
+    "password": "pass",
+    "filesystem": "Filesystem_4.json",
+    "motd": "Backup office printer.",
+    "description": "Secondary printer for office 2.",
+    "ports": ["9100"],
+    "interfaces": [
+      {
+        "name": "eth0",
+        "ip": "10.10.10.14",
+        "subnet": "255.255.255.0",
+        "mac": "00:11:22:33:44:14"
+      }
+    ]
+  },
+  {
+    "ip": "10.10.10.15",
+    "subnet": "255.255.255.0",
+    "hostname": "labpc2.chem",
+    "mac": "00:11:22:33:44:15",
+    "username": "admin",
+    "password": "pass",
+    "filesystem": "Filesystem_5.json",
+    "motd": "Backup laboratory workstation.",
+    "description": "Second chemistry lab PC.",
+    "ports": ["22"],
+    "interfaces": [
+      {
+        "name": "eth0",
+        "ip": "10.10.10.15",
+        "subnet": "255.255.255.0",
+        "mac": "00:11:22:33:44:15"
+      }
+    ]
+  },
+  {
+    "ip": "10.10.10.16",
+    "subnet": "255.255.255.0",
+    "hostname": "router2.core",
+    "mac": "00:11:22:33:44:16",
+    "username": "admin",
+    "password": "pass",
+    "filesystem": "Filesystem_6.json",
+    "motd": "Backup network router.",
+    "description": "Redundant core router.",
+    "ports": ["22"],
+    "interfaces": [
+      {
+        "name": "eth0",
+        "ip": "10.10.10.16",
+        "subnet": "255.255.255.0",
+        "mac": "00:11:22:33:44:16"
+      }
+    ]
+  },
+  {
+    "ip": "10.10.10.17",
+    "subnet": "255.255.255.0",
+    "hostname": "corrupt2.node",
+    "mac": "00:11:22:33:44:17",
+    "username": "admin",
+    "password": "pass",
+    "filesystem": "Filesystem_7.json",
+    "motd": "System corruption — quarantine advised.",
+    "description": "Corrupted node (isolated).",
+    "ports": ["22"],
+    "interfaces": [
+      {
+        "name": "eth0",
+        "ip": "10.10.10.17",
+        "subnet": "255.255.255.0",
+        "mac": "00:11:22:33:44:17"
+      }
+    ]
+  },
+  {
+    "ip": "10.10.10.18",
+    "subnet": "255.255.255.0",
+    "hostname": "hrworkstation2.npc",
+    "mac": "00:11:22:33:44:18",
+    "username": "admin",
+    "password": "pass",
+    "filesystem": "Filesystem_8.json",
+    "motd": "Secondary HR department machine.",
+    "description": "HR NPC’s backup machine.",
+    "ports": ["22", "445"],
+    "interfaces": [
+      {
+        "name": "eth0",
+        "ip": "10.10.10.18",
+        "subnet": "255.255.255.0",
+        "mac": "00:11:22:33:44:18"
+      }
+    ]
+  },
+  {
+    "ip": "10.10.10.19",
+    "subnet": "255.255.255.0",
+    "hostname": "oldresearch2.ws",
+    "mac": "00:11:22:33:44:19",
+    "username": "admin",
+    "password": "pass",
+    "filesystem": "Filesystem_9.json",
+    "motd": "Secondary research workstation (retired).",
+    "description": "Retired backup research station.",
+    "ports": ["22"],
+    "interfaces": [
+      {
+        "name": "eth0",
+        "ip": "10.10.10.19",
+        "subnet": "255.255.255.0",
+        "mac": "00:11:22:33:44:19"
+      }
+    ]
+  },
+  {
+    "ip": "10.10.10.20",
+    "subnet": "255.255.255.0",
+    "hostname": "iot2.sensor01",
+    "mac": "00:11:22:33:44:20",
+    "username": "admin",
+    "password": "pass",
+    "filesystem": "Filesystem_10.json",
+    "motd": "Backup IoT sensor device.",
+    "description": "Environmental IoT sensor (redundant).",
+    "ports": ["22", "1883"],
+    "interfaces": [
+      {
+        "name": "eth0",
+        "ip": "10.10.10.20",
+        "subnet": "255.255.255.0",
+        "mac": "00:11:22:33:44:20"
+      }
+    ]
+  }
+]

@@ -1,0 +1,32 @@
+{
+  "root": {
+    "filesystem_3.txt": {
+      "type": "file",
+      "content": "Corporate Admin Server\nContains tools and audit logs. Access restricted (in theory)."
+    },
+    "srv": {
+      "admin_tools.sh": {
+        "type": "file",
+        "content": "#!/bin/sh\n# Corporate admin utilities\n# (Execution blocked in Milestone 1)"
+      },
+      "audit.log": {
+        "type": "file",
+        "content": "2025-05-23: User login from 10.10.10.99\n2025-05-22: Unauthorized access attempt."
+      }
+    },
+    "home": {
+      "boss": {
+        "todo.txt": {
+          "type": "file",
+          "content": "1. Fire IT\n2. Approve overtime\n3. Audit user logins"
+        }
+      }
+    },
+    "etc": {
+      "passwd": {
+        "type": "file",
+        "content": "root:x:0:0:root:/root:/bin/bash"
+      }
+    }
+  }
+}
