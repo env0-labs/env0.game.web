@@ -7,8 +7,8 @@ Nothing in this file is guaranteed to be implemented.
 If something described here becomes true in the repository, it should be reflected in
 README.md.
 
-This project is no longer described in terms of “Acts”.
-It is structured as a single system experienced through different operational modes.
+This project is not structured as a sequence of “Acts”.
+It is a single system experienced through different operational modes.
 
 Each mode exposes a different surface of the same underlying work.
 
@@ -20,20 +20,26 @@ The system is always doing work.
 
 What changes over time is:
 - how much of that work the player performs directly
-- how much of it they delegate
-- how closely they choose to observe the consequences
+- how much of it they delegate or automate
+- how closely they choose to observe its consequences
 
 Movement between modes does not represent progress, success, or enlightenment.
 It represents **distance**.
+
+Distance from action.
+Distance from responsibility.
+Distance from consequence.
 
 ---
 
 ## Roadmap (Non-Binding)
 
-- Finalise Maintenance Mode as a stable, background system.
+- Stabilise Maintenance Mode as a persistent background system.
+- Expand Maintenance Mode into multiple interchangeable maintenance variants.
 - Build Records Mode as a navigable interpretive layer.
-- Implement a CLI-based Automation Mode that can alter how maintenance is performed.
-- Add a final Interpretation Mode once the system’s behaviour is stable.
+- Implement a CLI-based Automation Mode that alters how maintenance is performed.
+- Introduce a Compliance System spanning all modes.
+- Add a final Interpretation Mode once system behaviour is stable.
 
 ---
 
@@ -47,40 +53,77 @@ The player performs work correctly without understanding its meaning or scope.
 Over time, the work becomes routine and attention shifts away from content and toward
 completion.
 
-This mode is designed to become ignorable, not satisfying.
+Maintenance is designed to become ignorable, not satisfying.
 
 ### Player Belief
 
 “I’m doing necessary work. Nothing is wrong.”
 
-### Interface Constraints
+---
+
+### Core Interface Constraints
 
 - Terminal-only interface.
-- Only two accepted commands:
-  - `process`
-  - `status`
-- Any other input returns a flat error that reasserts the allowed commands.
+- All maintenance terminals expose the `status` command.
+- Most maintenance terminals expose `process` or an equivalent procedural action.
+- Any unsupported input returns a flat, procedural error.
 
-### Work Model
+No terminal explains why its work exists.
+No terminal explains how its work relates to other terminals.
+
+---
+
+### Work Model (Shared Across Variants)
 
 - Work is represented as parent and child process containers.
-- The player processes child items within the current parent container.
+- The player processes child items within a parent container.
 - Parent containers are finite.
-- When a parent container completes, a new one is assigned automatically.
-- The size of a new parent container is unknown until processing begins.
+- When a parent completes, a new one is assigned automatically.
+- Container size is unknown until processing begins.
 - Scope is revealed only through action, not planning.
 
 Backlog must feel normal.
-It must not feel like punishment or escalation.
+It must not feel punitive or exceptional.
 
-### Status Presentation
+---
 
-- `status` shows only the current container.
-- Output uses minimal ASCII structure.
-- Processed and pending items are distinguished.
-- No global totals.
-- No completion percentages.
-- No finish line.
+### Maintenance Variants (Planned)
+
+Maintenance Mode is not singular.
+
+Multiple maintenance variants exist simultaneously, accessed through different terminals.
+Each variant represents a different bureaucratic framing of similar underlying work.
+
+Examples of variation (non-exhaustive):
+- Sequential processing with strict ordering
+- Allocation or routing work with no feedback
+- Interrupt-driven work with frequent acknowledgements
+- Verification-heavy work with redundant confirmation
+- Monitoring or reconciliation work with low agency
+
+All variants are correct.
+None are optimal.
+None explain consequences.
+
+Variants may differ in effort and friction.
+They must not differ in moral weight or narrative importance.
+
+---
+
+### Status Presentation (Invariant)
+
+The `status` command is invariant across all maintenance variants.
+
+- It always reports real, current system state.
+- It uses minimal ASCII structure.
+- It shows only local containers and their child items.
+- It reveals no global totals.
+- It provides no progress indicators.
+- It never signals completion.
+
+`status` is the ground truth of the system.
+
+---
 
 ### Language Constraints
 
@@ -88,19 +131,20 @@ It must not feel like punishment or escalation.
 - No moral framing.
 - No ethical warnings.
 - No narrative commentary.
-- Only procedural confirmations are allowed.
 
 Terms such as `kill-child` and `kill-parent` may appear as legitimate process-control
 language:
-- present early
+- introduced early
 - repeated often
 - operationally dull
 - never explained
 - never escalated or dramatized
 
+---
+
 ### Experience Constraints
 
-- Maintenance Mode must be dull.
+- Maintenance must be dull.
 - Repetition is the mechanism.
 - Do not add variety to relieve boredom.
 - Output should become skimmable.
@@ -110,6 +154,8 @@ There are no puzzles.
 There is no exploration.
 There is no help system.
 
+---
+
 ### Transition Condition
 
 After sufficient repetition, the system allows access to Records Mode.
@@ -117,7 +163,7 @@ After sufficient repetition, the system allows access to Records Mode.
 This is not framed as success or completion.
 It is framed as availability.
 
-Maintenance Mode does not end.
+Maintenance does not end.
 It becomes background labour.
 
 ---
@@ -126,35 +172,39 @@ It becomes background labour.
 
 ### Purpose
 
-Records Mode provides access to institutional artifacts:
-logs, policies, memos, terminals, and records.
+Records Mode exposes institutional artifacts:
+logs, policies, memos, terminals, and historical records.
 
 It allows investigation without resolution.
 
 Maintenance remains mandatory.
 Interpretation remains optional.
 
+---
+
 ### Structure
 
 - The player can move between rooms or locations.
-- Each location contains one or more terminals or records.
-- Different terminals may perform similar work, framed differently.
-- Records are locally coherent but globally incomplete.
+- Locations contain records and terminals.
+- Terminals may load different maintenance variants.
+- Records are locally coherent and globally incomplete.
 
 No single record explains the system.
 Contradictions are allowed.
 Gaps are allowed.
 
+If the player feels confident they understand the system, too much has been revealed.
+
+---
+
 ### Constraints
 
-- Records must not deliver answers.
-- Records must not form a complete narrative.
 - Records must not unlock truth.
+- Records must not provide answers.
+- Records must not resolve ambiguity.
 
 The player may form theories.
-Those theories should be plausible and incomplete.
-
-If the player feels clever, too much has been revealed.
+Those theories should remain plausible and incomplete.
 
 ---
 
@@ -162,11 +212,13 @@ If the player feels clever, too much has been revealed.
 
 ### Purpose
 
-Automation Mode allows the player to alter how work is performed.
+Automation Mode allows the player to alter *how* work is performed.
 
-It introduces automation, patching, and delegation.
+It introduces delegation, automation, and procedural distance.
 
-This mode reduces direct labour and increases distance between action and outcome.
+Automation reduces visible labour while increasing abstraction.
+
+---
 
 ### Interface
 
@@ -177,6 +229,8 @@ This mode reduces direct labour and increases distance between action and outcom
 No direct editing.
 All changes are applied procedurally.
 
+---
+
 ### Constraints
 
 - Automation is framed as relief, not mastery.
@@ -184,22 +238,59 @@ All changes are applied procedurally.
 - No efficiency praise.
 - No moral framing.
 
-Patch scripts provide only procedural confirmation, for example:
+Patch scripts provide procedural confirmation only:
 - “This will change X. Are you sure? (y/n)”
 - later: `-y`
 
+---
+
 ### Critical Rule
 
-Automation does not eliminate maintenance.
-It moves it out of sight.
+Automation never eliminates maintenance.
 
-The player must always be able to return to a Maintenance terminal and run:
+The player must always be able to access a maintenance terminal and run:
 
-'''Status''' 
+`status`
 
 and receive real, current, unsanitised output.
 
 Maintenance remains the ground truth.
+
+---
+
+## Compliance System (Cross-Mode)
+
+### Purpose
+
+The compliance system mirrors institutional reward and punishment structures.
+
+It exists to sustain participation.
+It does not enforce correctness.
+It does not explain itself.
+
+---
+
+### Recognition
+
+- Appears to be a reward system.
+- Is arbitrary and persistent.
+- Has no mechanical effect.
+- Cannot be optimised or pursued deliberately.
+
+Recognition signals visibility without meaning.
+
+---
+
+### Punishment
+
+- Is arbitrary and temporary.
+- Introduces friction without instruction.
+- Does not block progress.
+- Expires silently.
+
+Punishment is framed as “enhanced compliance”.
+
+Recognition and punishment never interact.
 
 ---
 
@@ -211,16 +302,12 @@ Interpretation Mode provides fluent, persuasive explanations.
 
 These explanations are plausible but not authoritative.
 
+---
+
 ### Asymmetry
 
 - Maintenance and Automation provide truth without meaning.
 - Interpretation provides meaning without guaranteed truth.
-
-### Constraints
-
-- Interpretation must tempt belief.
-- It must not demand trust.
-- It must not resolve ambiguity.
 
 Ignorance must become a choice.
 
