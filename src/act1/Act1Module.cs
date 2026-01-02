@@ -55,6 +55,11 @@ public sealed class Act1Module : IActModule
             case "status":
                 RenderStatus(output);
                 break;
+            case "exit":
+                AddLine(output, "Exiting...");
+                state.NextAct = ActRoute.Act2;
+                state.IsComplete = true;
+                return output;
             default:
                 RenderInvalidCommand(output);
                 break;

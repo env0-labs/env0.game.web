@@ -38,6 +38,20 @@ public sealed class Act1ModuleTests
     }
 
     [Fact]
+    public void Handle_Exit_SetsNextActAndCompletes()
+    {
+        var module = new Act1Module();
+        var session = new SessionState();
+        module.Handle(string.Empty, session).ToList();
+
+        var output = module.Handle("Exit", session).ToList();
+
+        Assert.Contains(output, line => line.Text == "Exiting...");
+        Assert.True(session.IsComplete);
+        Assert.Equal(ActRoute.Act2, session.NextAct);
+    }
+
+    [Fact]
     public void Handle_Status_PrintsContainerHeader()
     {
         var module = new Act1Module();

@@ -118,6 +118,14 @@ public sealed class Act2Module : IActModule
 
             _executor.Execute(selectedChoice.Effects, _gameState);
 
+            if (IsTerminalTransition(selectedChoice))
+            {
+                state.NextAct = ActRoute.Act1;
+                state.IsComplete = true;
+                _phase = Act2Phase.Completed;
+                return output;
+            }
+
             if (!string.IsNullOrWhiteSpace(selectedChoice.ResultText))
             {
                 AddLine(output, selectedChoice.ResultText);
@@ -207,5 +215,13 @@ public sealed class Act2Module : IActModule
     private static void AddPrompt(List<OutputLine> output, string text)
     {
         output.Add(new OutputLine(OutputType.Standard, text, newLine: false));
+    }
+
+    private static bool IsTerminalTransition(ChoiceDefinition choice)
+    {
+        if (string.IsNullOrWhiteSpace(choice.Text))
+            return false;
+
+        return choice.Text.Contains("Sit down at the terminal", StringComparison.OrdinalIgnoreCase);
     }
 }

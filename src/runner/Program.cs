@@ -37,13 +37,13 @@ namespace Env0.Runner
                 switch (input)
                 {
                     case "1":
-                        RunModule(new Act1Module());
+                        RunWithRouting(new Act1Module());
                         break;
                     case "2":
-                        RunModule(new Act2Module());
+                        RunWithRouting(new Act2Module());
                         break;
                     case "3":
-                        RunModule(new Act3Module());
+                        RunWithRouting(new Act3Module());
                         break;
                     case "4":
                         Console.WriteLine("Act 4 runner is a placeholder for now.");
@@ -57,11 +57,21 @@ namespace Env0.Runner
             }
         }
 
-        private static void RunModule(IActModule module)
+        private static void RunWithRouting(IActModule module)
+        {
+            var next = RunModule(module);
+            while (next != ActRoute.None)
+            {
+                var routedModule = CreateModule(next);
+                next = RunModule(routedModule);
+            }
+        }
+
+        private static ActRoute RunModule(IActModule module)
         {
             var originalDirectory = Environment.CurrentDirectory;
             Environment.CurrentDirectory = AppContext.BaseDirectory;
-            var session = new SessionState();
+            var session = new SessionState { NextAct = ActRoute.None };
             PrintOutput(module.Handle(string.Empty, session));
 
             while (!session.IsComplete)
@@ -77,6 +87,18 @@ namespace Env0.Runner
             }
 
             Environment.CurrentDirectory = originalDirectory;
+            return session.NextAct;
+        }
+
+        private static IActModule CreateModule(ActRoute route)
+        {
+            return route switch
+            {
+                ActRoute.Act1 => new Act1Module(),
+                ActRoute.Act2 => new Act2Module(),
+                ActRoute.Act3 => new Act3Module(),
+                _ => throw new InvalidOperationException($"Unknown route: {route}")
+            };
         }
 
         private static void PrintOutput(IEnumerable<OutputLine> lines)
