@@ -2,12 +2,12 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "dotnet: build C:\\Users\\ewan\\Desktop\\env0\\env0.game\\src\\act3\\env0.act3.tests\\Env0.Act3.Tests.csproj",
+      "label": "dotnet: build C:\\Users\\ewan\\Desktop\\env0\\env0.game\\tests\\terminal tests\\env0.terminal.tests\\Env0.Terminal.Tests.csproj",
       "type": "process",
       "command": "dotnet",
       "args": [
         "build",
-        "${workspaceFolder}/tests/act 3 tests/env0.act3.tests/Env0.Act3.Tests.csproj",
+        "${workspaceFolder}/tests/terminal tests/env0.terminal.tests/Env0.Terminal.Tests.csproj",
         "/property:GenerateFullPaths=true",
         "/p:Configuration=Debug",
         "/p:Platform=AnyCPU",
@@ -16,12 +16,12 @@
       "problemMatcher": "$msCompile"
     },
     {
-      "label": "build: act3 tests",
+      "label": "build: terminal tests",
       "type": "process",
       "command": "dotnet",
       "args": [
         "build",
-        "${workspaceFolder}/tests/act 3 tests/env0.act3.tests/Env0.Act3.Tests.csproj",
+        "${workspaceFolder}/tests/terminal tests/env0.terminal.tests/Env0.Terminal.Tests.csproj",
         "/property:GenerateFullPaths=true",
         "/p:Configuration=Debug",
         "/p:Platform=AnyCPU",
@@ -30,12 +30,12 @@
       "problemMatcher": "$msCompile"
     },
     {
-      "label": "test: act3 tests",
+      "label": "test: terminal tests",
       "type": "process",
       "command": "dotnet",
       "args": [
         "test",
-        "${workspaceFolder}/tests/act 3 tests/env0.act3.tests"
+        "${workspaceFolder}/tests/terminal tests/env0.terminal.tests"
       ],
       "problemMatcher": "$msCompile"
     }
