@@ -143,7 +143,7 @@ namespace Env0.Terminal.Tests.Commands
             api.Initialize();
             api.Execute(""); api.Execute(""); api.Execute("alice"); api.Execute("hunter2");
 
-            var variants = new[] { "WORKSTATION2.NODE.ZERO", "workstation2.node.zero", "workstation2.node.zero " };
+            var variants = new[] { "INTAKE.STAGE01", "intake.stage01", "intake.stage01 " };
             foreach (var host in variants)
             {
                 var state = api.Execute($"ssh {host.Trim()}");

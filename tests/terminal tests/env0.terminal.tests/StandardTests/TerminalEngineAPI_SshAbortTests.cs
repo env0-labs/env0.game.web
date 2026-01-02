@@ -13,7 +13,7 @@ namespace Env0.Terminal.Tests
             api.Initialize();
             api.Execute(""); api.Execute(""); api.Execute("alice"); api.Execute("hunter2");
 
-            var state = api.Execute("ssh workstation2.node.zero");
+            var state = api.Execute("ssh intake.stage01");
             Assert.Equal(TerminalPhase.Login, state.Phase);
             Assert.True(state.IsLoginPrompt);
 
@@ -29,7 +29,7 @@ namespace Env0.Terminal.Tests
             api.Initialize();
             api.Execute(""); api.Execute(""); api.Execute("alice"); api.Execute("hunter2");
 
-            var state = api.Execute("ssh admin@workstation2.node.zero");
+            var state = api.Execute("ssh operator@intake.stage01");
             Assert.Equal(TerminalPhase.Login, state.Phase);
             Assert.True(state.IsPasswordPrompt);
 

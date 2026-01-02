@@ -88,7 +88,69 @@ public sealed class RecordsModuleTests
         }
     }
 
+    [Fact]
+    public void Handle_TerminalChoice_SetsTerminalRoutingState()
+    {
+        var module = new RecordsModule();
+        var session = new SessionState();
+        var story = "test_records_terminal.json";
+        var devicesJson = @"[
+  { ""recordsRoomId"": ""start"", ""filesystem"": ""Filesystem_1.json"" }
+]";
+
+        CreateStoryFile(story, BuildTerminalStoryJson("Terminal scene."));
+        CreateDevicesFile(devicesJson);
+
+        try
+        {
+            module.Handle(string.Empty, session).ToList();
+            var output = module.Handle("1", session).ToList();
+
+            Assert.True(session.IsComplete);
+            Assert.Equal(ContextRoute.Terminal, session.NextContext);
+            Assert.Equal(ContextRoute.Records, session.TerminalReturnContext);
+            Assert.Equal("Filesystem_1.json", session.TerminalStartFilesystem);
+            Assert.Equal("start", session.RecordsReturnSceneId);
+            Assert.DoesNotContain("Invalid input", output.Select(line => line.Text));
+        }
+        finally
+        {
+            DeleteStoryFile(story);
+            DeleteDevicesFile();
+        }
+    }
+
+    [Fact]
+    public void Handle_ResumeRecords_RendersSceneWithoutInvalidInput()
+    {
+        var module = new RecordsModule();
+        var session = new SessionState();
+        var story = "test_records_resume.json";
+
+        CreateStoryFile(story, BuildTerminalStoryJson("Resume scene."));
+
+        try
+        {
+            module.Handle(string.Empty, session).ToList();
+
+            session.ResumeRecords = true;
+            session.RecordsReturnSceneId = "start";
+
+            var output = module.Handle(string.Empty, session).ToList();
+            var texts = output.Select(line => line.Text).ToList();
+
+            Assert.Contains("Resume scene.", texts);
+            Assert.DoesNotContain("Invalid input", texts);
+        }
+        finally
+        {
+            DeleteStoryFile(story);
+        }
+    }
+
     private static string StoryDirectory => Path.Combine(AppContext.BaseDirectory, "story");
+    private static string DevicesDirectory => Path.Combine(AppContext.BaseDirectory, "Config", "Jsons");
+    private static string DevicesPath => Path.Combine(DevicesDirectory, "Devices.json");
 
     private static void CreateStoryFile(string fileName, string json)
     {
@@ -102,6 +164,25 @@ public sealed class RecordsModuleTests
         if (File.Exists(path))
         {
             File.Delete(path);
+        }
+    }
+
+    private static void CreateDevicesFile(string json)
+    {
+        Directory.CreateDirectory(DevicesDirectory);
+        File.WriteAllText(DevicesPath, json);
+    }
+
+    private static void DeleteDevicesFile()
+    {
+        if (File.Exists(DevicesPath))
+        {
+            File.Delete(DevicesPath);
+        }
+
+        if (Directory.Exists(DevicesDirectory) && !Directory.EnumerateFileSystemEntries(DevicesDirectory).Any())
+        {
+            Directory.Delete(DevicesDirectory);
         }
     }
 
@@ -144,6 +225,29 @@ public sealed class RecordsModuleTests
       ""Text"": ""End scene."",
       ""IsEnd"": true,
       ""Choices"": []
+    }}
+  ]
+}}";
+    }
+
+    private static string BuildTerminalStoryJson(string text)
+    {
+        return $@"{{
+  ""StartSceneId"": ""start"",
+  ""Scenes"": [
+    {{
+      ""Id"": ""start"",
+      ""Text"": ""{text}"",
+      ""IsEnd"": false,
+      ""Choices"": [
+        {{
+          ""Number"": 1,
+          ""Text"": ""Sit down at the terminal"",
+          ""Effects"": [
+            {{ ""Type"": ""GotoScene"", ""Value"": ""start"" }}
+          ]
+        }}
+      ]
     }}
   ]
 }}";

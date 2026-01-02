@@ -69,6 +69,21 @@ namespace Env0.Terminal.Tests
         }
 
         [Fact]
+        public void Initialize_WithRequestedFilesystem_SelectsDeviceFilesystem()
+        {
+            var api = new TerminalEngineAPI();
+            api.Initialize("Filesystem_5.json");
+
+            var state = api.Execute(""); // boot
+            state = api.Execute(""); // login
+            state = api.Execute("alice");
+            state = api.Execute("hunter2");
+
+            Assert.NotNull(state.DeviceInfo);
+            Assert.Equal("Filesystem_5.json", state.DeviceInfo.Filesystem);
+        }
+
+        [Fact]
         public void Login_EmptyUsername_ShowsFlavor_AndRepeatsPrompt_PerContract()
         {
             var api = new TerminalEngineAPI();
@@ -106,7 +121,7 @@ namespace Env0.Terminal.Tests
 
             state = api.Execute("ls");
             Assert.Equal(TerminalPhase.Terminal, state.Phase);
-            Assert.Contains("home", state.Output + " " + (state.DirectoryListing != null ? string.Join(" ", state.DirectoryListing) : ""));
+            Assert.Contains("bin", state.Output + " " + (state.DirectoryListing != null ? string.Join(" ", state.DirectoryListing) : ""));
         }
 
         [Fact]
@@ -119,10 +134,10 @@ namespace Env0.Terminal.Tests
             state = api.Execute("alice");
             state = api.Execute("hunter2");
 
-            state = api.Execute("cd home");
-            Assert.Equal("/home", state.CurrentDirectory);
+            state = api.Execute("cd docs");
+            Assert.Equal("/docs", state.CurrentDirectory);
             state = api.Execute("ls");
-            Assert.Contains("user", state.Output + " " + (state.DirectoryListing != null ? string.Join(" ", state.DirectoryListing) : ""));
+            Assert.Contains("procedure_excerpt.txt", state.Output + " " + (state.DirectoryListing != null ? string.Join(" ", state.DirectoryListing) : ""));
         }
 
         [Fact]
@@ -202,7 +217,7 @@ namespace Env0.Terminal.Tests
             var api = new TerminalEngineAPI();
             api.Initialize();
             api.Execute(""); api.Execute(""); api.Execute("ewan"); api.Execute("pass");
-            var state = api.Execute("ssh workstation2.node.zero");
+            var state = api.Execute("ssh intake.stage01");
             Assert.Equal(TerminalPhase.Login, state.Phase); // Should be login, not terminal
             Assert.True(state.IsLoginPrompt || state.IsPasswordPrompt);
         }
@@ -245,7 +260,7 @@ namespace Env0.Terminal.Tests
             api.Initialize();
             // Login to root device
             api.Execute(""); api.Execute(""); api.Execute("ewan"); api.Execute("pass");
-            var state = api.Execute("ssh workstation.node.zero");
+            var state = api.Execute("ssh proc.floor01");
             Assert.True(state.IsError);
             Assert.Contains("already on", (state.ErrorMessage ?? state.Output ?? "").ToLower());
         }
@@ -269,25 +284,23 @@ namespace Env0.Terminal.Tests
             api.Initialize();
             api.Execute(""); api.Execute(""); api.Execute("ewan"); api.Execute("pass");
             // SSH to another device
-            var state = api.Execute("ssh workstation2.node.zero");
-            state = api.Execute("admin"); state = api.Execute("pass");
+            var state = api.Execute("ssh intake.stage01");
+            state = api.Execute("operator"); state = api.Execute("pass");
             // SSH back to original host (cyclic)
-            state = api.Execute("ssh workstation.node.zero");
+            state = api.Execute("ssh proc.floor01");
             Assert.True(state.IsError);
             Assert.Contains("cyclic", (state.ErrorMessage ?? state.Output ?? "").ToLower());
         }
 
         [Fact]
-        public void SSHCommand_SshToDeviceWithNoSSHPort_IsRejected()
+        public void SSHCommand_SshToKnownDevice_PromptsLogin()
         {
             var api = new TerminalEngineAPI();
             api.Initialize();
             api.Execute(""); api.Execute(""); api.Execute("ewan"); api.Execute("pass");
-            // Try SSH to device with no port 22
-            var state = api.Execute("ssh printer.office1");
-            Assert.True(state.IsError);
-            Assert.Contains("connect to host", (state.ErrorMessage ?? state.Output ?? "").ToLower());
-            Assert.Contains("port 22", (state.ErrorMessage ?? state.Output ?? "").ToLower());
+            var state = api.Execute("ssh qa.verify01");
+            Assert.Equal(TerminalPhase.Login, state.Phase);
+            Assert.True(state.IsLoginPrompt || state.IsPasswordPrompt);
         }
 
         [Fact]
@@ -296,12 +309,12 @@ namespace Env0.Terminal.Tests
             var api = new TerminalEngineAPI();
             api.Initialize();
             api.Execute(""); api.Execute(""); api.Execute("ewan"); api.Execute("pass");
-            var state = api.Execute("ssh workstation2.node.zero");
+            var state = api.Execute("ssh intake.stage01");
             // wrong username
-            state = api.Execute("notadmin");
+            state = api.Execute("notoperator");
             Assert.True(state.IsLoginPrompt); // Should repeat username prompt
             // correct username, wrong password
-            state = api.Execute("admin");
+            state = api.Execute("operator");
             state = api.Execute("notpass");
             Assert.True(state.IsPasswordPrompt); // Should repeat password prompt
         }
@@ -335,10 +348,10 @@ namespace Env0.Terminal.Tests
             api.Initialize();
             api.Execute(""); api.Execute(""); api.Execute("ewan"); api.Execute("pass");
             // SSH to 2 hops
-            var state = api.Execute("ssh workstation2.node.zero");
-            state = api.Execute("admin"); state = api.Execute("pass");
-            state = api.Execute("ssh forgotten2.server");
-            state = api.Execute("admin"); state = api.Execute("pass");
+            var state = api.Execute("ssh intake.stage01");
+            state = api.Execute("operator"); state = api.Execute("pass");
+            state = api.Execute("ssh cons.dispatch01");
+            state = api.Execute("operator"); state = api.Execute("pass");
             // Pop back up one level
             state = api.Execute("exit");
             Assert.Contains("connection to", (state.Output ?? "").ToLower());
@@ -372,10 +385,10 @@ namespace Env0.Terminal.Tests
             api.Initialize();
             api.Execute(""); api.Execute(""); api.Execute("ewan"); api.Execute("pass");
             // SSH to another device
-            var state = api.Execute("ssh workstation2.node.zero");
-            state = api.Execute("admin"); state = api.Execute("pass");
+            var state = api.Execute("ssh intake.stage01");
+            state = api.Execute("operator"); state = api.Execute("pass");
             // Now try to ssh back to itself
-            state = api.Execute("ssh workstation2.node.zero");
+            state = api.Execute("ssh intake.stage01");
             Assert.True(state.IsError);
             Assert.Contains("already on", (state.ErrorMessage ?? state.Output ?? "").ToLower());
         }

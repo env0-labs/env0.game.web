@@ -25,7 +25,7 @@ The project is a single solution with multiple modules:
     |  +-- records               # Records / bureaucratic interpretation
     |  +-- terminal              # Terminal / config inspection & patching
     |  +-- context               # Placeholder
-    |  +-- runner                # Top-level runner / context selector
+    |  +-- runner                # Top-level runner / context launcher
     +-- tests
     +-- env0.game.sln
 
@@ -50,8 +50,7 @@ Each context folder contains a self-contained module that:
 Current status:
 
 - Maintenance: module (`MaintenanceModule`) exists and is wired to the runner; process includes a batch confirmation gate
-- Records: module (`RecordsModule`) exists and is wired to the runner; a
-  standalone console `Program.cs` also exists
+- Records: module (`RecordsModule`) exists and is wired to the runner; terminals route into the CLI and return to the originating room
 - Terminal: module (`TerminalModule`) exists; includes a standalone playground
   app and internal docs
 - Context: placeholder folder exists
@@ -60,10 +59,10 @@ Current status:
 
 The runner is a deliberately dumb console application that:
 
-- Lets you select which context to load
+- Launches Maintenance by default
 - Passes raw input to the active context
 - Prints returned output lines
-- Returns to the menu when the context signals completion
+- Routes to the next context when the current one signals completion
 
 The runner enforces no game rules.
 
@@ -105,7 +104,7 @@ dotnet build
 dotnet run --project src/runner
 ```
 
-The runner will prompt you to select a context to load.
+The runner starts in Maintenance by default.
 
 ### Run context-specific entry points
 
@@ -128,13 +127,22 @@ dotnet run --project src/terminal/env0.terminal.playground
 Contexts signal completion via shared session state.
 
 When a context sets `SessionState.IsComplete = true`, the runner exits
-the input loop and returns control to the menu.
+the input loop and routes to the next context.
 
 This avoids:
 
 - Control flow hidden in output text
 - Special runner commands like `exit`
 - Exceptions used as flow control
+
+------------------------------------------------------------------------
+
+## Records Terminals
+
+Terminal access in Records is mapped in `Config/Jsons/Devices.json`.
+Each device includes a `recordsRoomId` and `filesystem`, and Records uses
+that mapping to launch the terminal with the correct filesystem. On
+`quit`, the player returns to the originating Records room.
 
 ------------------------------------------------------------------------
 

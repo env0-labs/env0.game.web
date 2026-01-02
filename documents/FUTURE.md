@@ -36,7 +36,7 @@ Distance from consequence.
 
 - Stabilise Maintenance Mode as a persistent background system.
 - Expand Maintenance Mode into multiple interchangeable maintenance variants.
-- Build Records Mode as a navigable interpretive layer.
+- Continue expanding Records Mode as a navigable interpretive layer.
 - Implement a CLI-based Automation Mode that alters how maintenance is performed.
 - Introduce a Compliance System spanning all modes.
 - Add a final Interpretation Mode once system behaviour is stable.
@@ -168,7 +168,7 @@ It becomes background labour.
 
 ---
 
-## Records Mode (Planned / Under Consolidation)
+## Records Mode (In Progress)
 
 ### Purpose
 
@@ -186,8 +186,10 @@ Interpretation remains optional.
 
 - The player can move between rooms or locations.
 - Locations contain records and terminals.
-- Terminals may load different maintenance variants.
+- Terminals route into the CLI and return to the originating room.
 - Records are locally coherent and globally incomplete.
+
+Terminal access is mapped per room in `Config/Jsons/Devices.json` via `recordsRoomId`.
 
 No single record explains the system.
 Contradictions are allowed.
