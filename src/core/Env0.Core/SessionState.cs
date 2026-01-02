@@ -8,5 +8,7 @@ public sealed class SessionState
     public string? TerminalStartFilesystem { get; set; }
     public string? RecordsReturnSceneId { get; set; }
     public bool ResumeRecords { get; set; }
+    public string? MaintenanceMachineId { get; set; }
+    public string? MaintenanceFilesystem { get; set; }
 }
 

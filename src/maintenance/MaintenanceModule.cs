@@ -28,6 +28,8 @@ public sealed class MaintenanceModule : IContextModule
         {
             _initialized = true;
             AddLine(output, "env0.maintenance booting");
+            if (!string.IsNullOrWhiteSpace(state.MaintenanceMachineId))
+                AddLine(output, $"{state.MaintenanceMachineId} is loading...");
             AddLine(output, string.Empty);
             AddPrompt(output);
             return output;
@@ -59,13 +61,19 @@ public sealed class MaintenanceModule : IContextModule
                 AddLine(output, "Loading CLI...");
                 state.NextContext = ContextRoute.Terminal;
                 state.TerminalReturnContext = ContextRoute.Maintenance;
-                state.TerminalStartFilesystem = null;
+                state.TerminalStartFilesystem = state.MaintenanceFilesystem;
                 state.IsComplete = true;
+                state.MaintenanceMachineId = null;
+                state.MaintenanceFilesystem = null;
                 return output;
             case "exit":
                 AddLine(output, "Exiting...");
                 state.NextContext = ContextRoute.Records;
+                if (!string.IsNullOrWhiteSpace(state.RecordsReturnSceneId))
+                    state.ResumeRecords = true;
                 state.IsComplete = true;
+                state.MaintenanceMachineId = null;
+                state.MaintenanceFilesystem = null;
                 return output;
             default:
                 RenderInvalidCommand(output);

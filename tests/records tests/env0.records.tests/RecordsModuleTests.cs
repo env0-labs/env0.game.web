@@ -89,13 +89,13 @@ public sealed class RecordsModuleTests
     }
 
     [Fact]
-    public void Handle_TerminalChoice_SetsTerminalRoutingState()
+    public void Handle_TerminalChoice_SetsMaintenanceRoutingState()
     {
         var module = new RecordsModule();
         var session = new SessionState();
         var story = "test_records_terminal.json";
         var devicesJson = @"[
-  { ""recordsRoomId"": ""start"", ""filesystem"": ""Filesystem_1.json"" }
+  { ""recordsRoomId"": ""start"", ""filesystem"": ""Filesystem_1.json"", ""hostname"": ""proc.floor01"" }
 ]";
 
         CreateStoryFile(story, BuildTerminalStoryJson("Terminal scene."));
@@ -107,9 +107,9 @@ public sealed class RecordsModuleTests
             var output = module.Handle("1", session).ToList();
 
             Assert.True(session.IsComplete);
-            Assert.Equal(ContextRoute.Terminal, session.NextContext);
-            Assert.Equal(ContextRoute.Records, session.TerminalReturnContext);
-            Assert.Equal("Filesystem_1.json", session.TerminalStartFilesystem);
+            Assert.Equal(ContextRoute.Maintenance, session.NextContext);
+            Assert.Equal("Filesystem_1.json", session.MaintenanceFilesystem);
+            Assert.Equal("proc.floor01", session.MaintenanceMachineId);
             Assert.Equal("start", session.RecordsReturnSceneId);
             Assert.DoesNotContain("Invalid input", output.Select(line => line.Text));
         }

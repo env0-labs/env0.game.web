@@ -35,6 +35,8 @@ namespace Env0.Terminal
                 state.IsComplete = true;
                 state.TerminalReturnContext = ContextRoute.None;
                 state.TerminalStartFilesystem = null;
+                state.MaintenanceMachineId = null;
+                state.MaintenanceFilesystem = null;
                 return exitOutput;
             }
 

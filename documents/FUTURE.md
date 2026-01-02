@@ -186,7 +186,7 @@ Interpretation remains optional.
 
 - The player can move between rooms or locations.
 - Locations contain records and terminals.
-- Terminals route into the CLI and return to the originating room.
+- Terminals route into Maintenance (contextual variants) and return to the originating room.
 - Records are locally coherent and globally incomplete.
 
 Terminal access is mapped per room in `Config/Jsons/Devices.json` via `recordsRoomId`.

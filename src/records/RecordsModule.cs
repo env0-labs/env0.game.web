@@ -23,7 +23,7 @@ public sealed class RecordsModule : IContextModule
     private GameState? _gameState;
     private ChoiceEvaluator? _evaluator;
     private EffectExecutor? _executor;
-    private Dictionary<string, string>? _terminalFilesystemByRoom;
+    private Dictionary<string, TerminalDeviceMapping>? _terminalDevicesByRoom;
 
     public IEnumerable<OutputLine> Handle(string input, SessionState state)
     {
@@ -134,12 +134,12 @@ public sealed class RecordsModule : IContextModule
             var currentSceneId = scene.Id;
             _executor.Execute(selectedChoice.Effects, _gameState);
 
-            if (IsTerminalTransition(selectedChoice) && TryGetTerminalFilesystem(currentSceneId, out var filesystem))
+            if (IsTerminalTransition(selectedChoice) && TryGetTerminalDevice(currentSceneId, out var device))
             {
-                state.NextContext = ContextRoute.Terminal;
-                state.TerminalReturnContext = ContextRoute.Records;
-                state.TerminalStartFilesystem = filesystem;
+                state.NextContext = ContextRoute.Maintenance;
                 state.RecordsReturnSceneId = currentSceneId;
+                state.MaintenanceMachineId = device!.Hostname;
+                state.MaintenanceFilesystem = device.Filesystem;
                 state.IsComplete = true;
                 return output;
             }
@@ -243,25 +243,28 @@ public sealed class RecordsModule : IContextModule
         return choice.Text.Contains("Sit down at the terminal", StringComparison.OrdinalIgnoreCase);
     }
 
-    private bool TryGetTerminalFilesystem(string sceneId, out string filesystem)
+    private bool TryGetTerminalDevice(string sceneId, out TerminalDeviceMapping? device)
     {
-        filesystem = string.Empty;
+        device = null;
         if (string.IsNullOrWhiteSpace(sceneId))
             return false;
 
-        _terminalFilesystemByRoom ??= LoadTerminalMappings();
-        if (_terminalFilesystemByRoom.TryGetValue(sceneId, out var value) && !string.IsNullOrWhiteSpace(value))
+        _terminalDevicesByRoom ??= LoadTerminalMappings();
+        if (_terminalDevicesByRoom.TryGetValue(sceneId, out var value) &&
+            value != null &&
+            !string.IsNullOrWhiteSpace(value.Filesystem) &&
+            !string.IsNullOrWhiteSpace(value.Hostname))
         {
-            filesystem = value;
+            device = value;
             return true;
         }
 
         return false;
     }
 
-    private Dictionary<string, string> LoadTerminalMappings()
+    private Dictionary<string, TerminalDeviceMapping> LoadTerminalMappings()
     {
-        var map = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        var map = new Dictionary<string, TerminalDeviceMapping>(StringComparer.OrdinalIgnoreCase);
         var path = Path.Combine(AppContext.BaseDirectory, "Config", "Jsons", "Devices.json");
 
         if (!File.Exists(path))
@@ -282,10 +285,18 @@ public sealed class RecordsModule : IContextModule
             {
                 var roomId = device.RecordsRoomId?.Trim();
                 var filesystem = device.Filesystem?.Trim();
-                if (string.IsNullOrWhiteSpace(roomId) || string.IsNullOrWhiteSpace(filesystem))
+                var hostname = device.Hostname?.Trim();
+                if (string.IsNullOrWhiteSpace(roomId) ||
+                    string.IsNullOrWhiteSpace(filesystem) ||
+                    string.IsNullOrWhiteSpace(hostname))
                     continue;
 
-                map[roomId] = filesystem;
+                map[roomId] = new TerminalDeviceMapping
+                {
+                    RecordsRoomId = roomId,
+                    Filesystem = filesystem,
+                    Hostname = hostname
+                };
             }
         }
         catch
@@ -300,6 +311,14 @@ public sealed class RecordsModule : IContextModule
     {
         public string? RecordsRoomId { get; set; }
         public string? Filesystem { get; set; }
+        public string? Hostname { get; set; }
+    }
+
+    private sealed class TerminalDeviceMapping
+    {
+        public string? RecordsRoomId { get; set; }
+        public string? Filesystem { get; set; }
+        public string? Hostname { get; set; }
     }
 }
 
