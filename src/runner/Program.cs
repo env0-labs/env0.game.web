@@ -9,6 +9,8 @@ namespace Env0.Runner
 {
     internal static class Program
     {
+        private static readonly RecordsModule RecordsModuleInstance = new RecordsModule();
+
         private static int Main()
         {
             RunWithRouting(new MaintenanceModule());
@@ -17,19 +19,21 @@ namespace Env0.Runner
 
         private static void RunWithRouting(IContextModule module)
         {
-            var next = RunModule(module);
+            var session = new SessionState();
+            var next = RunModule(module, session);
             while (next != ContextRoute.None)
             {
                 var routedModule = CreateModule(next);
-                next = RunModule(routedModule);
+                next = RunModule(routedModule, session);
             }
         }
 
-        private static ContextRoute RunModule(IContextModule module)
+        private static ContextRoute RunModule(IContextModule module, SessionState session)
         {
             var originalDirectory = Environment.CurrentDirectory;
             Environment.CurrentDirectory = AppContext.BaseDirectory;
-            var session = new SessionState { NextContext = ContextRoute.None };
+            session.IsComplete = false;
+            session.NextContext = ContextRoute.None;
             PrintOutput(module.Handle(string.Empty, session));
 
             while (!session.IsComplete)
@@ -53,7 +57,7 @@ namespace Env0.Runner
             return route switch
             {
                 ContextRoute.Maintenance => new MaintenanceModule(),
-                ContextRoute.Records => new RecordsModule(),
+                ContextRoute.Records => RecordsModuleInstance,
                 ContextRoute.Terminal => new TerminalModule(),
                 _ => throw new InvalidOperationException($"Unknown route: {route}")
             };

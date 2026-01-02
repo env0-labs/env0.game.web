@@ -10,6 +10,7 @@ namespace Env0.Terminal
         private readonly TerminalEngineAPI _api = new TerminalEngineAPI();
         private bool _initialized;
         private bool _bootSequenceComplete;
+        private string _requestedFilesystem;
 
         public IEnumerable<OutputLine> Handle(string input, SessionState state)
         {
@@ -20,15 +21,30 @@ namespace Env0.Terminal
                 {
                     new OutputLine(OutputType.Standard, "Exiting...")
                 };
-                state.NextContext = ContextRoute.Maintenance;
+                var returnContext = state.TerminalReturnContext == ContextRoute.None
+                    ? ContextRoute.Maintenance
+                    : state.TerminalReturnContext;
+                state.NextContext = returnContext;
+                if (returnContext == ContextRoute.Records)
+                    state.ResumeRecords = true;
+                else
+                {
+                    state.RecordsReturnSceneId = null;
+                    state.ResumeRecords = false;
+                }
                 state.IsComplete = true;
+                state.TerminalReturnContext = ContextRoute.None;
+                state.TerminalStartFilesystem = null;
                 return exitOutput;
             }
 
             if (!_initialized)
             {
-                _api.Initialize();
+                if (_requestedFilesystem == null && !string.IsNullOrWhiteSpace(state.TerminalStartFilesystem))
+                    _requestedFilesystem = state.TerminalStartFilesystem;
+                _api.Initialize(_requestedFilesystem);
                 _initialized = true;
+                state.TerminalStartFilesystem = null;
             }
 
             var output = new List<OutputLine>();

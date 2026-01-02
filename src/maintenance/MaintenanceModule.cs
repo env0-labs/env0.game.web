@@ -58,6 +58,8 @@ public sealed class MaintenanceModule : IContextModule
             case "load cli":
                 AddLine(output, "Loading CLI...");
                 state.NextContext = ContextRoute.Terminal;
+                state.TerminalReturnContext = ContextRoute.Maintenance;
+                state.TerminalStartFilesystem = null;
                 state.IsComplete = true;
                 return output;
             case "exit":

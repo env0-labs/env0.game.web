@@ -38,24 +38,35 @@ namespace Env0.Terminal
 
         private TerminalPhase _phase = TerminalPhase.Booting;
 
-        public void Initialize()
+        public void Initialize(string requestedFilesystem = null)
         {
             JsonLoader.LoadAll();
 
             var bootConfig = JsonLoader.BootConfig;
             var userConfig = JsonLoader.UserConfig;
             var devices = JsonLoader.Devices;
-            var fsPoco = JsonLoader.Filesystems.ContainsKey("Filesystem_1.json")
-                ? JsonLoader.Filesystems["Filesystem_1.json"]
+            if (devices == null || devices.Count == 0)
+                throw new System.Exception("Critical config missing: Devices");
+
+            var localDevice = devices[0];
+            if (!string.IsNullOrWhiteSpace(requestedFilesystem))
+            {
+                var match = devices.FirstOrDefault(d =>
+                    string.Equals(d.Filesystem, requestedFilesystem, System.StringComparison.OrdinalIgnoreCase));
+                if (match != null)
+                    localDevice = match;
+            }
+
+            var fsPoco = JsonLoader.Filesystems.ContainsKey(localDevice.Filesystem)
+                ? JsonLoader.Filesystems[localDevice.Filesystem]
                 : null;
 
-            if (devices == null || devices.Count == 0 || fsPoco == null)
+            if (fsPoco == null)
                 throw new System.Exception("Critical config missing: Devices or Filesystem_1.json");
 
             var fsRootNode = new FileEntry { Children = fsPoco.Root };
             _filesystemManager = FilesystemManager.FromPocoRoot(fsRootNode);
 
-            var localDevice = devices[0];
             _networkManager = new NetworkManager(devices, localDevice);
             _sshHandler = new SSHHandler(_networkManager);
 

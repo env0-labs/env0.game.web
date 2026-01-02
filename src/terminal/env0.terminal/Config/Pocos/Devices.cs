@@ -20,6 +20,7 @@ namespace Env0.Terminal.Config.Pocos
         public string Username { get; set; } = "";
         public string Password { get; set; } = "";
         public string Filesystem { get; set; } = "";
+        public string RecordsRoomId { get; set; } = "";
         public string Motd { get; set; } = "";
         public string Description { get; set; } = "";
         public List<string> Ports { get; set; } = new List<string>();

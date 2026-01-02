@@ -7,7 +7,8 @@
     "username": "operator",
     "password": "pass",
     "filesystem": "Filesystem_1.json",
-    "motd": "PROCESSING TERMINAL — Use assigned identifiers only.",
+    "recordsRoomId": "rm_processing_floor",
+    "motd": "PROCESSING TERMINAL - Use assigned identifiers only.",
     "description": "Processing Floor workstation. Converts assigned units into containers.",
     "ports": ["22"],
     "interfaces": [
@@ -27,7 +28,8 @@
     "username": "operator",
     "password": "pass",
     "filesystem": "Filesystem_2.json",
-    "motd": "INTAKE & PRE-PROCESSING — Do not record origin.",
+    "recordsRoomId": "rm_intake_preprocessing",
+    "motd": "INTAKE & PRE-PROCESSING - Do not record origin.",
     "description": "Intake & Pre-Processing terminal. Normalizes incoming units for Processing.",
     "ports": ["22"],
     "interfaces": [
@@ -47,7 +49,8 @@
     "username": "operator",
     "password": "pass",
     "filesystem": "Filesystem_3.json",
-    "motd": "OUTPUT CONSOLIDATION — F-grade clearance required.",
+    "recordsRoomId": "rm_output_consolidation",
+    "motd": "OUTPUT CONSOLIDATION - F-grade clearance required.",
     "description": "Output Consolidation terminal. Batches containers into dispatchable output.",
     "ports": ["22"],
     "interfaces": [
@@ -67,7 +70,8 @@
     "username": "operator",
     "password": "pass",
     "filesystem": "Filesystem_4.json",
-    "motd": "DEPARTMENT OF ACCESS — Provide justification code only.",
+    "recordsRoomId": "rm_access_department",
+    "motd": "DEPARTMENT OF ACCESS - Provide justification code only.",
     "description": "Access Registry terminal. Maintains clearance grades and role flags.",
     "ports": ["22"],
     "interfaces": [
@@ -87,7 +91,8 @@
     "username": "operator",
     "password": "pass",
     "filesystem": "Filesystem_5.json",
-    "motd": "COMPLIANCE & ALIGNMENT — Pass/Fail only. Reasons optional.",
+    "recordsRoomId": "rm_compliance_alignment",
+    "motd": "COMPLIANCE & ALIGNMENT - Pass/Fail only. Reasons optional.",
     "description": "Compliance & Alignment terminal. Validates work against standards.",
     "ports": ["22"],
     "interfaces": [
@@ -107,7 +112,8 @@
     "username": "operator",
     "password": "pass",
     "filesystem": "Filesystem_6.json",
-    "motd": "EXCEPTION HANDLING — Forward without amendment.",
+    "recordsRoomId": "rm_exception_handling",
+    "motd": "EXCEPTION HANDLING - Forward without amendment.",
     "description": "Exception Handling terminal. Routes non-standard units; amendment not permitted.",
     "ports": ["22"],
     "interfaces": [
@@ -127,7 +133,8 @@
     "username": "operator",
     "password": "pass",
     "filesystem": "Filesystem_7.json",
-    "motd": "SCHEDULING & LOAD — Maintain steady dispatch.",
+    "recordsRoomId": "rm_scheduling_load",
+    "motd": "SCHEDULING & LOAD - Maintain steady dispatch.",
     "description": "Scheduling & Load Management terminal. Manages dispatch windows and variance routing.",
     "ports": ["22"],
     "interfaces": [
@@ -147,7 +154,8 @@
     "username": "operator",
     "password": "pass",
     "filesystem": "Filesystem_8.json",
-    "motd": "RESOURCE ALLOCATION — Record variance and proceed.",
+    "recordsRoomId": "rm_resource_allocation",
+    "motd": "RESOURCE ALLOCATION - Record variance and proceed.",
     "description": "Resource Allocation terminal. Maintains capacity thresholds and variance logs.",
     "ports": ["22"],
     "interfaces": [
@@ -167,7 +175,8 @@
     "username": "operator",
     "password": "pass",
     "filesystem": "Filesystem_9.json",
-    "motd": "QUALITY ASSURANCE — Stamp indicates procedure, not outcome.",
+    "recordsRoomId": "rm_quality_assurance",
+    "motd": "QUALITY ASSURANCE - Stamp indicates procedure, not outcome.",
     "description": "Quality Assurance terminal. Performs sample verification and issues verification stamps.",
     "ports": ["22"],
     "interfaces": [
@@ -187,7 +196,8 @@
     "username": "operator",
     "password": "pass",
     "filesystem": "Filesystem_10.json",
-    "motd": "RECORDS & RETENTION — Do not duplicate archives.",
+    "recordsRoomId": "rm_records_retention",
+    "motd": "RECORDS & RETENTION - Do not duplicate archives.",
     "description": "Records & Retention terminal. Maintains archives and retention schedules; executes disposition protocol.",
     "ports": ["22"],
     "interfaces": [

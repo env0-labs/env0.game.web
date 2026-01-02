@@ -23,6 +23,7 @@ public sealed class RecordsModule : IContextModule
     private GameState? _gameState;
     private ChoiceEvaluator? _evaluator;
     private EffectExecutor? _executor;
+    private Dictionary<string, string>? _terminalFilesystemByRoom;
 
     public IEnumerable<OutputLine> Handle(string input, SessionState state)
     {
@@ -88,6 +89,20 @@ public sealed class RecordsModule : IContextModule
         {
             var scene = _repo.Get(_gameState.CurrentSceneId);
 
+            if (string.IsNullOrWhiteSpace(input) && state.ResumeRecords)
+            {
+                state.ResumeRecords = false;
+                if (!string.IsNullOrWhiteSpace(state.RecordsReturnSceneId))
+                {
+                    _gameState.SetScene(state.RecordsReturnSceneId);
+                    state.RecordsReturnSceneId = null;
+                    scene = _repo.Get(_gameState.CurrentSceneId);
+                }
+
+                RenderScene(output, state);
+                return output;
+            }
+
             AddLine(output, string.Empty);
 
             if (!int.TryParse(input, out var selectedNumber))
@@ -116,13 +131,16 @@ public sealed class RecordsModule : IContextModule
                 return output;
             }
 
+            var currentSceneId = scene.Id;
             _executor.Execute(selectedChoice.Effects, _gameState);
 
-            if (IsTerminalTransition(selectedChoice))
+            if (IsTerminalTransition(selectedChoice) && TryGetTerminalFilesystem(currentSceneId, out var filesystem))
             {
-                state.NextContext = ContextRoute.Maintenance;
+                state.NextContext = ContextRoute.Terminal;
+                state.TerminalReturnContext = ContextRoute.Records;
+                state.TerminalStartFilesystem = filesystem;
+                state.RecordsReturnSceneId = currentSceneId;
                 state.IsComplete = true;
-                _phase = RecordsPhase.Completed;
                 return output;
             }
 
@@ -223,6 +241,65 @@ public sealed class RecordsModule : IContextModule
             return false;
 
         return choice.Text.Contains("Sit down at the terminal", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private bool TryGetTerminalFilesystem(string sceneId, out string filesystem)
+    {
+        filesystem = string.Empty;
+        if (string.IsNullOrWhiteSpace(sceneId))
+            return false;
+
+        _terminalFilesystemByRoom ??= LoadTerminalMappings();
+        if (_terminalFilesystemByRoom.TryGetValue(sceneId, out var value) && !string.IsNullOrWhiteSpace(value))
+        {
+            filesystem = value;
+            return true;
+        }
+
+        return false;
+    }
+
+    private Dictionary<string, string> LoadTerminalMappings()
+    {
+        var map = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        var path = Path.Combine(AppContext.BaseDirectory, "Config", "Jsons", "Devices.json");
+
+        if (!File.Exists(path))
+            return map;
+
+        try
+        {
+            var json = File.ReadAllText(path);
+            var devices = JsonSerializer.Deserialize<List<DeviceMapping>>(
+                json,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
+            );
+
+            if (devices == null)
+                return map;
+
+            foreach (var device in devices)
+            {
+                var roomId = device.RecordsRoomId?.Trim();
+                var filesystem = device.Filesystem?.Trim();
+                if (string.IsNullOrWhiteSpace(roomId) || string.IsNullOrWhiteSpace(filesystem))
+                    continue;
+
+                map[roomId] = filesystem;
+            }
+        }
+        catch
+        {
+            return map;
+        }
+
+        return map;
+    }
+
+    private sealed class DeviceMapping
+    {
+        public string? RecordsRoomId { get; set; }
+        public string? Filesystem { get; set; }
     }
 }
 
