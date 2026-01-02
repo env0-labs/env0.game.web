@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+<!--
+    <ImplicitUsings>disable</ImplicitUsings>
+-->
+    <Nullable>disable</Nullable>
+    <IsPackable>false</IsPackable>
+    <AssemblyName>Env0.Terminal.Tests</AssemblyName>
+    <RootNamespace>Env0.Terminal.Tests</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="6.0.2" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+    <PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\terminal\env0.terminal\Env0.Terminal.csproj" />
+  </ItemGroup>
+
+  <!-- WARNING: Do not touch this copy block unless you like pain. MSBuild only works with recursive Include + Link for test data folders. -->
+  <ItemGroup>
+    <None Include="..\..\..\src\terminal\env0.terminal\Config\Jsons\JsonFilesystems\**\*">
+      <Link>Config\Jsons\JsonFilesystems\%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="..\..\..\src\terminal\env0.terminal\Config\Jsons\*.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+
+
+
+</Project>
+
+

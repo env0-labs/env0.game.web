@@ -3,9 +3,9 @@
 A modular, text-based systems experience built around maintenance,
 procedural correctness, and delayed interpretation.
 
-This repository contains one system implemented as multiple epistemic
-modes ("Acts"), each exposing different permissions, affordances, and
-abstractions over the same underlying workflow.
+This repository contains one system implemented as multiple contexts,
+each exposing different permissions, affordances, and abstractions over
+the same underlying workflow.
 
 This is not a traditional game project. There is no engine dependency,
 no renderer, and no attempt at spectacle. The experience is
@@ -21,11 +21,11 @@ The project is a single solution with multiple modules:
     +-- src
     |  +-- core
     |  |  +-- Env0.Core          # Shared contracts only (no behavior)
-    |  +-- act1                  # Maintenance (process/status loop)
-    |  +-- act2                  # Records / bureaucratic interpretation
-    |  +-- act3                  # Terminal / config inspection & patching
-    |  +-- act4                  # Placeholder
-    |  +-- runner                # Top-level runner / act selector
+    |  +-- maintenance           # Maintenance (process/status loop)
+    |  +-- records               # Records / bureaucratic interpretation
+    |  +-- terminal              # Terminal / config inspection & patching
+    |  +-- context               # Placeholder
+    |  +-- runner                # Top-level runner / context selector
     +-- tests
     +-- env0.game.sln
 
@@ -34,36 +34,36 @@ The project is a single solution with multiple modules:
 `src/core/Env0.Core` contains only shared contracts:
 
 - Output models
-- Act interface (`IActModule`)
+- Context interface (`IContextModule`)
 - Session state
 
 There is no narrative logic and no IO in Core.
 
-### Acts
+### Contexts
 
-Each `actX` folder contains a self-contained module that:
+Each context folder contains a self-contained module that:
 
-- Implements `IActModule`
+- Implements `IContextModule`
 - Owns its own behavior and state transitions
-- Does not directly reference other acts
+- Does not directly reference other contexts
 
 Current status:
 
-- Act 1: module (`Act1Module`) exists and is wired to the runner; process includes a batch confirmation gate
-- Act 2: module (`Act2Module`) exists and is wired to the runner; a
+- Maintenance: module (`MaintenanceModule`) exists and is wired to the runner; process includes a batch confirmation gate
+- Records: module (`RecordsModule`) exists and is wired to the runner; a
   standalone console `Program.cs` also exists
-- Act 3: module (`Act3Module`) exists; includes a standalone playground
+- Terminal: module (`TerminalModule`) exists; includes a standalone playground
   app and internal docs
-- Act 4: placeholder folder exists
+- Context: placeholder folder exists
 
 ### Runner
 
 The runner is a deliberately dumb console application that:
 
-- Lets you select which act to load
-- Passes raw input to the active act
+- Lets you select which context to load
+- Passes raw input to the active context
 - Prints returned output lines
-- Returns to the menu when the act signals completion
+- Returns to the menu when the context signals completion
 
 The runner enforces no game rules.
 
@@ -72,18 +72,18 @@ The runner enforces no game rules.
 ## Architectural Principles
 
 - Core owns contracts, not behavior
-- Acts own behavior, not wiring
+- Contexts own behavior, not wiring
 - Runner owns wiring, not rules
 
-No act should:
+No context should:
 
-- Know which other acts exist
+- Know which other contexts exist
 - Control process lifetime directly
 - Perform direct console IO
 
 No runner should:
 
-- Enforce act-specific rules
+- Enforce context-specific rules
 - Interpret command meaning
 - Contain narrative logic
 
@@ -105,30 +105,30 @@ dotnet build
 dotnet run --project src/runner
 ```
 
-The runner will prompt you to select an act to load.
+The runner will prompt you to select a context to load.
 
-### Run act-specific entry points
+### Run context-specific entry points
 
-Act 2 can still be run directly:
+Records can still be run directly:
 
 ```bash
-dotnet run --project src/act2
+dotnet run --project src/records
 ```
 
-Act 3 has a playground app:
+Terminal has a playground app:
 
 ```bash
-dotnet run --project src/act3/env0.act3.playground
+dotnet run --project src/terminal/env0.terminal.playground
 ```
 
 ------------------------------------------------------------------------
 
-## Act Lifecycle
+## Context Lifecycle
 
-Acts signal completion via shared session state.
+Contexts signal completion via shared session state.
 
-When an act sets `SessionState.IsComplete = true`, the runner exits the
-act input loop and returns control to the menu.
+When a context sets `SessionState.IsComplete = true`, the runner exits
+the input loop and returns control to the menu.
 
 This avoids:
 
@@ -142,7 +142,7 @@ This avoids:
 
 - Large refactors should be done by porting, not stripping, where
   possible.
-- Shared utilities should only be moved into Core once multiple acts
+- Shared utilities should only be moved into Core once multiple contexts
   genuinely require them.
 
 If something feels like it "belongs everywhere", question it first.
@@ -169,7 +169,8 @@ Everything works.
 
 Active development.
 
-- Act 1: module wired to runner (process/status + batch confirmation gate)
-- Act 2: module wired to runner; standalone console entry present
-- Act 3: module wired to runner; tests and playground present
-- Act 4: placeholder folder
+- Maintenance: module wired to runner (process/status + batch confirmation gate)
+- Records: module wired to runner; standalone console entry present
+- Terminal: module wired to runner; tests and playground present
+- Context: placeholder folder
+

@@ -8,25 +8,25 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core", "core", "{605AEB65-8
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Env0.Core", "src\core\Env0.Core\Env0.Core.csproj", "{A6D82B1C-ECB6-4B10-B1BF-D96FC26496AF}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "act1", "act1", "{D5FBA79C-2081-45AB-AD82-3FECC288466F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "maintenance", "maintenance", "{D5FBA79C-2081-45AB-AD82-3FECC288466F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "env0.act1", "src\act1\env0.act1.csproj", "{233344FB-E66C-4533-A144-38A02BD62B5C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "env0.maintenance", "src\maintenance\env0.maintenance.csproj", "{233344FB-E66C-4533-A144-38A02BD62B5C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Env0.Act1.Tests", "tests\act 1 tests\env0.act1.tests\Env0.Act1.Tests.csproj", "{FFF537F2-3FF1-4397-B278-8E897CFF4453}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Env0.Maintenance.Tests", "tests\maintenance tests\env0.maintenance.tests\Env0.Maintenance.Tests.csproj", "{FFF537F2-3FF1-4397-B278-8E897CFF4453}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "act2", "act2", "{B79998C9-8E8A-9F9F-EB97-057ABE8DB9AB}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "records", "records", "{B79998C9-8E8A-9F9F-EB97-057ABE8DB9AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "env0.act2", "src\act2\env0.act2.csproj", "{C8E0A2A6-0A9C-4F91-9C85-6FAD3CB8B317}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "env0.records", "src\records\env0.records.csproj", "{C8E0A2A6-0A9C-4F91-9C85-6FAD3CB8B317}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Env0.Act2.Tests", "tests\act 2 tests\env0.act2.tests\Env0.Act2.Tests.csproj", "{E54ABD98-BA6D-47D2-892E-51D61609CCA7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Env0.Records.Tests", "tests\records tests\env0.records.tests\Env0.Records.Tests.csproj", "{E54ABD98-BA6D-47D2-892E-51D61609CCA7}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "act3", "act3", "{1FA2F0EC-4FD4-2A7A-3F95-2E9DB39356AB}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "terminal", "terminal", "{1FA2F0EC-4FD4-2A7A-3F95-2E9DB39356AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Env0.Act3", "src\act3\env0.act3\Env0.Act3.csproj", "{0179400E-5B91-3F84-1656-8ADCD0864C68}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Env0.Terminal", "src\terminal\env0.terminal\Env0.Terminal.csproj", "{0179400E-5B91-3F84-1656-8ADCD0864C68}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Env0.Act3.Playground", "src\act3\env0.act3.playground\Env0.Act3.Playground.csproj", "{B46CF8D1-DD51-8ABE-4C09-C227970ECC50}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Env0.Terminal.Playground", "src\terminal\env0.terminal.playground\Env0.Terminal.Playground.csproj", "{B46CF8D1-DD51-8ABE-4C09-C227970ECC50}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Env0.Act3.Tests", "tests\act 3 tests\env0.act3.tests\Env0.Act3.Tests.csproj", "{29C25E6D-9E06-6F53-4427-76271C54B144}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Env0.Terminal.Tests", "tests\terminal tests\env0.terminal.tests\Env0.Terminal.Tests.csproj", "{29C25E6D-9E06-6F53-4427-76271C54B144}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "runner", "runner", "{D2FA9C81-70F6-4DE5-B090-D3598A2B5CF1}"
 EndProject
@@ -98,3 +98,5 @@ Global
 		SolutionGuid = {8FECF29F-3589-4FFE-9672-7EECEBC81E02}
 	EndGlobalSection
 EndGlobal
+
+

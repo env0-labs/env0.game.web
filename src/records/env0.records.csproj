@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>env0.records</AssemblyName>
+    <RootNamespace>env0.records</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Update="story\*.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\core\Env0.Core\Env0.Core.csproj" />
+  </ItemGroup>
+
+</Project>
+

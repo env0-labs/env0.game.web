@@ -10,20 +10,22 @@
 
   <ItemGroup>
     <ProjectReference Include="..\core\Env0.Core\Env0.Core.csproj" />
-    <ProjectReference Include="..\act1\env0.act1.csproj" />
-    <ProjectReference Include="..\act2\env0.act2.csproj" />
-    <ProjectReference Include="..\act3\env0.act3\Env0.Act3.csproj" />
+    <ProjectReference Include="..\maintenance\env0.maintenance.csproj" />
+    <ProjectReference Include="..\records\env0.records.csproj" />
+    <ProjectReference Include="..\terminal\env0.terminal\Env0.Terminal.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\act2\story\*.json">
+    <None Include="..\records\story\*.json">
       <Link>story\%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\act3\env0.act3\Config\Jsons\**\*.json">
+    <None Include="..\terminal\env0.terminal\Config\Jsons\**\*.json">
       <Link>Config\Jsons\%(RecursiveDir)%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
 </Project>
+
+

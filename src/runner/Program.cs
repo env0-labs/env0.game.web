@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Env0.Act3;
+using Env0.Terminal;
 using Env0.Core;
-using env0.act1;
-using env0.act2;
+using env0.maintenance;
+using env0.records;
 
 namespace Env0.Runner
 {
@@ -13,11 +13,11 @@ namespace Env0.Runner
         {
             while (true)
             {
-                Console.WriteLine("Select an act to launch:");
-                Console.WriteLine("  1) Act 1");
-                Console.WriteLine("  2) Act 2");
-                Console.WriteLine("  3) Act 3");
-                Console.WriteLine("  4) Act 4 (placeholder)");
+                Console.WriteLine("Select a context to launch:");
+                Console.WriteLine("  1) Maintenance");
+                Console.WriteLine("  2) Records");
+                Console.WriteLine("  3) Terminal");
+                Console.WriteLine("  4) Context (placeholder)");
                 Console.WriteLine("  Q) Quit");
                 Console.Write("> ");
 
@@ -37,16 +37,16 @@ namespace Env0.Runner
                 switch (input)
                 {
                     case "1":
-                        RunWithRouting(new Act1Module());
+                        RunWithRouting(new MaintenanceModule());
                         break;
                     case "2":
-                        RunWithRouting(new Act2Module());
+                        RunWithRouting(new RecordsModule());
                         break;
                     case "3":
-                        RunWithRouting(new Act3Module());
+                        RunWithRouting(new TerminalModule());
                         break;
                     case "4":
-                        Console.WriteLine("Act 4 runner is a placeholder for now.");
+                        Console.WriteLine("Context runner is a placeholder for now.");
                         break;
                     default:
                         Console.WriteLine("Unknown option. Please choose 1-4 or Q.");
@@ -57,21 +57,21 @@ namespace Env0.Runner
             }
         }
 
-        private static void RunWithRouting(IActModule module)
+        private static void RunWithRouting(IContextModule module)
         {
             var next = RunModule(module);
-            while (next != ActRoute.None)
+            while (next != ContextRoute.None)
             {
                 var routedModule = CreateModule(next);
                 next = RunModule(routedModule);
             }
         }
 
-        private static ActRoute RunModule(IActModule module)
+        private static ContextRoute RunModule(IContextModule module)
         {
             var originalDirectory = Environment.CurrentDirectory;
             Environment.CurrentDirectory = AppContext.BaseDirectory;
-            var session = new SessionState { NextAct = ActRoute.None };
+            var session = new SessionState { NextContext = ContextRoute.None };
             PrintOutput(module.Handle(string.Empty, session));
 
             while (!session.IsComplete)
@@ -87,16 +87,16 @@ namespace Env0.Runner
             }
 
             Environment.CurrentDirectory = originalDirectory;
-            return session.NextAct;
+            return session.NextContext;
         }
 
-        private static IActModule CreateModule(ActRoute route)
+        private static IContextModule CreateModule(ContextRoute route)
         {
             return route switch
             {
-                ActRoute.Act1 => new Act1Module(),
-                ActRoute.Act2 => new Act2Module(),
-                ActRoute.Act3 => new Act3Module(),
+                ContextRoute.Maintenance => new MaintenanceModule(),
+                ContextRoute.Records => new RecordsModule(),
+                ContextRoute.Terminal => new TerminalModule(),
                 _ => throw new InvalidOperationException($"Unknown route: {route}")
             };
         }
@@ -123,3 +123,6 @@ namespace Env0.Runner
         }
     }
 }
+
+
+

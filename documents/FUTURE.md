@@ -7,7 +7,7 @@ Nothing in this file is guaranteed to be implemented.
 If something described here becomes true in the repository, it should be reflected in
 README.md.
 
-This project is not structured as a sequence of “Acts”.
+This project is not structured as a sequence of contexts.
 It is a single system experienced through different operational modes.
 
 Each mode exposes a different surface of the same underlying work.
