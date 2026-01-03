@@ -1,31 +1,64 @@
 {
   "Root": {
-    "readme.txt": { "type": "file", "content": "PROCESSING TERMINAL\n\nRole: Convert assigned units into containers.\nNotes: Do not reference origin. Use assigned identifiers only." },
     "bin": {
-      "process.sh": { "type": "file", "content": "#!/bin/sh\n# Placeholder. Interface not implemented.\necho \"process: interface unavailable\""} ,
-      "status.sh": { "type": "file", "content": "#!/bin/sh\n# Placeholder.\necho \"status: interface unavailable\""}
+      "process.sh": {
+        "content": "#!/bin/sh\n# Placeholder. Interface not implemented.\necho \u0022process: interface unavailable\u0022\r\n# What you are looking for isn\u0027t here.",
+        "type": "file"
+      },
+      "status.sh": {
+        "content": "#!/bin/sh\n# Placeholder.\necho \u0022status: interface unavailable\u0022",
+        "type": "file"
+      }
+    },
+    "docs": {
+      "procedure_excerpt.txt": {
+        "content": "Procedure (Excerpt)\n\n1) Receive units from /queue/in\n2) Process to container\n3) Seal and stage to /queue/out\n4) Route non-standard units to /queue/exceptions\n\nDo not describe units in free text.",
+        "type": "file"
+      }
     },
     "etc": {
-      "processing.cfg": { "type": "file", "content": "MODE=STANDARD\nUNIT_CLASS=ASSIGNED\nCONTAINER_SIZE=DEFAULT\nOUTPUT_PATH=/queue/out\nEXCEPTION_ROUTE=/queue/exceptions\nNOTE=Use assigned identifiers only" },
-      "terminology.map": { "type": "file", "content": "unit=unit\ncontainer=container\nbatch=batch\ncase=(deprecated)\nsubject=(do not use)" }
-    },
-    "queue": {
-      "in": {
-        "README.txt": { "type": "file", "content": "Incoming units are staged here by Intake.\nDo not inspect contents.\nDo not retain copies." }
+      "processing.cfg": {
+        "content": "MODE=STANDARD\nUNIT_CLASS=ASSIGNED\nCONTAINER_SIZE=DEFAULT\nOUTPUT_PATH=/queue/out\nEXCEPTION_ROUTE=/queue/exceptions\nNOTE=Use assigned identifiers only",
+        "type": "file"
       },
-      "out": {
-        "README.txt": { "type": "file", "content": "Output containers are staged here for Consolidation.\nSeal and tag per procedure." }
-      },
-      "exceptions": {
-        "README.txt": { "type": "file", "content": "Non-standard units routed here.\nDo not attempt amendment.\nForward to Exception Handling." }
+      "terminology.map": {
+        "content": "unit=unit\ncontainer=container\nbatch=batch\ncase=(deprecated)\nsubject=(do not use)",
+        "type": "file"
       }
     },
     "log": {
-      "processing.log": { "type": "file", "content": "…\n[OK] throughput within tolerance\n[OK] output sealed\n[WARN] identifier format drift observed\n…\n[OK] resolved without amendment\n…" },
-      "shift_handover.txt": { "type": "file", "content": "Handover Notes\n\n- Keep the queue steady.\n- Don’t open anything.\n- If Alignment asks, answer only in codes." }
+      "processing.log": {
+        "content": "\u2026\n[OK] throughput within tolerance\n[OK] output sealed\n[WARN] identifier format drift observed\n\u2026\n[OK] resolved without amendment\n\u2026",
+        "type": "file"
+      },
+      "shift_handover.txt": {
+        "content": "Handover Notes\n\n- Keep the queue steady.\n- Don\u2019t open anything.\n- If Alignment asks, answer only in codes.",
+        "type": "file"
+      }
     },
-    "docs": {
-      "procedure_excerpt.txt": { "type": "file", "content": "Procedure (Excerpt)\n\n1) Receive units from /queue/in\n2) Process to container\n3) Seal and stage to /queue/out\n4) Route non-standard units to /queue/exceptions\n\nDo not describe units in free text." }
+    "queue": {
+      "exceptions": {
+        "README.txt": {
+          "content": "Non-standard units routed here.\nDo not attempt amendment.\nForward to Exception Handling.",
+          "type": "file"
+        }
+      },
+      "in": {
+        "README.txt": {
+          "content": "Incoming units are staged here by Intake.\nDo not inspect contents.\nDo not retain copies.",
+          "type": "file"
+        }
+      },
+      "out": {
+        "README.txt": {
+          "content": "Output containers are staged here for Consolidation.\nSeal and tag per procedure.",
+          "type": "file"
+        }
+      }
+    },
+    "readme.txt": {
+      "content": "PROCESSING TERMINAL\n\nRole: Convert assigned units into containers.\nNotes: Do not reference origin. Use assigned identifiers only.",
+      "type": "file"
     }
   }
 }

@@ -1,409 +1,839 @@
 {
-  "startSceneId": "rm_processing_floor",
   "scenes": [
     {
-      "id": "rm_processing_floor",
-      "text": "Processing Floor\n\nA broad open-plan room of identical desks and identical chairs. Monitor glow gathers in the corners where overhead lighting fails to reach. Power indicators blink patiently. The air is dry, faintly warm, and smells of dust and heated plastic.\n\nA laminated notice has been taped to a divider panel.",
       "choices": [
         {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "hx_fl_1"
+            }
+          ],
           "number": 1,
-          "text": "Go to the hallway",
-          "effects": [{ "type": "GotoScene", "value": "hx_fl_1" }]
+          "text": "Go to the hallway"
         },
         {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "rm_processing_floor"
+            }
+          ],
           "number": 2,
-          "text": "Sit down at the terminal",
           "resultText": "Terminal interface not yet implemented.",
-          "effects": [{ "type": "GotoScene", "value": "rm_processing_floor" }]
+          "text": "Sit down at the terminal"
         },
         {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "rm_processing_floor"
+            }
+          ],
           "number": 3,
-          "text": "Read the laminated notice",
           "resultText": "STANDARD OPERATING CONDITIONS\n\nMaintain throughput within tolerance.\nEscalate exceptions via Exception Handling.\nDo not retain copies of unassigned materials.",
-          "effects": [{ "type": "GotoScene", "value": "rm_processing_floor" }]
+          "text": "Read the laminated notice"
         }
-      ]
+      ],
+      "id": "rm_processing_floor",
+      "text": "Processing Floor\n\nA broad open-plan room of identical desks and identical chairs. Monitor glow gathers in the corners where overhead lighting fails to reach. Power indicators blink patiently. The air is dry, faintly warm, and smells of dust and heated plastic.\n\nA laminated notice has been taped to a divider panel."
     },
-
     {
-      "id": "rm_intake_preprocessing",
-      "text": "Intake & Pre-Processing\n\nA staging room with long tables, shallow trays, and stacks of blank labels. The surfaces are clean in a way that suggests routine rather than care. A terminal sits at the end of the nearest table, screen idling with a dim prompt.\n\nA torn printout has been left under a paperweight.",
       "choices": [
         {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "hx_fl_1"
+            }
+          ],
           "number": 1,
-          "text": "Go to the hallway",
-          "effects": [{ "type": "GotoScene", "value": "hx_fl_1" }]
+          "text": "Go to the hallway"
         },
         {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "rm_intake_preprocessing"
+            }
+          ],
           "number": 2,
-          "text": "Sit down at the terminal",
           "resultText": "Terminal interface not yet implemented.",
-          "effects": [{ "type": "GotoScene", "value": "rm_intake_preprocessing" }]
+          "text": "Sit down at the terminal"
         },
         {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "rm_intake_preprocessing"
+            }
+          ],
           "number": 3,
-          "text": "Read the torn printout",
           "resultText": "INTAKE SUMMARY (TRUNCATED)\n\nSource: [REDACTED]\nCount verified.\nNon-standard units forwarded for review.\nDiscontinue legacy classification codes effective Q3.",
-          "effects": [{ "type": "GotoScene", "value": "rm_intake_preprocessing" }]
+          "text": "Read the torn printout"
         }
-      ]
+      ],
+      "id": "rm_intake_preprocessing",
+      "text": "Intake \u0026 Pre-Processing\n\nA staging room with long tables, shallow trays, and stacks of blank labels. The surfaces are clean in a way that suggests routine rather than care. A terminal sits at the end of the nearest table, screen idling with a dim prompt.\n\nA torn printout has been left under a paperweight."
     },
-
     {
-      "id": "rm_output_consolidation",
-      "text": "Output Consolidation\n\nThe room is lined with metal shelving and wheeled carts. Plastic straps, sealing tape, and label dispensers sit exactly where they should. Several carts are tagged and staged as if waiting for collection.\n\nA post-it note has been pressed onto the terminal bezel. A cart tag hangs from a handle nearby.",
       "choices": [
         {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "hx_fl_1"
+            }
+          ],
           "number": 1,
-          "text": "Go to the hallway",
-          "effects": [{ "type": "GotoScene", "value": "hx_fl_1" }]
+          "text": "Go to the hallway"
         },
         {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "rm_output_consolidation"
+            }
+          ],
           "number": 2,
-          "text": "Sit down at the terminal",
           "resultText": "Access unavailable. Clearance grade insufficient.",
-          "effects": [{ "type": "GotoScene", "value": "rm_output_consolidation" }]
+          "text": "Sit down at the terminal"
         },
         {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "rm_output_consolidation"
+            }
+          ],
           "number": 3,
-          "text": "Read the post-it note",
           "resultText": "NOTE\n\nAccess restricted to personnel with F-grade clearance.\nGrading discrepancies should be referred to the Department of Access.",
-          "effects": [{ "type": "GotoScene", "value": "rm_output_consolidation" }]
+          "text": "Read the post-it note"
         },
         {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "rm_output_consolidation"
+            }
+          ],
           "number": 4,
-          "text": "Read the cart tag",
           "resultText": "CART TAG\n\nContents: Consolidated Output\nDestination: Routing",
-          "effects": [{ "type": "GotoScene", "value": "rm_output_consolidation" }]
-        }
-      ]
-    },
-
-    {
-      "id": "rm_break_room",
-      "text": "Break Room\n\nA vending machine hums with the confidence of a machine that will never be used again. A microwave sits on a counter with a layer of clean dust. The noticeboard is crowded with expired reminders and safety posters curling at the edges.\n\nOne printed reminder is pinned dead-centre.",
-      "choices": [
-        {
-          "number": 1,
-          "text": "Go to the hallway",
-          "effects": [{ "type": "GotoScene", "value": "hx_fl_1" }]
+          "text": "Read the cart tag"
         },
         {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "rm_break_room"
+            }
+          ],
+          "number": 5,
+          "resultText": "Well done! You got nothing!",
+          "text": "Test Choice"
+        }
+      ],
+      "id": "rm_output_consolidation",
+      "text": "Output Consolidation\n\nThe room is lined with metal shelving and wheeled carts. Plastic straps, sealing tape, and label dispensers sit exactly where they should. Several carts are tagged and staged as if waiting for collection.\n\nA post-it note has been pressed onto the terminal bezel. A cart tag hangs from a handle nearby."
+    },
+    {
+      "choices": [
+        {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "hx_fl_1"
+            }
+          ],
+          "number": 1,
+          "text": "Go to the hallway"
+        },
+        {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "rm_break_room"
+            }
+          ],
           "number": 2,
-          "text": "Read the printed reminder",
           "resultText": "REMINDER\n\nMeals must be consumed in designated areas only.\nDo not bring materials into break spaces.",
-          "effects": [{ "type": "GotoScene", "value": "rm_break_room" }]
+          "text": "Read the printed reminder"
         }
-      ]
+      ],
+      "id": "rm_break_room",
+      "text": "Break Room\n\nA vending machine hums with the confidence of a machine that will never be used again. A microwave sits on a counter with a layer of clean dust. The noticeboard is crowded with expired reminders and safety posters curling at the edges.\n\nOne printed reminder is pinned dead-centre."
     },
-
     {
+      "choices": [
+        {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "hx_fl_1"
+            }
+          ],
+          "number": 1,
+          "text": "Go to the hallway"
+        },
+        {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "rm_infrastructure_services"
+            }
+          ],
+          "number": 2,
+          "resultText": "SERVICE PANEL\n\nDo not disable environmental controls.\nReport irregular temperatures via Scheduling \u0026 Load Management.",
+          "text": "Read the placard"
+        }
+      ],
       "id": "rm_infrastructure_services",
-      "text": "Infrastructure Services\n\nA service room of cable trays and ventilation ducts. The building’s quiet becomes audible here: fans, relays, and a continuous low vibration transmitted through the floor. Warning labels are present, but not dramatic.\n\nA small placard is fixed to a panel.",
-      "choices": [
-        {
-          "number": 1,
-          "text": "Go to the hallway",
-          "effects": [{ "type": "GotoScene", "value": "hx_fl_1" }]
-        },
-        {
-          "number": 2,
-          "text": "Read the placard",
-          "resultText": "SERVICE PANEL\n\nDo not disable environmental controls.\nReport irregular temperatures via Scheduling & Load Management.",
-          "effects": [{ "type": "GotoScene", "value": "rm_infrastructure_services" }]
-        }
-      ]
+      "text": "Infrastructure Services\n\nA service room of cable trays and ventilation ducts. The building\u2019s quiet becomes audible here: fans, relays, and a continuous low vibration transmitted through the floor. Warning labels are present, but not dramatic.\n\nA small placard is fixed to a panel."
     },
-
     {
-      "id": "rm_access_department",
-      "text": "Department of Access\n\nA narrow office with mismatched filing trays and a terminal that has seen more use than anything else in the building. The furniture is arranged for work that does not require conversation. A stack of forms sits squared against the edge of a desk.\n\nA wall notice titled GRADING QUERIES is taped beside the terminal.",
       "choices": [
         {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "hx_fl_2"
+            }
+          ],
           "number": 1,
-          "text": "Go to the hallway",
-          "effects": [{ "type": "GotoScene", "value": "hx_fl_2" }]
+          "text": "Go to the hallway"
         },
         {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "rm_access_department"
+            }
+          ],
           "number": 2,
-          "text": "Sit down at the terminal",
           "resultText": "Terminal interface not yet implemented.",
-          "effects": [{ "type": "GotoScene", "value": "rm_access_department" }]
+          "text": "Sit down at the terminal"
         },
         {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "rm_access_department"
+            }
+          ],
           "number": 3,
-          "text": "Read the GRADING QUERIES notice",
           "resultText": "GRADING QUERIES\n\nGrading is assigned per operational requirement.\nRequests must include justification code.\nDo not include operational context.",
-          "effects": [{ "type": "GotoScene", "value": "rm_access_department" }]
+          "text": "Read the GRADING QUERIES notice"
         }
-      ]
+      ],
+      "id": "rm_access_department",
+      "text": "Department of Access\n\nA narrow office with mismatched filing trays and a terminal that has seen more use than anything else in the building. The furniture is arranged for work that does not require conversation. A stack of forms sits squared against the edge of a desk.\n\nA wall notice titled GRADING QUERIES is taped beside the terminal."
     },
-
     {
-      "id": "rm_compliance_alignment",
-      "text": "Compliance & Alignment\n\nA room built to reduce everything to categories. Checklists are clipped to boards. Approval trays are labelled with neutral terms. The terminal displays a plain interface with fields that suggest results rather than reasons.\n\nA note has been placed under the clipboard, as if to ensure it cannot be missed.",
       "choices": [
         {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "hx_fl_2"
+            }
+          ],
           "number": 1,
-          "text": "Go to the hallway",
-          "effects": [{ "type": "GotoScene", "value": "hx_fl_2" }]
+          "text": "Go to the hallway"
         },
         {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "rm_compliance_alignment"
+            }
+          ],
           "number": 2,
-          "text": "Sit down at the terminal",
           "resultText": "Terminal interface not yet implemented.",
-          "effects": [{ "type": "GotoScene", "value": "rm_compliance_alignment" }]
+          "text": "Sit down at the terminal"
         },
         {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "rm_compliance_alignment"
+            }
+          ],
           "number": 3,
-          "text": "Read the note",
           "resultText": "REMINDER\n\nDo not reference origin.\nUse assigned identifiers only.",
-          "effects": [{ "type": "GotoScene", "value": "rm_compliance_alignment" }]
+          "text": "Read the note"
         }
-      ]
+      ],
+      "id": "rm_compliance_alignment",
+      "text": "Compliance \u0026 Alignment\n\nA room built to reduce everything to categories. Checklists are clipped to boards. Approval trays are labelled with neutral terms. The terminal displays a plain interface with fields that suggest results rather than reasons.\n\nA note has been placed under the clipboard, as if to ensure it cannot be missed."
     },
-
     {
+      "choices": [
+        {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "hx_fl_2"
+            }
+          ],
+          "number": 1,
+          "text": "Go to the hallway"
+        },
+        {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "rm_exception_handling"
+            }
+          ],
+          "number": 2,
+          "resultText": "Terminal interface not yet implemented.",
+          "text": "Sit down at the terminal"
+        },
+        {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "rm_exception_handling"
+            }
+          ],
+          "number": 3,
+          "resultText": "EXCEPTION LOG (PARTIAL)\n\n\u2026classification mismatch.\n\u2026forwarded to Alignment.\n\u2026resolved without amendment.",
+          "text": "Read the printed log strip"
+        }
+      ],
       "id": "rm_exception_handling",
-      "text": "Exception Handling\n\nThe lighting is slightly harsher here. Forms are piled in a way that implies constant triage. The terminal is functional, but its keyboard is glossy from repeated use. The air smells faintly of paper and toner.\n\nA strip of log output has been printed and left on the desk.",
-      "choices": [
-        {
-          "number": 1,
-          "text": "Go to the hallway",
-          "effects": [{ "type": "GotoScene", "value": "hx_fl_2" }]
-        },
-        {
-          "number": 2,
-          "text": "Sit down at the terminal",
-          "resultText": "Terminal interface not yet implemented.",
-          "effects": [{ "type": "GotoScene", "value": "rm_exception_handling" }]
-        },
-        {
-          "number": 3,
-          "text": "Read the printed log strip",
-          "resultText": "EXCEPTION LOG (PARTIAL)\n\n…classification mismatch.\n…forwarded to Alignment.\n…resolved without amendment.",
-          "effects": [{ "type": "GotoScene", "value": "rm_exception_handling" }]
-        }
-      ]
+      "text": "Exception Handling\n\nThe lighting is slightly harsher here. Forms are piled in a way that implies constant triage. The terminal is functional, but its keyboard is glossy from repeated use. The air smells faintly of paper and toner.\n\nA strip of log output has been printed and left on the desk."
     },
-
     {
-      "id": "rm_scheduling_load",
-      "text": "Scheduling & Load Management\n\nA planning room with wall charts that have not been updated in some time. The terminal’s display is the only thing that looks current. A faded chart sits under glass, the kind of document that becomes policy because it is framed.\n\nYou can still read the headline.",
       "choices": [
         {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "hx_fl_2"
+            }
+          ],
           "number": 1,
-          "text": "Go to the hallway",
-          "effects": [{ "type": "GotoScene", "value": "hx_fl_2" }]
+          "text": "Go to the hallway"
         },
         {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "rm_scheduling_load"
+            }
+          ],
           "number": 2,
-          "text": "Sit down at the terminal",
           "resultText": "Terminal interface not yet implemented.",
-          "effects": [{ "type": "GotoScene", "value": "rm_scheduling_load" }]
+          "text": "Sit down at the terminal"
         },
         {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "rm_scheduling_load"
+            }
+          ],
           "number": 3,
-          "text": "Read the framed chart",
           "resultText": "TARGET LOAD PROFILE (OUTDATED)\n\nMaintain steady dispatch.\nAvoid spikes.\nVariance triggers Alignment review.",
-          "effects": [{ "type": "GotoScene", "value": "rm_scheduling_load" }]
+          "text": "Read the framed chart"
         }
-      ]
+      ],
+      "id": "rm_scheduling_load",
+      "text": "Scheduling \u0026 Load Management\n\nA planning room with wall charts that have not been updated in some time. The terminal\u2019s display is the only thing that looks current. A faded chart sits under glass, the kind of document that becomes policy because it is framed.\n\nYou can still read the headline."
     },
-
     {
-      "id": "rm_administrative_services",
-      "text": "Administrative Services\n\nEmpty desks and locked cabinets. Stationery is neatly arranged for work that never arrives. A tray marked INTERNAL ROUTING contains a single memo, still crisp.\n\nThe memo is dated, but not old enough to feel historical.",
       "choices": [
         {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "hx_fl_2"
+            }
+          ],
           "number": 1,
-          "text": "Go to the hallway",
-          "effects": [{ "type": "GotoScene", "value": "hx_fl_2" }]
+          "text": "Go to the hallway"
         },
         {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "rm_administrative_services"
+            }
+          ],
           "number": 2,
-          "text": "Read the memo",
           "resultText": "INTERNAL ROUTING\n\nDirect all non-standard requests to the relevant department.\nDo not retain copies.\nDo not annotate original documents.",
-          "effects": [{ "type": "GotoScene", "value": "rm_administrative_services" }]
+          "text": "Read the memo"
         }
-      ]
+      ],
+      "id": "rm_administrative_services",
+      "text": "Administrative Services\n\nEmpty desks and locked cabinets. Stationery is neatly arranged for work that never arrives. A tray marked INTERNAL ROUTING contains a single memo, still crisp.\n\nThe memo is dated, but not old enough to feel historical."
     },
-
     {
-      "id": "rm_records_retention",
-      "text": "Records & Retention\n\nArchive bays extend into the back of the room. Index cabinets line the walls with a precision that suggests long-term upkeep. The terminal’s screen is clean and bright, showing fields for retention windows and disposition codes.\n\nA memo has been filed improperly, protruding from a drawer.",
       "choices": [
         {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "hx_fl_3"
+            }
+          ],
           "number": 1,
-          "text": "Go to the hallway",
-          "effects": [{ "type": "GotoScene", "value": "hx_fl_3" }]
+          "text": "Go to the hallway"
         },
         {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "rm_records_retention"
+            }
+          ],
           "number": 2,
-          "text": "Sit down at the terminal",
           "resultText": "Terminal interface not yet implemented.",
-          "effects": [{ "type": "GotoScene", "value": "rm_records_retention" }]
+          "text": "Sit down at the terminal"
         },
         {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "rm_records_retention"
+            }
+          ],
           "number": 3,
-          "text": "Read the protruding memo",
           "resultText": "RETENTION POLICY UPDATE\n\nRetention schedules revised to align with current operational needs.\nExpired items are processed per disposition protocol.\nDo not duplicate archives.",
-          "effects": [{ "type": "GotoScene", "value": "rm_records_retention" }]
+          "text": "Read the protruding memo"
         }
-      ]
+      ],
+      "id": "rm_records_retention",
+      "text": "Records \u0026 Retention\n\nArchive bays extend into the back of the room. Index cabinets line the walls with a precision that suggests long-term upkeep. The terminal\u2019s screen is clean and bright, showing fields for retention windows and disposition codes.\n\nA memo has been filed improperly, protruding from a drawer."
     },
-
     {
-      "id": "rm_monitoring_oversight",
-      "text": "Monitoring & Oversight\n\nA clean room with one desk, one chair, and a terminal that looks newer than the rest. There are no binders, no trays, no loose paper. The building is quiet enough here that you can hear the terminal fan ramp up and settle.\n\nA placard sits on the desk.",
       "choices": [
         {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "hx_fl_3"
+            }
+          ],
           "number": 1,
-          "text": "Go to the hallway",
-          "effects": [{ "type": "GotoScene", "value": "hx_fl_3" }]
+          "text": "Go to the hallway"
         },
         {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "rm_monitoring_oversight"
+            }
+          ],
           "number": 2,
-          "text": "Sit down at the terminal",
           "resultText": "Terminal interface not yet implemented.",
-          "effects": [{ "type": "GotoScene", "value": "rm_monitoring_oversight" }]
+          "text": "Sit down at the terminal"
         },
         {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "rm_monitoring_oversight"
+            }
+          ],
           "number": 3,
-          "text": "Read the placard",
           "resultText": "OVERSIGHT\n\nObservation does not constitute authorisation.",
-          "effects": [{ "type": "GotoScene", "value": "rm_monitoring_oversight" }]
+          "text": "Read the placard"
         }
-      ]
+      ],
+      "id": "rm_monitoring_oversight",
+      "text": "Monitoring \u0026 Oversight\n\nA clean room with one desk, one chair, and a terminal that looks newer than the rest. There are no binders, no trays, no loose paper. The building is quiet enough here that you can hear the terminal fan ramp up and settle.\n\nA placard sits on the desk."
     },
-
     {
-      "id": "rm_resource_allocation",
-      "text": "Resource Allocation\n\nA room dedicated to limits. Shelves hold binders labelled by year and capacity band. The terminal displays tables and thresholds with the calm authority of something that does not need to justify itself.\n\nA notice has been pinned beside the screen.",
       "choices": [
         {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "hx_fl_3"
+            }
+          ],
           "number": 1,
-          "text": "Go to the hallway",
-          "effects": [{ "type": "GotoScene", "value": "hx_fl_3" }]
+          "text": "Go to the hallway"
         },
         {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "rm_resource_allocation"
+            }
+          ],
           "number": 2,
-          "text": "Sit down at the terminal",
           "resultText": "Terminal interface not yet implemented.",
-          "effects": [{ "type": "GotoScene", "value": "rm_resource_allocation" }]
+          "text": "Sit down at the terminal"
         },
         {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "rm_resource_allocation"
+            }
+          ],
           "number": 3,
-          "text": "Read the pinned notice",
           "resultText": "CAPACITY GUIDANCE\n\nDo not exceed reserved thresholds.\nIf thresholds are exceeded, record variance and proceed.",
-          "effects": [{ "type": "GotoScene", "value": "rm_resource_allocation" }]
+          "text": "Read the pinned notice"
         }
-      ]
+      ],
+      "id": "rm_resource_allocation",
+      "text": "Resource Allocation\n\nA room dedicated to limits. Shelves hold binders labelled by year and capacity band. The terminal displays tables and thresholds with the calm authority of something that does not need to justify itself.\n\nA notice has been pinned beside the screen."
     },
-
     {
-      "id": "rm_quality_assurance",
-      "text": "Quality Assurance\n\nSample trays sit in orderly rows. Stamps and clipboards are positioned with ritual precision. Nothing here appears broken. If something ever was, it has been removed.\n\nA single stamp lies face-down on the desk.",
       "choices": [
         {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "hx_fl_3"
+            }
+          ],
           "number": 1,
-          "text": "Go to the hallway",
-          "effects": [{ "type": "GotoScene", "value": "hx_fl_3" }]
+          "text": "Go to the hallway"
         },
         {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "rm_quality_assurance"
+            }
+          ],
           "number": 2,
-          "text": "Sit down at the terminal",
           "resultText": "Terminal interface not yet implemented.",
-          "effects": [{ "type": "GotoScene", "value": "rm_quality_assurance" }]
+          "text": "Sit down at the terminal"
         },
         {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "rm_quality_assurance"
+            }
+          ],
           "number": 3,
-          "text": "Pick up the stamp and read it",
           "resultText": "STAMP\n\nVERIFIED",
-          "effects": [{ "type": "GotoScene", "value": "rm_quality_assurance" }]
+          "text": "Pick up the stamp and read it"
         }
-      ]
+      ],
+      "id": "rm_quality_assurance",
+      "text": "Quality Assurance\n\nSample trays sit in orderly rows. Stamps and clipboards are positioned with ritual precision. Nothing here appears broken. If something ever was, it has been removed.\n\nA single stamp lies face-down on the desk."
     },
-
     {
-      "id": "rm_training_induction",
-      "text": "Training & Induction\n\nLaminated guides and corporate posters fill the walls. The language is cheerful in the same way a form letter is cheerful. The room is designed to teach procedure, not purpose.\n\nOne poster sits at eye level.",
       "choices": [
         {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "hx_fl_3"
+            }
+          ],
           "number": 1,
-          "text": "Go to the hallway",
-          "effects": [{ "type": "GotoScene", "value": "hx_fl_3" }]
+          "text": "Go to the hallway"
         },
         {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "rm_training_induction"
+            }
+          ],
           "number": 2,
-          "text": "Read the poster",
           "resultText": "WORKPLACE PRINCIPLES\n\nConsistency.\nAccuracy.\nDiscretion.\n\nIf unsure, refer to Alignment.",
-          "effects": [{ "type": "GotoScene", "value": "rm_training_induction" }]
+          "text": "Read the poster"
         }
-      ]
+      ],
+      "id": "rm_training_induction",
+      "text": "Training \u0026 Induction\n\nLaminated guides and corporate posters fill the walls. The language is cheerful in the same way a form letter is cheerful. The room is designed to teach procedure, not purpose.\n\nOne poster sits at eye level."
     },
-
     {
+      "choices": [
+        {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "rm_processing_floor"
+            }
+          ],
+          "number": 1,
+          "text": "Enter Processing Floor"
+        },
+        {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "rm_intake_preprocessing"
+            }
+          ],
+          "number": 2,
+          "text": "Enter Intake \u0026 Pre-Processing"
+        },
+        {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "rm_output_consolidation"
+            }
+          ],
+          "number": 3,
+          "text": "Enter Output Consolidation"
+        },
+        {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "rm_break_room"
+            }
+          ],
+          "number": 4,
+          "text": "Enter Break Room"
+        },
+        {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "rm_infrastructure_services"
+            }
+          ],
+          "number": 5,
+          "text": "Enter Infrastructure Services"
+        },
+        {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "st_fl_1"
+            }
+          ],
+          "number": 6,
+          "text": "Use the stairwell"
+        }
+      ],
       "id": "hx_fl_1",
-      "text": "Hallway (Floor 1)\n\nA carpeted corridor with fluorescent lighting. Doors sit evenly spaced. The building is clean in the way that suggests maintenance schedules rather than care.\n\nA stairwell door sits at the end of the corridor.",
-      "choices": [
-        { "number": 1, "text": "Enter Processing Floor", "effects": [{ "type": "GotoScene", "value": "rm_processing_floor" }] },
-        { "number": 2, "text": "Enter Intake & Pre-Processing", "effects": [{ "type": "GotoScene", "value": "rm_intake_preprocessing" }] },
-        { "number": 3, "text": "Enter Output Consolidation", "effects": [{ "type": "GotoScene", "value": "rm_output_consolidation" }] },
-        { "number": 4, "text": "Enter Break Room", "effects": [{ "type": "GotoScene", "value": "rm_break_room" }] },
-        { "number": 5, "text": "Enter Infrastructure Services", "effects": [{ "type": "GotoScene", "value": "rm_infrastructure_services" }] },
-        { "number": 6, "text": "Use the stairwell", "effects": [{ "type": "GotoScene", "value": "st_fl_1" }] }
-      ]
+      "text": "Hallway (Floor 1)\n\nA carpeted corridor with fluorescent lighting. Doors sit evenly spaced. The building is clean in the way that suggests maintenance schedules rather than care.\n\nA stairwell door sits at the end of the corridor."
     },
     {
+      "choices": [
+        {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "rm_access_department"
+            }
+          ],
+          "number": 1,
+          "text": "Enter Department of Access"
+        },
+        {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "rm_compliance_alignment"
+            }
+          ],
+          "number": 2,
+          "text": "Enter Compliance \u0026 Alignment"
+        },
+        {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "rm_exception_handling"
+            }
+          ],
+          "number": 3,
+          "text": "Enter Exception Handling"
+        },
+        {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "rm_scheduling_load"
+            }
+          ],
+          "number": 4,
+          "text": "Enter Scheduling \u0026 Load Management"
+        },
+        {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "rm_administrative_services"
+            }
+          ],
+          "number": 5,
+          "text": "Enter Administrative Services"
+        },
+        {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "st_fl_2"
+            }
+          ],
+          "number": 6,
+          "text": "Use the stairwell"
+        }
+      ],
       "id": "hx_fl_2",
-      "text": "Hallway (Floor 2)\n\nA longer corridor. The light here is whiter, less forgiving. Door plaques are uniform and recently cleaned. The air smells faintly of paper and toner.\n\nThe stairwell is marked with a small arrow label rather than proper signage.",
-      "choices": [
-        { "number": 1, "text": "Enter Department of Access", "effects": [{ "type": "GotoScene", "value": "rm_access_department" }] },
-        { "number": 2, "text": "Enter Compliance & Alignment", "effects": [{ "type": "GotoScene", "value": "rm_compliance_alignment" }] },
-        { "number": 3, "text": "Enter Exception Handling", "effects": [{ "type": "GotoScene", "value": "rm_exception_handling" }] },
-        { "number": 4, "text": "Enter Scheduling & Load Management", "effects": [{ "type": "GotoScene", "value": "rm_scheduling_load" }] },
-        { "number": 5, "text": "Enter Administrative Services", "effects": [{ "type": "GotoScene", "value": "rm_administrative_services" }] },
-        { "number": 6, "text": "Use the stairwell", "effects": [{ "type": "GotoScene", "value": "st_fl_2" }] }
-      ]
+      "text": "Hallway (Floor 2)\n\nA longer corridor. The light here is whiter, less forgiving. Door plaques are uniform and recently cleaned. The air smells faintly of paper and toner.\n\nThe stairwell is marked with a small arrow label rather than proper signage."
     },
     {
+      "choices": [
+        {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "rm_records_retention"
+            }
+          ],
+          "number": 1,
+          "text": "Enter Records \u0026 Retention"
+        },
+        {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "rm_monitoring_oversight"
+            }
+          ],
+          "number": 2,
+          "text": "Enter Monitoring \u0026 Oversight"
+        },
+        {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "rm_resource_allocation"
+            }
+          ],
+          "number": 3,
+          "text": "Enter Resource Allocation"
+        },
+        {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "rm_quality_assurance"
+            }
+          ],
+          "number": 4,
+          "text": "Enter Quality Assurance"
+        },
+        {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "rm_training_induction"
+            }
+          ],
+          "number": 5,
+          "text": "Enter Training \u0026 Induction"
+        },
+        {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "st_fl_3"
+            }
+          ],
+          "number": 6,
+          "text": "Use the stairwell"
+        }
+      ],
       "id": "hx_fl_3",
-      "text": "Hallway (Floor 3)\n\nQuiet, clean, and underused. The carpet is newer here, or replaced more often. The building’s hum is still present, but more distant, as if filtered.\n\nThe stairwell door closes with a heavier latch.",
-      "choices": [
-        { "number": 1, "text": "Enter Records & Retention", "effects": [{ "type": "GotoScene", "value": "rm_records_retention" }] },
-        { "number": 2, "text": "Enter Monitoring & Oversight", "effects": [{ "type": "GotoScene", "value": "rm_monitoring_oversight" }] },
-        { "number": 3, "text": "Enter Resource Allocation", "effects": [{ "type": "GotoScene", "value": "rm_resource_allocation" }] },
-        { "number": 4, "text": "Enter Quality Assurance", "effects": [{ "type": "GotoScene", "value": "rm_quality_assurance" }] },
-        { "number": 5, "text": "Enter Training & Induction", "effects": [{ "type": "GotoScene", "value": "rm_training_induction" }] },
-        { "number": 6, "text": "Use the stairwell", "effects": [{ "type": "GotoScene", "value": "st_fl_3" }] }
-      ]
+      "text": "Hallway (Floor 3)\n\nQuiet, clean, and underused. The carpet is newer here, or replaced more often. The building\u2019s hum is still present, but more distant, as if filtered.\n\nThe stairwell door closes with a heavier latch."
     },
-
     {
+      "choices": [
+        {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "hx_fl_1"
+            }
+          ],
+          "number": 1,
+          "text": "Return to Hallway (Floor 1)"
+        },
+        {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "hx_fl_2"
+            }
+          ],
+          "number": 2,
+          "text": "Go up to Floor 2"
+        }
+      ],
       "id": "st_fl_1",
-      "text": "Stairwell\n\nConcrete stairs. Signs indicate Floor 1 and Floor 2. The paint has been touched up recently, but not carefully.",
-      "choices": [
-        { "number": 1, "text": "Return to Hallway (Floor 1)", "effects": [{ "type": "GotoScene", "value": "hx_fl_1" }] },
-        { "number": 2, "text": "Go up to Floor 2", "effects": [{ "type": "GotoScene", "value": "hx_fl_2" }] }
-      ]
+      "text": "Stairwell\n\nConcrete stairs. Signs indicate Floor 1 and Floor 2. The paint has been touched up recently, but not carefully."
     },
     {
+      "choices": [
+        {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "hx_fl_2"
+            }
+          ],
+          "number": 1,
+          "text": "Return to Hallway (Floor 2)"
+        },
+        {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "hx_fl_1"
+            }
+          ],
+          "number": 2,
+          "text": "Go down to Floor 1"
+        },
+        {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "hx_fl_3"
+            }
+          ],
+          "number": 3,
+          "text": "Go up to Floor 3"
+        }
+      ],
       "id": "st_fl_2",
-      "text": "Stairwell\n\nConcrete stairs. The handrail is worn smooth. Floor labels are printed on cheap plastic strips.",
-      "choices": [
-        { "number": 1, "text": "Return to Hallway (Floor 2)", "effects": [{ "type": "GotoScene", "value": "hx_fl_2" }] },
-        { "number": 2, "text": "Go down to Floor 1", "effects": [{ "type": "GotoScene", "value": "hx_fl_1" }] },
-        { "number": 3, "text": "Go up to Floor 3", "effects": [{ "type": "GotoScene", "value": "hx_fl_3" }] }
-      ]
+      "text": "Stairwell\n\nConcrete stairs. The handrail is worn smooth. Floor labels are printed on cheap plastic strips."
     },
     {
-      "id": "st_fl_3",
-      "text": "Stairwell\n\nConcrete stairs. A small sign reads: \"Do not loiter.\" Someone has underlined it once, carefully.",
       "choices": [
-        { "number": 1, "text": "Return to Hallway (Floor 3)", "effects": [{ "type": "GotoScene", "value": "hx_fl_3" }] },
-        { "number": 2, "text": "Go down to Floor 2", "effects": [{ "type": "GotoScene", "value": "hx_fl_2" }] }
-      ]
+        {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "hx_fl_3"
+            }
+          ],
+          "number": 1,
+          "text": "Return to Hallway (Floor 3)"
+        },
+        {
+          "effects": [
+            {
+              "type": "GotoScene",
+              "value": "hx_fl_2"
+            }
+          ],
+          "number": 2,
+          "text": "Go down to Floor 2"
+        }
+      ],
+      "id": "st_fl_3",
+      "text": "Stairwell\n\nConcrete stairs. A small sign reads: \u0022Do not loiter.\u0022 Someone has underlined it once, carefully."
     }
-  ]
+  ],
+  "startSceneId": "rm_processing_floor"
 }
