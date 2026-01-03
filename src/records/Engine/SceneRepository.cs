@@ -57,7 +57,7 @@ public sealed class SceneRepository
 
             var choiceIndexes = new HashSet<int>();
             var choiceIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            var aliasMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            var aliasMap = new Dictionary<string, (string ChoiceId, string CanonicalCommand)>(StringComparer.OrdinalIgnoreCase);
 
             foreach (var choice in scene.Choices)
             {
@@ -90,7 +90,10 @@ public sealed class SceneRepository
         }
     }
 
-    private static void ValidateAliases(string sceneId, ChoiceDefinition choice, Dictionary<string, string> aliasMap)
+    private static void ValidateAliases(
+        string sceneId,
+        ChoiceDefinition choice,
+        Dictionary<string, (string ChoiceId, string CanonicalCommand)> aliasMap)
     {
         var canonical = $"{choice.Verb} {choice.Noun}";
         var canonicalNormalized = ChoiceInputNormalizer.Normalize(canonical);
@@ -105,15 +108,15 @@ public sealed class SceneRepository
             if (string.Equals(normalized, canonicalNormalized, StringComparison.OrdinalIgnoreCase))
                 containsCanonical = true;
 
-            if (aliasMap.TryGetValue(normalized, out var existingChoiceId) &&
-                !string.Equals(existingChoiceId, choice.Id, StringComparison.OrdinalIgnoreCase))
+            if (aliasMap.TryGetValue(normalized, out var existing) &&
+                !string.Equals(existing.ChoiceId, choice.Id, StringComparison.OrdinalIgnoreCase))
             {
                 throw new InvalidOperationException(
-                    $"Alias collision in scene {sceneId}: '{alias}' matches both {existingChoiceId} and {choice.Id}."
+                    $"Alias collision in scene {sceneId}: '{alias}' matches {existing.ChoiceId} ({existing.CanonicalCommand}) and {choice.Id} ({canonical})."
                 );
             }
 
-            aliasMap[normalized] = choice.Id;
+            aliasMap[normalized] = (choice.Id, canonical);
         }
 
         if (!containsCanonical)

@@ -106,16 +106,36 @@ public sealed class RecordsModule : IContextModule
 
             AddLine(output, string.Empty);
 
-            if (_inputRouter.IsHelpCommand(input))
+            var route = _inputRouter.Resolve(input, scene);
+            if (route.Kind == InputRouteKind.MetaCommand)
             {
                 RenderScene(output, state, showNumbersOverride: true);
                 return output;
             }
 
-            if (!_inputRouter.TryResolve(input, scene, out var selectedChoice) || selectedChoice == null)
+            if (route.Kind == InputRouteKind.Failure)
             {
-                AddLine(output, "Input not recognized.");
-                AddLine(output, "Use 'options' or 'help' to display numbered choices.");
+                var allowedVerbs = GetDistinctSorted(scene.Choices.Select(choice => choice.Verb));
+                var allowedObjects = GetDistinctSorted(scene.Choices.Select(choice => choice.Noun));
+                var errorLines = RecordsErrorPolicy.BuildErrorLines(
+                    route.FailureKind ?? InputFailureKind.UnknownVerb,
+                    route.AttemptedVerbToken,
+                    allowedVerbs,
+                    allowedObjects,
+                    route.AmbiguousCommands);
+
+                foreach (var line in errorLines)
+                    AddLine(output, line);
+
+                AddLine(output, string.Empty);
+                RenderScene(output, state);
+                return output;
+            }
+
+            var selectedChoice = route.Choice;
+            if (selectedChoice == null)
+            {
+                AddLine(output, "Unrecognised action.");
                 AddLine(output, string.Empty);
                 RenderScene(output, state);
                 return output;
@@ -333,6 +353,16 @@ public sealed class RecordsModule : IContextModule
         public string? RecordsRoomId { get; set; }
         public string? Filesystem { get; set; }
         public string? Hostname { get; set; }
+    }
+
+    private static List<string> GetDistinctSorted(IEnumerable<string> values)
+    {
+        return values
+            .Where(value => !string.IsNullOrWhiteSpace(value))
+            .Select(value => value.Trim())
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .OrderBy(value => value, StringComparer.OrdinalIgnoreCase)
+            .ToList();
     }
 
 }

@@ -91,17 +91,46 @@ while (true)
     var input = Console.ReadLine();
     Console.WriteLine();
 
-    if (inputRouter.IsHelpCommand(input ?? string.Empty))
+    var route = inputRouter.Resolve(input ?? string.Empty, scene);
+    if (route.Kind == InputRouteKind.MetaCommand)
     {
-        showNumericOptions = true;
+        var allowedChoices = scene.Choices
+            .Where(choice => evaluator.IsEnabled(choice, state, out _))
+            .OrderBy(choice => choice.Index)
+            .ToList();
+
+        Console.WriteLine("Available:");
+        foreach (var choice in allowedChoices)
+        {
+            Console.WriteLine($"[{choice.Index}] {choice.Verb} {choice.Noun}");
+        }
+
         Console.WriteLine();
         continue;
     }
 
-    if (!inputRouter.TryResolve(input ?? string.Empty, scene, out var selectedChoice) || selectedChoice is null)
+    if (route.Kind == InputRouteKind.Failure)
     {
-        Console.WriteLine("Input not recognized.");
-        Console.WriteLine("Use 'options' or 'help' to display numbered choices.");
+        var allowedVerbs = GetDistinctSorted(scene.Choices.Select(choice => choice.Verb));
+        var allowedObjects = GetDistinctSorted(scene.Choices.Select(choice => choice.Noun));
+        var errorLines = RecordsErrorPolicy.BuildErrorLines(
+            route.FailureKind ?? InputFailureKind.UnknownVerb,
+            route.AttemptedVerbToken,
+            allowedVerbs,
+            allowedObjects,
+            route.AmbiguousCommands);
+
+        foreach (var line in errorLines)
+            Console.WriteLine(line);
+
+        Console.WriteLine();
+        continue;
+    }
+
+    var selectedChoice = route.Choice;
+    if (selectedChoice is null)
+    {
+        Console.WriteLine("Unrecognised action.");
         Console.WriteLine();
         continue;
     }
@@ -129,4 +158,14 @@ while (true)
 // End
 // ------------------------------------------------------------------
 Console.WriteLine("Game ended.");
+
+static List<string> GetDistinctSorted(IEnumerable<string> values)
+{
+    return values
+        .Where(value => !string.IsNullOrWhiteSpace(value))
+        .Select(value => value.Trim())
+        .Distinct(StringComparer.OrdinalIgnoreCase)
+        .OrderBy(value => value, StringComparer.OrdinalIgnoreCase)
+        .ToList();
+}
 

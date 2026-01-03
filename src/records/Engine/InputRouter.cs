@@ -10,32 +10,45 @@ public sealed class InputRouter
         "options"
     };
 
-    public bool IsHelpCommand(string input)
+    private static bool IsHelpCommand(string input)
     {
         var normalized = ChoiceInputNormalizer.Normalize(input);
         return HelpCommands.Contains(normalized);
     }
 
-    public bool TryResolve(string input, SceneDefinition scene, out ChoiceDefinition? choice)
+    public InputRouteResult Resolve(string input, SceneDefinition scene)
     {
-        choice = null;
-
         if (string.IsNullOrWhiteSpace(input))
-            return false;
+            return InputRouteResult.Failure(InputFailureKind.UnknownVerb, string.Empty);
 
         var trimmed = input.Trim();
+        if (IsHelpCommand(trimmed))
+            return InputRouteResult.Meta(InputMetaCommand.Options);
+
         if (IsDigitsOnly(trimmed) && int.TryParse(trimmed, out var index))
         {
-            choice = scene.Choices.FirstOrDefault(c => c.Index == index);
-            return choice != null;
+            var choice = scene.Choices.FirstOrDefault(c => c.Index == index);
+            return choice != null
+                ? InputRouteResult.ResolvedChoice(choice)
+                : InputRouteResult.Failure(InputFailureKind.UnknownVerb, string.Empty);
         }
 
         var normalized = ChoiceInputNormalizer.Normalize(trimmed);
         if (string.IsNullOrWhiteSpace(normalized))
-            return false;
+            return InputRouteResult.Failure(InputFailureKind.UnknownVerb, string.Empty);
 
         var aliasMap = BuildAliasMap(scene);
-        return aliasMap.TryGetValue(normalized, out choice);
+        if (aliasMap.TryGetValue(normalized, out var matchedChoice))
+            return InputRouteResult.ResolvedChoice(matchedChoice);
+
+        var attemptedVerbToken = GetFirstToken(normalized);
+        if (string.IsNullOrWhiteSpace(attemptedVerbToken))
+            return InputRouteResult.Failure(InputFailureKind.UnknownVerb, string.Empty);
+
+        var allowedVerbs = BuildAllowedVerbs(scene);
+        return allowedVerbs.Contains(attemptedVerbToken)
+            ? InputRouteResult.Failure(InputFailureKind.KnownVerbButNoMatchingCommand, attemptedVerbToken)
+            : InputRouteResult.Failure(InputFailureKind.UnknownVerb, attemptedVerbToken);
     }
 
     private static bool IsDigitsOnly(string input)
@@ -61,11 +74,38 @@ public sealed class InputRouter
                 if (string.IsNullOrWhiteSpace(normalized))
                     continue;
 
-                if (!map.ContainsKey(normalized))
-                    map[normalized] = choice;
+                if (map.TryGetValue(normalized, out var existingChoice) &&
+                    !string.Equals(existingChoice.Id, choice.Id, StringComparison.OrdinalIgnoreCase))
+                {
+                    var existingCommand = $"{existingChoice.Verb} {existingChoice.Noun}";
+                    var newCommand = $"{choice.Verb} {choice.Noun}";
+                    throw new InvalidOperationException(
+                        $"Alias collision for '{normalized}': {existingChoice.Id} ({existingCommand}) conflicts with {choice.Id} ({newCommand})."
+                    );
+                }
+
+                map[normalized] = choice;
             }
         }
 
         return map;
+    }
+
+    private static HashSet<string> BuildAllowedVerbs(SceneDefinition scene)
+    {
+        var verbs = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        foreach (var choice in scene.Choices)
+        {
+            if (!string.IsNullOrWhiteSpace(choice.Verb))
+                verbs.Add(choice.Verb.Trim());
+        }
+
+        return verbs;
+    }
+
+    private static string GetFirstToken(string normalized)
+    {
+        var tokens = normalized.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        return tokens.Length > 0 ? tokens[0] : string.Empty;
     }
 }

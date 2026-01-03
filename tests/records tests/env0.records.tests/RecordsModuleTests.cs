@@ -55,7 +55,9 @@ public sealed class RecordsModuleTests
             var invalidOutput = module.Handle("abc", session).ToList();
             var invalidTexts = invalidOutput.Select(line => line.Text).ToList();
 
-            Assert.Contains("Input not recognized.", invalidTexts);
+            Assert.Contains("Unrecognised action.", invalidTexts);
+            Assert.Contains("Actions: read", invalidTexts);
+            Assert.Contains("Objects: memo", invalidTexts);
             Assert.False(session.IsComplete);
         }
         finally
@@ -111,7 +113,7 @@ public sealed class RecordsModuleTests
             Assert.Equal("Filesystem_1.json", session.MaintenanceFilesystem);
             Assert.Equal("proc.floor01", session.MaintenanceMachineId);
             Assert.Equal("start", session.RecordsReturnSceneId);
-            Assert.DoesNotContain("Input not recognized.", output.Select(line => line.Text));
+            Assert.DoesNotContain("Unrecognised action.", output.Select(line => line.Text));
         }
         finally
         {
@@ -140,7 +142,7 @@ public sealed class RecordsModuleTests
             var texts = output.Select(line => line.Text).ToList();
 
             Assert.Contains("Resume scene.", texts);
-            Assert.DoesNotContain("Input not recognized.", texts);
+            Assert.DoesNotContain("Unrecognised action.", texts);
         }
         finally
         {
@@ -226,6 +228,82 @@ public sealed class RecordsModuleTests
     }
 
     [Fact]
+    public void Handle_UnknownVerb_ReportsActionsAndObjects()
+    {
+        var module = new RecordsModule();
+        var session = new SessionState();
+        var story = "test_records_unknown_verb.json";
+
+        CreateStoryFile(story, BuildSingleChoiceStoryJson("Unknown verb scene."));
+
+        try
+        {
+            module.Handle(string.Empty, session).ToList();
+
+            var output = module.Handle("poke memo", session).ToList();
+            var texts = output.Select(line => line.Text).ToList();
+
+            Assert.Contains("Unrecognised action.", texts);
+            Assert.Contains("Actions: read", texts);
+            Assert.Contains("Objects: memo", texts);
+        }
+        finally
+        {
+            DeleteStoryFile(story);
+        }
+    }
+
+    [Fact]
+    public void Handle_KnownVerbWithoutMatch_ReportsVerbSpecificMessage()
+    {
+        var module = new RecordsModule();
+        var session = new SessionState();
+        var story = "test_records_known_verb.json";
+
+        CreateStoryFile(story, BuildSingleChoiceStoryJson("Known verb scene."));
+
+        try
+        {
+            module.Handle(string.Empty, session).ToList();
+
+            var output = module.Handle("read banana", session).ToList();
+            var texts = output.Select(line => line.Text).ToList();
+
+            Assert.Contains("No readable item matches that command in this room.", texts);
+            Assert.Contains("Actions: read", texts);
+            Assert.Contains("Objects: memo", texts);
+        }
+        finally
+        {
+            DeleteStoryFile(story);
+        }
+    }
+
+    [Fact]
+    public void Handle_NumericSelectionWorksWhenNumbersHidden()
+    {
+        var module = new RecordsModule();
+        var session = new SessionState();
+        var story = "test_records_numeric_hidden.json";
+
+        CreateStoryFile(story, BuildSingleChoiceStoryJson("Numeric hidden scene.", "NUMERIC BODY"));
+
+        try
+        {
+            module.Handle(string.Empty, session).ToList();
+
+            var output = module.Handle("1", session).ToList();
+            var texts = output.Select(line => line.Text).ToList();
+
+            Assert.Contains("NUMERIC BODY", texts);
+        }
+        finally
+        {
+            DeleteStoryFile(story);
+        }
+    }
+
+    [Fact]
     public void Handle_AliasCollisionFailsFast()
     {
         var module = new RecordsModule();
@@ -238,6 +316,9 @@ public sealed class RecordsModuleTests
         {
             var ex = Assert.Throws<InvalidOperationException>(() => module.Handle(string.Empty, session).ToList());
             Assert.Contains("Alias collision", ex.Message);
+            Assert.Contains("read memo", ex.Message);
+            Assert.Contains("start.read_memo", ex.Message);
+            Assert.Contains("start.read_notice", ex.Message);
         }
         finally
         {
