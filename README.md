@@ -9,7 +9,8 @@ the same underlying workflow.
 
 This is not a traditional game project. There is no engine dependency,
 no renderer, and no attempt at spectacle. The experience is
-intentionally minimal, procedural, and slow. Once the logic is absolutely rock solid, I will decide on a front end for the project.
+intentionally minimal, procedural, and slow. The current front end is a
+minimal WPF runner, with a console runner available for quick tests.
 
 ------------------------------------------------------------------------
 
@@ -23,9 +24,10 @@ The project is a single solution with multiple modules:
     |  |  +-- Env0.Core          # Shared contracts only (no behavior)
     |  +-- maintenance           # Maintenance (process/status loop)
     |  +-- records               # Records / bureaucratic interpretation
-    |  +-- terminal              # Terminal / config inspection & patching
+    |  +-- terminal              # Terminal / CLI inspection & operations
     |  +-- context               # Placeholder
-    |  +-- runner                # Top-level runner / context launcher
+    |  +-- runner                # Console runner / context launcher
+    |  |  +-- Runner.Wpf         # WPF runner (primary UI)
     +-- tests
     +-- env0.game.sln
 
@@ -64,6 +66,9 @@ The runner is a deliberately dumb console application that:
 - Routes to the next context when the current one signals completion
 
 The runner enforces no game rules.
+
+The WPF runner mirrors the console runner routing but renders in a rich
+text UI with type-on output.
 
 ------------------------------------------------------------------------
 
@@ -105,6 +110,12 @@ dotnet run --project src/runner
 
 The runner starts in Maintenance by default.
 
+### Run the WPF runner (Windows)
+
+```bash
+dotnet run --project src/runner/Runner.Wpf
+```
+
 ### Run context-specific entry points
 
 Records can still be run directly:
@@ -117,6 +128,25 @@ Terminal has a playground app:
 
 ```bash
 dotnet run --project src/terminal/env0.terminal.playground
+```
+
+------------------------------------------------------------------------
+
+## Tests
+
+Run everything:
+
+```bash
+dotnet test
+```
+
+Run specific suites:
+
+```bash
+dotnet test "tests\maintenance tests\env0.maintenance.tests\Env0.Maintenance.Tests.csproj"
+dotnet test "tests\records tests\env0.records.tests\Env0.Records.Tests.csproj"
+dotnet test "tests\terminal tests\env0.terminal.tests\Env0.Terminal.Tests.csproj"
+dotnet test "tests\runner\Env0.Runner.Wpf.Tests\Env0.Runner.Wpf.Tests.csproj"
 ```
 
 ------------------------------------------------------------------------
@@ -184,4 +214,3 @@ Active development.
 - Records: module wired to runner; standalone console entry present
 - Terminal: module wired to runner; tests and playground present
 - Context: placeholder folder
-

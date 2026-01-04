@@ -7,8 +7,10 @@ Nothing in this file is guaranteed to be implemented.
 If something described here becomes true in the repository, it should be reflected in
 README.md.
 
-This project is not structured as a sequence of contexts.
-It is a single system experienced through different operational modes.
+The repository already implements multiple contexts (Maintenance, Records, Terminal)
+with both console and WPF runners. The intent remains a single system experienced
+through different operational modes, even if the implementation routes between
+contexts.
 
 Each mode exposes a different surface of the same underlying work.
 
@@ -37,7 +39,7 @@ Distance from consequence.
 - Stabilise Maintenance Mode as a persistent background system.
 - Expand Maintenance Mode into multiple interchangeable maintenance variants.
 - Continue expanding Records Mode as a navigable interpretive layer.
-- Implement a CLI-based Automation Mode that alters how maintenance is performed.
+- Evolve the existing Terminal Mode into a CLI-based Automation Mode that alters how maintenance is performed.
 - Introduce a Compliance System spanning all modes.
 - Add a final Interpretation Mode once system behaviour is stable.
 
@@ -212,11 +214,11 @@ Those theories should remain plausible and incomplete.
 
 ---
 
-## Automation Mode (CLI / Configuration Mode)
+## Terminal Mode (CLI / Configuration Mode)
 
 ### Purpose
 
-Automation Mode allows the player to alter *how* work is performed.
+Terminal Mode allows the player to inspect and (eventually) alter *how* work is performed.
 
 It introduces delegation, automation, and procedural distance.
 
@@ -227,8 +229,8 @@ Automation reduces visible labour while increasing abstraction.
 ### Interface
 
 - Linux-like CLI.
-- Read access to system configuration.
-- Indirect write access via patch scripts or automation definitions.
+- Read access to system configuration (current implementation focus).
+- Indirect write access via patch scripts or automation definitions (planned).
 
 No direct editing.
 All changes are applied procedurally.
