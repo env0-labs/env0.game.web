@@ -123,6 +123,35 @@ public sealed class RecordsModuleTests
     }
 
     [Fact]
+    public void Handle_TerminalChoiceWithoutDeviceMapping_DoesNotRoute()
+    {
+        var module = new RecordsModule();
+        var session = new SessionState();
+        var story = "test_records_terminal_missing_device.json";
+
+        CreateStoryFile(story, BuildTerminalStoryJson("Terminal missing device."));
+
+        try
+        {
+            module.Handle(string.Empty, session).ToList();
+            var output = module.Handle("1", session).ToList();
+            var texts = output.Select(line => line.Text).ToList();
+
+            Assert.False(session.IsComplete);
+            Assert.Equal(ContextRoute.None, session.NextContext);
+            Assert.Null(session.MaintenanceFilesystem);
+            Assert.Null(session.MaintenanceMachineId);
+            Assert.Contains("Terminal missing device.", texts);
+            Assert.Contains("> ", texts);
+            Assert.DoesNotContain("Unrecognised action.", texts);
+        }
+        finally
+        {
+            DeleteStoryFile(story);
+        }
+    }
+
+    [Fact]
     public void Handle_ResumeRecords_RendersSceneWithoutInvalidInput()
     {
         var module = new RecordsModule();
