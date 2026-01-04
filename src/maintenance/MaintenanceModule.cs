@@ -165,7 +165,6 @@ public sealed class MaintenanceModule : IContextModule
         AddLine(output, "Accepted commands:");
         AddLine(output, "- process");
         AddLine(output, "- status");
-        AddLine(output, "- load cli");
         AddLine(output, string.Empty);
     }
 
@@ -188,6 +187,7 @@ public sealed class MaintenanceModule : IContextModule
             _containersCompletedSinceBatch = 0;
             _batchPromptActive = false;
             AddLine(output, "Batch recorded.");
+            AddLine(output, "Type 'exit' to exit this program at any time.");
 
             if (_batchesCompleted >= 3)
             {
