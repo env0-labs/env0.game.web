@@ -16,6 +16,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Runner.Wpf\**\*.cs" />
+    <Page Remove="Runner.Wpf\**\*.xaml" />
+    <None Remove="Runner.Wpf\**\*" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="..\records\story\*.json">
       <Link>story\%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
