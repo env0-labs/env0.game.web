@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Env0.Terminal.Terminal.AAI;
 using Env0.Terminal.Terminal.Commands;
 
 namespace Env0.Terminal.Terminal
@@ -59,7 +61,19 @@ namespace Env0.Terminal.Terminal
             {
                 return command.Execute(session, args);
             }
-            return new CommandResult($"bash: {cmd}: command not found\n\n", OutputType.Error);
+
+            // Unknown command: keep canonical shell error, then optionally let AAI respond.
+            // We always include the canonical phrase "command not found" for test stability and UX familiarity.
+            var unknown = new CommandResult($"bash: {cmd}: command not found\n\n", OutputType.Error);
+
+            // AAI lives in the gaps: it only triggers for fully-initialized sessions.
+            if (AaiResponder.ShouldTrigger(session, input))
+            {
+                var known = _commands.Keys.ToList();
+                unknown.AddLine(AaiResponder.BuildResponse(input, known), OutputType.Error);
+            }
+
+            return unknown;
         }
     }
 }

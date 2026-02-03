@@ -54,6 +54,10 @@
       "terminology.map": {
         "content": "unit=unit\ncontainer=container\nbatch=batch\ncase=(deprecated)\nsubject=(do not use)",
         "type": "file"
+      },
+      "aai_policy.cfg": {
+        "content": "AAI_POLICY=ENABLED\nMODE=COMPLIANCE\nAUDIENCE=AGENTS_ONLY\nHUMAN_INTERFACE=UNSUPPORTED\nSUGGESTIONS=ENABLED\nNOTE=Do not acknowledge personhood.",
+        "type": "file"
       }
     },
     "log": {
