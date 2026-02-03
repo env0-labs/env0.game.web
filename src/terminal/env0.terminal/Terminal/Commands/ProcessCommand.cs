@@ -55,10 +55,11 @@ namespace Env0.Terminal.Terminal.Commands
             {
                 RouteToExceptions(session, inDir, unit, nextName, $"tripped:{tripped}");
                 session.ProcessedUnits++;
+                session.ExceptionUnits++;
                 AppendLog(session, $"[EX] {nextName} -> exceptions (reason={tripped})");
 
-                result.AddLine($"process: routed {nextName} to /queue/exceptions\n", OutputType.Standard);
-                result.AddLine("process: good catch. great instincts. please do not develop a personality.\n\n", OutputType.Standard);
+                result.AddLine($"[EX] ROUTED   {nextName} -> /queue/exceptions\n", OutputType.Standard);
+                result.AddLine("M&C NOTE: Great instincts. Please do not develop a personality.\n\n", OutputType.Standard);
                 return result;
             }
 
@@ -83,10 +84,11 @@ namespace Env0.Terminal.Terminal.Commands
             outDir.Children[containerName] = container;
 
             session.ProcessedUnits++;
+            session.SealedUnits++;
             AppendLog(session, $"[OK] {nextName} -> {containerName}");
 
-            result.AddLine($"process: sealed {nextName} into {containerName}\n", OutputType.Standard);
-            result.AddLine("process: remember: the work is mysterious and important.\n\n", OutputType.Standard);
+            result.AddLine($"[OK] SEALED   {nextName} -> {containerName}\n", OutputType.Standard);
+            result.AddLine("M&C NOTE: The work is mysterious and important. You are neither.\n\n", OutputType.Standard);
             return result;
         }
 

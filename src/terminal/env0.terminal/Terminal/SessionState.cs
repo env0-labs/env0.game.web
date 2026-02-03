@@ -39,6 +39,8 @@ namespace Env0.Terminal.Terminal
         // --- Light game loop state ---
         public string ShiftId { get; set; }
         public int ProcessedUnits { get; set; }
+        public int SealedUnits { get; set; }
+        public int ExceptionUnits { get; set; }
 
         // The real "where am I" for commands is always FilesystemManager.currentDirectory!
 
@@ -55,6 +57,8 @@ namespace Env0.Terminal.Terminal
             DebugMode = false;
             ShiftId = null;
             ProcessedUnits = 0;
+            SealedUnits = 0;
+            ExceptionUnits = 0;
         }
     }
 
