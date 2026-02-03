@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using Env0.Core;
 using env0.maintenance;
 using env0.records;
@@ -29,8 +30,10 @@ public partial class MainWindow : Window
 
         Opened += OnOpened;
 
-        InputSink.KeyDown += OnKeyDown;
-        InputSink.TextInput += OnTextInput;
+        // Capture input at the Window level (tunnel) so we don't depend on any specific control
+        // successfully holding focus.
+        AddHandler(InputElement.KeyDownEvent, OnKeyDown, RoutingStrategies.Tunnel);
+        AddHandler(InputElement.TextInputEvent, OnTextInput, RoutingStrategies.Tunnel);
     }
 
     private void OnOpened(object? sender, EventArgs e)
@@ -40,6 +43,8 @@ public partial class MainWindow : Window
         RouteIfNeeded();
         EnsurePromptAndInput();
 
+        // Try to focus the terminal; keep the hidden sink as a backup.
+        Terminal.Focus();
         InputSink.Focus();
     }
 
@@ -139,6 +144,7 @@ public partial class MainWindow : Window
         RouteIfNeeded();
         EnsurePromptAndInput();
 
+        Terminal.Focus();
         InputSink.Focus();
     }
 

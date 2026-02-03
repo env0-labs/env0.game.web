@@ -8,10 +8,11 @@
         Title="env0 (Avalonia PoC)">
 
   <Grid Background="#050607">
-    <local:CrtTerminalControl x:Name="Terminal" />
+    <local:CrtTerminalControl x:Name="Terminal" Focusable="True" />
 
-    <!-- Hidden input sink: captures keyboard input but we render it inline in the terminal grid. -->
+    <!-- Hidden input sink (kept as a fallback focus target). -->
     <TextBox x:Name="InputSink" Opacity="0" Width="1" Height="1" BorderThickness="0"
+             Focusable="True" IsTabStop="True"
              Background="#050607" Foreground="#050607" CaretBrush="#050607" />
   </Grid>
 </Window>
