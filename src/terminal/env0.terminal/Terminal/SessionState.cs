@@ -36,6 +36,10 @@ namespace Env0.Terminal.Terminal
         // Debug flag
         public bool DebugMode { get; set; } = false;
 
+        // --- Light game loop state ---
+        public string ShiftId { get; set; }
+        public int ProcessedUnits { get; set; }
+
         // The real "where am I" for commands is always FilesystemManager.currentDirectory!
 
         // Constructor
@@ -49,6 +53,8 @@ namespace Env0.Terminal.Terminal
             CommandHistory = new List<string>();
             SshStack = new Stack<SshSessionContext>();
             DebugMode = false;
+            ShiftId = null;
+            ProcessedUnits = 0;
         }
     }
 

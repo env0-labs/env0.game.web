@@ -192,7 +192,13 @@ namespace Env0.Terminal
                             string warning = string.IsNullOrEmpty(_capturedPassword)
                                 ? "no password? well you like to live dangerously... I'll allow it\n"
                                 : "";
-                            return BuildRenderState($"{warning}Login complete!\n\nType ls to view available files\n");
+
+                            // Flavor + direction: give the player an immediate job loop.
+                            var shiftBanner = "\nSHIFT ASSIGNMENT: PROCESSING\n" +
+                                              "OBJECTIVE: empty /queue/in into /queue/out\n" +
+                                              "TIP: try 'status' then 'process'\n\n";
+
+                            return BuildRenderState($"{warning}Login complete!\n{shiftBanner}Type ls to view available files\n");
                         }
                         // Reset to username prompt on any weird state
                         _loginStep = LoginStep.Username;

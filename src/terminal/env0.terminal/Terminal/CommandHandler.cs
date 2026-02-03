@@ -30,6 +30,8 @@ namespace Env0.Terminal.Terminal
             RegisterCommand("ifconfig", new IfconfigCommand());
             RegisterCommand("inbox", new InboxCommand());
             RegisterCommand("memo", new MemoCommand());
+            RegisterCommand("status", new StatusCommand());
+            RegisterCommand("process", new ProcessCommand());
 
             //  TODO: once everything is stable we can look at implementing debug commands as they require full stack for operation. Await Milestone 1B succesful test output before implementation.
             /*// Debug-only commands

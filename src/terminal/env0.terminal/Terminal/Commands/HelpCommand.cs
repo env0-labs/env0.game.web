@@ -23,6 +23,8 @@ Available commands:
   sudo [cmd]       Attempt to run as root (Easter egg)
   inbox            List corporate inbox messages
   memo             Print a daily memo
+  status           Show shift + queue status
+  process          Process one unit from /queue/in
   help             Show this help message
   ifconfig         Show network interfaces
 

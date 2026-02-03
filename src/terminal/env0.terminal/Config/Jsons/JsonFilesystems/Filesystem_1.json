@@ -81,6 +81,18 @@
         "README.txt": {
           "content": "Incoming units are staged here by Intake.\nDo not inspect contents.\nDo not retain copies.",
           "type": "file"
+        },
+        "U-00017.txt": {
+          "content": "UNIT U-00017\n\n[redacted]\n\n(approved content unavailable)",
+          "type": "file"
+        },
+        "U-00018.txt": {
+          "content": "UNIT U-00018\n\nContains: staples (approx)\n", 
+          "type": "file"
+        },
+        "U-00019.txt": {
+          "content": "UNIT U-00019\n\nContains: sky\n", 
+          "type": "file"
         }
       },
       "out": {
