@@ -24,10 +24,18 @@ namespace Env0.Terminal.Config
 
         private static string ResolvePath(params string[] pathOptions)
         {
+            // Support running from arbitrary working directories (e.g., `dotnet run` from repo root)
+            // by also probing paths relative to the app's base directory.
+            var baseDir = AppContext.BaseDirectory;
+
             foreach (var path in pathOptions)
             {
                 if (System.IO.File.Exists(path))
                     return path;
+
+                var rooted = Path.Combine(baseDir, path);
+                if (System.IO.File.Exists(rooted))
+                    return rooted;
             }
             // If none found, return the first anyway (to fail with a clear error)
             return pathOptions.First();
@@ -141,12 +149,22 @@ namespace Env0.Terminal.Config
 
         private static void LoadAdditionalFilesystems(params string[] directories)
         {
+            var baseDir = AppContext.BaseDirectory;
+
             foreach (var directory in directories)
             {
-                if (!Directory.Exists(directory))
+                var candidate = directory;
+                if (!Directory.Exists(candidate))
+                {
+                    var rooted = Path.Combine(baseDir, directory);
+                    if (Directory.Exists(rooted))
+                        candidate = rooted;
+                }
+
+                if (!Directory.Exists(candidate))
                     continue;
 
-                var files = Directory.GetFiles(directory, "Filesystem_*.json");
+                var files = Directory.GetFiles(candidate, "Filesystem_*.json");
                 foreach (var file in files)
                 {
                     var name = Path.GetFileName(file);

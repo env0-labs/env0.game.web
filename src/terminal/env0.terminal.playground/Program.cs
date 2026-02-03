@@ -112,6 +112,10 @@ namespace Env0.Terminal.Playground
         /// </summary>
         static string ReadPassword()
         {
+            // When running interactively, hide input. When stdin is redirected (CI/scripts), fall back to ReadLine.
+            if (Console.IsInputRedirected)
+                return Console.ReadLine() ?? string.Empty;
+
             var password = string.Empty;
             ConsoleKeyInfo key;
             while (true)
