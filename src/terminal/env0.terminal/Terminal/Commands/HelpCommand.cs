@@ -21,6 +21,8 @@ Available commands:
   ssh [host]       SSH into another device (stub)
   exit             Exit SSH session or terminal (contextual)
   sudo [cmd]       Attempt to run as root (Easter egg)
+  inbox            List corporate inbox messages
+  memo             Print a daily memo
   help             Show this help message
   ifconfig         Show network interfaces
 

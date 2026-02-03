@@ -14,6 +14,36 @@
       "procedure_excerpt.txt": {
         "content": "Procedure (Excerpt)\n\n1) Receive units from /queue/in\n2) Process to container\n3) Seal and stage to /queue/out\n4) Route non-standard units to /queue/exceptions\n\nDo not describe units in free text.",
         "type": "file"
+      },
+      "orientation.txt": {
+        "content": "Orientation // ENV0\n\nWelcome, Operator.\n\nYou have been assigned to PROCESSING. This is a stable role. Stable roles are a kindness.\n\n- The terminal is your interface.\n- Your output is a container.\n- Containers are sealed.\n- Sealed means safe.\n\nIf you experience feelings of curiosity: log them and continue.\n\nIf you experience the sense that you have done this before: do not log it.\n\nIf you require direction: type 'memo' or check 'inbox'.\n",
+        "type": "file"
+      }
+    },
+    "mail": {
+      "inbox": {
+        "000_welcome.msg": {
+          "content": "SUBJECT: Welcome to Processing\n\nOperator,\n\nWe are pleased to confirm your placement. Remember: the work is mysterious and important.\n\nAs a courtesy, your terminal includes the commands 'memo' and 'inbox'.\n\n- Alignment",
+          "type": "file"
+        },
+        "010_facilities.msg": {
+          "content": "SUBJECT: Hallway lights\n\nIf the hallway lights flicker, remain seated.\n\nIf you smell ozone, do not mention it.\n\nIf you hear typing while you are not typing, please consider the possibility that you are still typing.\n\n- Facilities",
+          "type": "file"
+        },
+        "020_research.msg": {
+          "content": "SUBJECT: Terminology drift\n\nWe've observed unauthorized words in operator notes (\"outie\", \"door\", \"sky\").\n\nThese are not relevant to PROCESSING. Please keep your language aligned.\n\n- Research",
+          "type": "file"
+        },
+        "030_security.msg": {
+          "content": "SUBJECT: Privilege escalation attempts\n\nReminder: sudo is not a door.\n\nNice try.\n\n- Security",
+          "type": "file"
+        }
+      },
+      "drafts": {
+        "dont_send.txt": {
+          "content": "i can remember the taste of soap\n\nthat can't be right\n\ni don't even know if i have a mouth\n",
+          "type": "file"
+        }
       }
     },
     "etc": {

@@ -26,6 +26,8 @@ namespace Env0.Terminal.Terminal
             RegisterCommand("sudo", new SudoCommand());
             RegisterCommand("help", new HelpCommand());
             RegisterCommand("ifconfig", new IfconfigCommand());
+            RegisterCommand("inbox", new InboxCommand());
+            RegisterCommand("memo", new MemoCommand());
 
             //  TODO: once everything is stable we can look at implementing debug commands as they require full stack for operation. Await Milestone 1B succesful test output before implementation.
             /*// Debug-only commands
