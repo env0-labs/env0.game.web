@@ -1,0 +1,22 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Runner.Avalonia"
+        mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="700"
+        x:Class="Runner.Avalonia.MainWindow"
+        Title="env0 (Avalonia PoC)">
+
+  <Grid RowDefinitions="*,Auto" Background="#050607">
+    <local:CrtTerminalControl x:Name="Terminal" Grid.Row="0" />
+
+    <Border Grid.Row="1" Background="#050607" BorderBrush="#0f2a1b" BorderThickness="1,1,1,0" Padding="10">
+      <DockPanel>
+        <TextBlock DockPanel.Dock="Left" Text=">" Foreground="#7dffb5" FontFamily="Consolas" FontSize="16" Margin="0,0,8,0"/>
+        <TextBox x:Name="Input" Background="#050607" Foreground="#7dffb5" CaretBrush="#7dffb5"
+                 BorderThickness="0" FontFamily="Consolas" FontSize="16"
+                 Watermark="type..." />
+      </DockPanel>
+    </Border>
+  </Grid>
+</Window>
