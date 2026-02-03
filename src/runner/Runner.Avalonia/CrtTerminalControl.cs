@@ -18,14 +18,22 @@ namespace Runner.Avalonia;
 ///
 /// This is intentionally not a full terminal emulator.
 /// </summary>
-public sealed class CrtTerminalControl : Control
+public sealed partial class CrtTerminalControl : Control
 {
     public int Columns { get; set; } = 100;
     public int Rows { get; set; } = 40;
 
+    public bool InlineInputActive => _inlineActive;
+
     private readonly List<StringBuilder> _lines = new();
     private int _cursorCol;
     private readonly List<long[]> _cellAges = new(); // per row, per col: unix ms when last written
+
+    // Inline input editor overlay (drawn into the buffer at a fixed starting column)
+    private bool _inlineActive;
+    private int _inlineLineIndex;
+    private int _inlineStartCol;
+    private int _inlineLastLen;
 
     private Typeface _typeface = new Typeface("Consolas");
     private double _fontSize = 16;
@@ -57,6 +65,10 @@ public sealed class CrtTerminalControl : Control
         _lines.Clear();
         _cellAges.Clear();
         _cursorCol = 0;
+        _inlineActive = false;
+        _inlineLineIndex = 0;
+        _inlineStartCol = 0;
+        _inlineLastLen = 0;
         EnsureAtLeastOneLine();
         InvalidateVisual();
     }
@@ -64,6 +76,11 @@ public sealed class CrtTerminalControl : Control
     public void Append(string text, bool newLine)
     {
         if (text == null) text = string.Empty;
+
+        // If the engine is producing output, cancel any inline editor.
+        // (The runner will re-enter input mode after printing finishes.)
+        _inlineActive = false;
+        _inlineLastLen = 0;
 
         EnsureAtLeastOneLine();
         foreach (var ch in text)
