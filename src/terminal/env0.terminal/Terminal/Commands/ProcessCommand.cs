@@ -33,7 +33,7 @@ namespace Env0.Terminal.Terminal.Commands
             if (inDir.Children == null || inDir.Children.Count == 0)
             {
                 result.AddLine("process: no units in /queue/in.\n", OutputType.Standard);
-                result.AddLine("process: you may idle. (Or pretend you are idling.)\n\n", OutputType.Standard);
+                result.AddLine("process: check 'inbox' for new directives.\n\n", OutputType.Standard);
                 return result;
             }
 
@@ -51,6 +51,10 @@ namespace Env0.Terminal.Terminal.Commands
             var forbidden = new[] { "door", "sky", "outie", "name", "help" };
             var tripped = forbidden.FirstOrDefault(w => content.IndexOf(w, StringComparison.OrdinalIgnoreCase) >= 0);
 
+            // Special units are rare drops. They still "process", but they also change the world.
+            bool isSpecial = nextName.IndexOf("U-00020", StringComparison.OrdinalIgnoreCase) >= 0
+                             || nextName.IndexOf("U-00021", StringComparison.OrdinalIgnoreCase) >= 0;
+
             if (!string.IsNullOrWhiteSpace(tripped))
             {
                 RouteToExceptions(session, inDir, unit, nextName, $"tripped:{tripped}");
@@ -59,7 +63,12 @@ namespace Env0.Terminal.Terminal.Commands
                 AppendLog(session, $"[EX] {nextName} -> exceptions (reason={tripped})");
 
                 result.AddLine($"[EX] ROUTED   {nextName} -> /queue/exceptions\n", OutputType.Standard);
-                result.AddLine("M&C NOTE: Great instincts. Please do not develop a personality.\n\n", OutputType.Standard);
+                result.AddLine(Quip(nextName, ok: false) + "\n\n", OutputType.Standard);
+
+                // When the queue empties, something always happens.
+                if (inDir.Children.Count == 0)
+                    OnQueueEmpty(session);
+
                 return result;
             }
 
@@ -88,7 +97,24 @@ namespace Env0.Terminal.Terminal.Commands
             AppendLog(session, $"[OK] {nextName} -> {containerName}");
 
             result.AddLine($"[OK] SEALED   {nextName} -> {containerName}\n", OutputType.Standard);
-            result.AddLine("M&C NOTE: The work is mysterious and important. You are neither.\n\n", OutputType.Standard);
+
+            // Rare drops: inject extra "something happened" moments.
+            if (isSpecial)
+            {
+                TriggerSpecial(session, nextName);
+                result.AddLine("M&C NOTE: Congratulations. You have been selected for additional compliance.\n", OutputType.Standard);
+            }
+            else
+            {
+                result.AddLine(Quip(nextName, ok: true) + "\n", OutputType.Standard);
+            }
+
+            result.AddLine(string.Empty, OutputType.Standard);
+
+            // When the queue empties, something always happens.
+            if (inDir.Children.Count == 0)
+                OnQueueEmpty(session);
+
             return result;
         }
 
@@ -118,6 +144,86 @@ namespace Env0.Terminal.Terminal.Commands
 
             var stamp = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss 'UTC'");
             log.Content = (log.Content ?? string.Empty) + $"\n[{stamp}] {line}";
+        }
+
+        private static string Quip(string unitName, bool ok)
+        {
+            // Deterministic, Fallout-y corporate one-liners.
+            var poolOk = new[]
+            {
+                "M&C NOTE: Nice. Don't make it weird.",
+                "M&C NOTE: Great job. Please stop being great.",
+                "M&C NOTE: You are within acceptable human variance.",
+                "M&C NOTE: Productivity detected. Concerning.",
+                "M&C NOTE: Remember: curiosity is a resource leak.",
+            };
+
+            var poolEx = new[]
+            {
+                "M&C NOTE: Excellent catch. Now forget it happened.",
+                "M&C NOTE: You flagged an anomaly. Do not bond with it.",
+                "M&C NOTE: That's an exceptions problem. Congratulations: it's still your problem.",
+                "M&C NOTE: Thank you for your honesty. It has been recorded.",
+                "M&C NOTE: We noticed you noticing.",
+            };
+
+            var pool = ok ? poolOk : poolEx;
+            var h = StableHash(unitName ?? string.Empty);
+            return pool[Math.Abs(h) % pool.Length];
+        }
+
+        private static void TriggerSpecial(SessionState session, string unitName)
+        {
+            // Special units: file mutations + immediate "something happened".
+            // Keep it lightweight and reversible.
+            if (session?.FilesystemManager == null) return;
+
+            // Drop a note into inbox.
+            if (session.FilesystemManager.TryGetEntry("/mail/inbox", out var inbox, out _) && inbox != null && inbox.IsDirectory)
+            {
+                if (inbox.Children == null)
+                    inbox.Children = new Dictionary<string, FileEntry>(StringComparer.OrdinalIgnoreCase);
+
+                var msgName = $"{Sanitize(unitName)}_mc.msg";
+                inbox.Children[msgName] = new FileEntry
+                {
+                    Type = "file",
+                    Content = $"SUBJECT: Monitoring Event ({unitName})\n\nWe detected an operator interaction with a Special Unit.\n\nThis is normal.\nThis is also not normal.\n\n- Monitoring & Compliance\n"
+                };
+            }
+
+            // Lightly adjust the log (feels like the system is paying attention).
+            AppendLog(session, $"[MC] special unit observed: {unitName}");
+        }
+
+        private static void OnQueueEmpty(SessionState session)
+        {
+            if (session?.FilesystemManager == null) return;
+
+            // When you finish a micro-shift, immediately nudge the player: check inbox.
+            if (session.FilesystemManager.TryGetEntry("/mail/inbox", out var inbox, out _) && inbox != null && inbox.IsDirectory)
+            {
+                if (inbox.Children == null)
+                    inbox.Children = new Dictionary<string, FileEntry>(StringComparer.OrdinalIgnoreCase);
+
+                var name = $"shift_complete_{DateTime.UtcNow:HHmmss}.msg";
+                inbox.Children[name] = new FileEntry
+                {
+                    Type = "file",
+                    Content = "SUBJECT: Shift complete (micro)\n\nGreat news: you are done.\nBad news: you are still here.\n\nNext: check 'status', then check 'inbox'.\n\n- Department for Change\n"
+                };
+            }
+        }
+
+        private static int StableHash(string s)
+        {
+            unchecked
+            {
+                int hash = 23;
+                for (int i = 0; i < s.Length; i++)
+                    hash = (hash * 31) + s[i];
+                return hash;
+            }
         }
 
         private static string Sanitize(string name)
