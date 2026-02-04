@@ -19,6 +19,11 @@
     <None Update="Config\Jsons\*.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+
+    <!-- Terminal data files (virtual filesystems) -->
+    <None Include="Config\Jsons\JsonFilesystems\**\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
