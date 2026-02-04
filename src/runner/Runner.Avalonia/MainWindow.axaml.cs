@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -39,7 +40,7 @@ public partial class MainWindow : Window
     private void OnOpened(object? sender, EventArgs e)
     {
         // Start current module (boot).
-        Print(_module.Handle(string.Empty, _session));
+        Print(SafeHandle(string.Empty));
         RouteIfNeeded();
         EnsurePromptAndInput();
 
@@ -140,7 +141,7 @@ public partial class MainWindow : Window
 
         _input.Clear();
 
-        Print(_module.Handle(text, _session));
+        Print(SafeHandle(text));
         RouteIfNeeded();
         EnsurePromptAndInput();
 
@@ -218,6 +219,36 @@ public partial class MainWindow : Window
         };
     }
 
+    private IEnumerable<OutputLine> SafeHandle(string input)
+    {
+        try
+        {
+            return _module.Handle(input, _session) ?? Array.Empty<OutputLine>();
+        }
+        catch (Exception ex)
+        {
+            // Never crash the UI because a context threw.
+            var msg = $"EXCEPTION: {ex.GetType().Name}: {ex.Message}";
+            var stack = (ex.StackTrace ?? string.Empty).Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
+
+            var lines = new List<OutputLine>
+            {
+                new OutputLine(OutputType.Error, msg),
+            };
+            foreach (var s in stack.Take(12))
+            {
+                if (!string.IsNullOrWhiteSpace(s))
+                    lines.Add(new OutputLine(OutputType.Error, s.Trim()));
+            }
+            lines.Add(new OutputLine(OutputType.Standard, string.Empty));
+
+            // Keep session alive.
+            _session.IsComplete = false;
+            _session.NextContext = ContextRoute.None;
+            return lines;
+        }
+    }
+
     private void Print(IEnumerable<OutputLine> lines)
     {
         if (lines == null)
@@ -252,7 +283,7 @@ public partial class MainWindow : Window
             _module = CreateModule(next);
 
             // boot the next module
-            Print(_module.Handle(string.Empty, _session));
+            Print(SafeHandle(string.Empty));
         }
     }
 
