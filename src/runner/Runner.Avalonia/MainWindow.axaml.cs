@@ -16,6 +16,8 @@ public partial class MainWindow : Window
     private readonly SessionState _session = new();
     private readonly RecordsModule _records = new();
 
+    private readonly string _originalDirectory;
+
     private IContextModule _module;
     private ContextRoute _route = ContextRoute.Maintenance;
 
@@ -27,14 +29,24 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
 
+        _originalDirectory = Environment.CurrentDirectory;
+        // Match the console runner: contexts expect AppContext.BaseDirectory as cwd.
+        Environment.CurrentDirectory = AppContext.BaseDirectory;
+
         _module = new MaintenanceModule();
 
         Opened += OnOpened;
+        Closed += OnClosed;
 
         // Capture input at the Window level (tunnel) so we don't depend on any specific control
         // successfully holding focus.
         AddHandler(InputElement.KeyDownEvent, OnKeyDown, RoutingStrategies.Tunnel);
         AddHandler(InputElement.TextInputEvent, OnTextInput, RoutingStrategies.Tunnel);
+    }
+
+    private void OnClosed(object? sender, EventArgs e)
+    {
+        Environment.CurrentDirectory = _originalDirectory;
     }
 
     private void OnOpened(object? sender, EventArgs e)
