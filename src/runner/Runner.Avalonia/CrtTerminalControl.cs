@@ -291,7 +291,8 @@ public sealed partial class CrtTerminalControl : Control
                 // Optional barrel distortion (very subtle) by warping draw positions.
                 if (EnableBarrelDistortion)
                 {
-                    (x, y) = DistortPoint(x, y, Bounds.Width, Bounds.Height, k: 0.06);
+                    // Keep it extremely subtle; per-glyph distortion is easy to overdo.
+                    (x, y) = DistortPoint(x, y, Bounds.Width, Bounds.Height, k: 0.02);
                 }
 
                 if (!EnableRgbSplit)

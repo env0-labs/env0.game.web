@@ -84,27 +84,25 @@ public partial class MainWindow : Window
             return;
         }
 
-        // CRT effect toggles (UK keyboard: shift+8=*, shift+7=&, shift+6=^)
-        if (e.KeyModifiers.HasFlag(KeyModifiers.Shift))
+        // CRT effect toggles (temporary dev controls)
+        // 1 = scanlines, 2 = barrel distortion, 3 = RGB split
+        if (e.Key == Key.D1 || e.Key == Key.NumPad1)
         {
-            if (e.Key == Key.D8) // *
-            {
-                Terminal.EnableRgbSplit = !Terminal.EnableRgbSplit;
-                e.Handled = true;
-                return;
-            }
-            if (e.Key == Key.D7) // &
-            {
-                Terminal.EnableBarrelDistortion = !Terminal.EnableBarrelDistortion;
-                e.Handled = true;
-                return;
-            }
-            if (e.Key == Key.D6) // ^
-            {
-                Terminal.EnableScanlines = !Terminal.EnableScanlines;
-                e.Handled = true;
-                return;
-            }
+            Terminal.EnableScanlines = !Terminal.EnableScanlines;
+            e.Handled = true;
+            return;
+        }
+        if (e.Key == Key.D2 || e.Key == Key.NumPad2)
+        {
+            Terminal.EnableBarrelDistortion = !Terminal.EnableBarrelDistortion;
+            e.Handled = true;
+            return;
+        }
+        if (e.Key == Key.D3 || e.Key == Key.NumPad3)
+        {
+            Terminal.EnableRgbSplit = !Terminal.EnableRgbSplit;
+            e.Handled = true;
+            return;
         }
 
         switch (e.Key)
