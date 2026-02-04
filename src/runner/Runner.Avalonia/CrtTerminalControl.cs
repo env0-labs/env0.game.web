@@ -23,6 +23,11 @@ public sealed partial class CrtTerminalControl : Control
     public int Columns { get; set; } = 100;
     public int Rows { get; set; } = 40;
 
+    // CRT effect toggles
+    public bool EnableScanlines { get; set; } = true;
+    public bool EnableRgbSplit { get; set; } = false;
+    public bool EnableBarrelDistortion { get; set; } = false;
+
     public bool InlineInputActive => _inlineActive;
 
     private readonly List<StringBuilder> _lines = new();
@@ -283,24 +288,76 @@ public sealed partial class CrtTerminalControl : Control
                 var x = c * _cellW;
                 var y = r * _cellH;
 
-                var glyph = new FormattedText(
-                    ch.ToString(),
-                    System.Globalization.CultureInfo.InvariantCulture,
-                    FlowDirection.LeftToRight,
-                    _typeface,
-                    _fontSize,
-                    brush
-                );
+                // Optional barrel distortion (very subtle) by warping draw positions.
+                if (EnableBarrelDistortion)
+                {
+                    (x, y) = DistortPoint(x, y, Bounds.Width, Bounds.Height, k: 0.06);
+                }
 
-                context.DrawText(glyph, new Point(x, y));
+                if (!EnableRgbSplit)
+                {
+                    var glyph = new FormattedText(
+                        ch.ToString(),
+                        System.Globalization.CultureInfo.InvariantCulture,
+                        FlowDirection.LeftToRight,
+                        _typeface,
+                        _fontSize,
+                        brush
+                    );
+
+                    context.DrawText(glyph, new Point(x, y));
+                }
+                else
+                {
+                    // Fake chromatic aberration: draw tinted layers with tiny offsets.
+                    var main = new FormattedText(
+                        ch.ToString(),
+                        System.Globalization.CultureInfo.InvariantCulture,
+                        FlowDirection.LeftToRight,
+                        _typeface,
+                        _fontSize,
+                        brush
+                    );
+
+                    var redBrush = new SolidColorBrush(Color.FromArgb((byte)(Math.Clamp(intensity * 90, 0, 255)), 0xff, 0x50, 0x50));
+                    var blueBrush = new SolidColorBrush(Color.FromArgb((byte)(Math.Clamp(intensity * 90, 0, 255)), 0x60, 0x80, 0xff));
+
+                    var red = new FormattedText(
+                        ch.ToString(),
+                        System.Globalization.CultureInfo.InvariantCulture,
+                        FlowDirection.LeftToRight,
+                        _typeface,
+                        _fontSize,
+                        redBrush
+                    );
+                    var blue = new FormattedText(
+                        ch.ToString(),
+                        System.Globalization.CultureInfo.InvariantCulture,
+                        FlowDirection.LeftToRight,
+                        _typeface,
+                        _fontSize,
+                        blueBrush
+                    );
+
+                    context.DrawText(red, new Point(x + 0.7, y));
+                    context.DrawText(blue, new Point(x - 0.7, y));
+                    context.DrawText(main, new Point(x, y));
+                }
             }
         }
 
-        // CRT scanlines: darken every few pixels
-        var scanBrush = new SolidColorBrush(Color.FromArgb(18, 0, 0, 0));
-        for (double y = 0; y < Bounds.Height; y += 4)
+        // CRT scanlines: darken every few pixels (with subtle drift)
+        if (EnableScanlines)
         {
-            context.FillRectangle(scanBrush, new Rect(0, y, Bounds.Width, 1));
+            var drift = (_ticks % 4);
+            var scanBrushA = new SolidColorBrush(Color.FromArgb(18, 0, 0, 0));
+            var scanBrushB = new SolidColorBrush(Color.FromArgb(10, 0, 0, 0));
+
+            var row = 0;
+            for (double y = drift; y < Bounds.Height; y += 4)
+            {
+                context.FillRectangle((row++ % 2 == 0) ? scanBrushA : scanBrushB, new Rect(0, y, Bounds.Width, 1));
+            }
         }
 
         // subtle vignette
@@ -321,6 +378,26 @@ public sealed partial class CrtTerminalControl : Control
         // border glow-ish
         var borderPen = new Pen(new SolidColorBrush(Color.FromArgb(80, 0x0f, 0x2a, 0x1b)), 1);
         context.DrawRectangle(borderPen, new Rect(0.5, 0.5, Bounds.Width - 1, Bounds.Height - 1));
+    }
+
+    private static (double x, double y) DistortPoint(double x, double y, double w, double h, double k)
+    {
+        // Barrel distortion approximation in screen space.
+        // k ~ 0.02..0.10 (subtle). Higher values bend edges more.
+        if (w <= 0 || h <= 0)
+            return (x, y);
+
+        var nx = (x / w - 0.5) * 2.0;
+        var ny = (y / h - 0.5) * 2.0;
+        var r2 = nx * nx + ny * ny;
+
+        // push points outward slightly (barrel)
+        var dx = nx * r2 * k;
+        var dy = ny * r2 * k;
+
+        var ox = ((nx + dx) / 2.0 + 0.5) * w;
+        var oy = ((ny + dy) / 2.0 + 0.5) * h;
+        return (ox, oy);
     }
 
     private static double Hash01(int x, int y, long t)

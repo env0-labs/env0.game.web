@@ -84,6 +84,29 @@ public partial class MainWindow : Window
             return;
         }
 
+        // CRT effect toggles (UK keyboard: shift+8=*, shift+7=&, shift+6=^)
+        if (e.KeyModifiers.HasFlag(KeyModifiers.Shift))
+        {
+            if (e.Key == Key.D8) // *
+            {
+                Terminal.EnableRgbSplit = !Terminal.EnableRgbSplit;
+                e.Handled = true;
+                return;
+            }
+            if (e.Key == Key.D7) // &
+            {
+                Terminal.EnableBarrelDistortion = !Terminal.EnableBarrelDistortion;
+                e.Handled = true;
+                return;
+            }
+            if (e.Key == Key.D6) // ^
+            {
+                Terminal.EnableScanlines = !Terminal.EnableScanlines;
+                e.Handled = true;
+                return;
+            }
+        }
+
         switch (e.Key)
         {
             case Key.Enter:
