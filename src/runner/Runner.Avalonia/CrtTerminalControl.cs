@@ -292,7 +292,7 @@ public sealed partial class CrtTerminalControl : Control
                 if (EnableBarrelDistortion)
                 {
                     // Keep it extremely subtle; per-glyph distortion is easy to overdo.
-                    (x, y) = DistortPoint(x, y, Bounds.Width, Bounds.Height, k: 0.02);
+                    (x, y) = DistortPoint(x, y, Bounds.Width, Bounds.Height, k: 0.008);
                 }
 
                 if (!EnableRgbSplit)
@@ -393,11 +393,17 @@ public sealed partial class CrtTerminalControl : Control
         var r2 = nx * nx + ny * ny;
 
         // push points outward slightly (barrel)
+        // Horizontal warp tends to sell the effect without wrecking readability.
         var dx = nx * r2 * k;
-        var dy = ny * r2 * k;
+        var dy = ny * r2 * (k * 0.35);
 
         var ox = ((nx + dx) / 2.0 + 0.5) * w;
         var oy = ((ny + dy) / 2.0 + 0.5) * h;
+
+        // Clamp so glyphs don't disappear outside the clipped surface.
+        ox = Math.Clamp(ox, 0, w);
+        oy = Math.Clamp(oy, 0, h);
+
         return (ox, oy);
     }
 
