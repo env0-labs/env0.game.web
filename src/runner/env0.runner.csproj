@@ -16,9 +16,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!-- Exclude UI runners from the console runner build. -->
     <Compile Remove="Runner.Wpf\**\*.cs" />
     <Page Remove="Runner.Wpf\**\*.xaml" />
     <None Remove="Runner.Wpf\**\*" />
+
+    <Compile Remove="Runner.Avalonia\**\*.cs" />
+    <AvaloniaXaml Remove="Runner.Avalonia\**\*.axaml" />
+    <None Remove="Runner.Avalonia\**\*" />
   </ItemGroup>
 
   <ItemGroup>
