@@ -73,7 +73,7 @@ public sealed partial class CrtTerminalControl : Control
         InvalidateVisual();
     }
 
-    public void Append(string text, bool newLine)
+    public void Append(string text, bool newLine, bool wordWrap = false)
     {
         if (text == null) text = string.Empty;
 
@@ -83,18 +83,26 @@ public sealed partial class CrtTerminalControl : Control
         _inlineLastLen = 0;
 
         EnsureAtLeastOneLine();
-        foreach (var ch in text)
+
+        if (!wordWrap)
         {
-            if (ch == '\r')
-                continue;
-
-            if (ch == '\n')
+            foreach (var ch in text)
             {
-                NewLine();
-                continue;
-            }
+                if (ch == '\r')
+                    continue;
 
-            PutChar(ch);
+                if (ch == '\n')
+                {
+                    NewLine();
+                    continue;
+                }
+
+                PutChar(ch);
+            }
+        }
+        else
+        {
+            AppendWordWrapped(text);
         }
 
         if (newLine)
@@ -102,6 +110,65 @@ public sealed partial class CrtTerminalControl : Control
 
         TrimScrollback();
         InvalidateVisual();
+    }
+
+    private void AppendWordWrapped(string text)
+    {
+        // Wrap on word boundaries for normal output (not prompts / inline input).
+        // Newlines in the source text are respected.
+        var i = 0;
+        while (i < text.Length)
+        {
+            var ch = text[i];
+
+            if (ch == '\r')
+            {
+                i++;
+                continue;
+            }
+
+            if (ch == '\n')
+            {
+                NewLine();
+                i++;
+                continue;
+            }
+
+            // Preserve runs of whitespace, but don't start a new line with a space.
+            if (char.IsWhiteSpace(ch))
+            {
+                if (_cursorCol > 0)
+                    PutChar(' ');
+                i++;
+                continue;
+            }
+
+            // Read a word
+            var start = i;
+            while (i < text.Length)
+            {
+                var c2 = text[i];
+                if (c2 == '\r' || c2 == '\n' || char.IsWhiteSpace(c2))
+                    break;
+                i++;
+            }
+            var word = text.Substring(start, i - start);
+
+            // If the word doesn't fit on this line, move to next line (unless at col 0)
+            if (_cursorCol > 0 && _cursorCol + word.Length > Columns)
+                NewLine();
+
+            // If the word is longer than the line, fall back to char wrapping.
+            if (word.Length > Columns)
+            {
+                foreach (var wc in word)
+                    PutChar(wc);
+                continue;
+            }
+
+            foreach (var wc in word)
+                PutChar(wc);
+        }
     }
 
     private void EnsureAtLeastOneLine()

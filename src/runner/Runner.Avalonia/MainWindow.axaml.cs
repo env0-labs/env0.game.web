@@ -213,7 +213,7 @@ public partial class MainWindow : Window
         {
             var prompt = GetDefaultPrompt(_route);
             if (!string.IsNullOrEmpty(prompt))
-                Terminal.Append(prompt, newLine: false);
+                Terminal.Append(prompt, newLine: false, wordWrap: false);
 
             Terminal.BeginInlineInput();
         }
@@ -271,7 +271,8 @@ public partial class MainWindow : Window
 
         foreach (var line in lines)
         {
-            Terminal.Append(line.Text ?? string.Empty, newLine: line.NewLine);
+            // Word-wrap context output at word boundaries.
+            Terminal.Append(line.Text ?? string.Empty, newLine: line.NewLine, wordWrap: true);
             endedWithPromptCandidate = line.NewLine == false;
         }
 
