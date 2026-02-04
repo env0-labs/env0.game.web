@@ -5,7 +5,7 @@
         xmlns:local="clr-namespace:Runner.Avalonia"
         mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="720"
         x:Class="Runner.Avalonia.MainWindow"
-        Width="1280" Height="720"
+        WindowState="Maximized"
         Background="#000000"
         Title="env0">
 

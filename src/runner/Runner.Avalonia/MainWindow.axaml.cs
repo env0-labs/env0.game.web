@@ -76,6 +76,14 @@ public partial class MainWindow : Window
 
     private void OnKeyDown(object? sender, KeyEventArgs e)
     {
+        // Escape to exit.
+        if (e.Key == Key.Escape)
+        {
+            Close();
+            e.Handled = true;
+            return;
+        }
+
         switch (e.Key)
         {
             case Key.Enter:
