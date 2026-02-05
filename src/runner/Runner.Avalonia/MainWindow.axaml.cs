@@ -328,8 +328,8 @@ public partial class MainWindow : Window
                 continue;
             }
 
-            // Stream content lines.
-            Terminal.EnqueueStream(text, newLine: true);
+            // Stream content lines, wrapped to the visible width.
+            Terminal.EnqueueStreamWrapped(text);
             endedWithPromptCandidate = false;
         }
 

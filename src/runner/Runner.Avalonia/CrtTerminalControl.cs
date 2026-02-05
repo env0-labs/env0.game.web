@@ -143,8 +143,6 @@ public sealed partial class CrtTerminalControl : Control
 
     public void EnqueueStream(string text, bool newLine)
     {
-        // Streaming output should feel like a device typing.
-        // Keep wrapping simple: the fixed-grid PutChar() already hard-wraps at Columns.
         if (text == null)
             text = string.Empty;
 
@@ -154,6 +152,98 @@ public sealed partial class CrtTerminalControl : Control
 
         _streamQueue.Enqueue(new StreamOp { Text = text, NewLine = newLine, Index = 0 });
         InvalidateVisual();
+    }
+
+    public void EnqueueStreamWrapped(string text)
+    {
+        if (text == null)
+            text = string.Empty;
+
+        // If the engine is producing output, cancel any inline editor.
+        _inlineActive = false;
+        _inlineLastLen = 0;
+
+        foreach (var chunk in WrapForStream(text, GetWrapWidth()))
+            _streamQueue.Enqueue(new StreamOp { Text = chunk, NewLine = true, Index = 0 });
+
+        InvalidateVisual();
+    }
+
+    private int GetWrapWidth()
+    {
+        // Prefer the actual visible width if we have font metrics.
+        if (_cellW > 0 && Bounds.Width > 0)
+        {
+            var w = (int)Math.Floor((Bounds.Width - (PadX * 2)) / _cellW);
+            if (w > 10)
+                return Math.Min(Columns, w);
+        }
+
+        return Columns;
+    }
+
+    private static IEnumerable<string> WrapForStream(string text, int width)
+    {
+        width = Math.Max(10, width);
+
+        // Preserve explicit line breaks; wrap each paragraph.
+        var rawLines = text.Replace("\r", string.Empty).Split('\n');
+        foreach (var raw in rawLines)
+        {
+            if (raw.Length == 0)
+            {
+                yield return string.Empty;
+                continue;
+            }
+
+            var line = raw;
+            var i = 0;
+            while (i < line.Length)
+            {
+                // Skip leading whitespace at start of wrapped line.
+                while (i < line.Length && char.IsWhiteSpace(line[i]))
+                    i++;
+
+                if (i >= line.Length)
+                {
+                    yield return string.Empty;
+                    break;
+                }
+
+                int start = i;
+                int lastSpace = -1;
+                int len = 0;
+
+                while (i < line.Length && len < width)
+                {
+                    var ch = line[i];
+                    if (char.IsWhiteSpace(ch))
+                        lastSpace = i;
+
+                    i++;
+                    len++;
+                }
+
+                if (i >= line.Length)
+                {
+                    yield return line.Substring(start);
+                    break;
+                }
+
+                // If we stopped mid-word, backtrack to last space.
+                if (lastSpace > start)
+                {
+                    var take = lastSpace - start;
+                    yield return line.Substring(start, take);
+                    i = lastSpace + 1;
+                }
+                else
+                {
+                    // No space found; hard wrap.
+                    yield return line.Substring(start, len);
+                }
+            }
+        }
     }
 
     private void PumpStream()
