@@ -27,9 +27,9 @@ public static class ObjectiveLine
     private static string BuildKey(SessionState state, ContextRoute route)
     {
         if (!state.MaintenanceExitUnlocked)
-            return $"phase:bootstrap|route:{route}|batches:{state.BatchesCompleted}|manual:{state.ManualCompletions}";
+            return $"phase:bootstrap|route:{route}|return:{state.TerminalReturnContext}|batches:{state.BatchesCompleted}|manual:{state.ManualCompletions}";
 
-        return $"phase:post_unlock|route:{route}|batches:{state.BatchesCompleted}";
+        return $"phase:post_unlock|route:{route}|return:{state.TerminalReturnContext}|batches:{state.BatchesCompleted}";
     }
 
     private static string BuildLine(SessionState state, ContextRoute route)
@@ -50,7 +50,15 @@ public static class ObjectiveLine
             return "Directive: exit maintenance. Return to Records for the next instruction.";
 
         if (route == ContextRoute.Terminal)
-            return "Directive: run only what you can justify. Return when the machine state matches the record.";
+        {
+            // Terminal is used as a sub-context from both Maintenance and Records.
+            return state.TerminalReturnContext switch
+            {
+                ContextRoute.Records => "Directive: acquire retention evidence. Return to Records with verifiable output.",
+                ContextRoute.Maintenance => "Directive: follow maintenance instructions. Exit CLI when complete.",
+                _ => "Directive: run only what you can justify. Return when the machine state matches the record."
+            };
+        }
 
         return "Directive: follow Records. Keep work traceable.";
     }
