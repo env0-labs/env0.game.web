@@ -85,20 +85,22 @@ public partial class MainWindow : Window
         }
 
         // CRT effect toggles (temporary dev controls)
-        // 1 = scanlines, 2 = barrel distortion, 3 = RGB split
-        if (e.Key == Key.D1 || e.Key == Key.NumPad1)
+        // Use Shift+1/2/3 so plain 1/2/3 remain usable for gameplay/terminal.
+        // (UK keyboard: Shift+1=! Shift+2=" Shift+3=£)
+        var shift = (e.KeyModifiers & KeyModifiers.Shift) != 0;
+        if (shift && e.Key == Key.D1)
         {
             Terminal.EnableScanlines = !Terminal.EnableScanlines;
             e.Handled = true;
             return;
         }
-        if (e.Key == Key.D2 || e.Key == Key.NumPad2)
+        if (shift && e.Key == Key.D2)
         {
             Terminal.EnableBarrelDistortion = !Terminal.EnableBarrelDistortion;
             e.Handled = true;
             return;
         }
-        if (e.Key == Key.D3 || e.Key == Key.NumPad3)
+        if (shift && e.Key == Key.D3)
         {
             Terminal.EnableRgbSplit = !Terminal.EnableRgbSplit;
             e.Handled = true;
