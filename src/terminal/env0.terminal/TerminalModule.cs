@@ -90,8 +90,7 @@ namespace Env0.Terminal
         private static void AppendObjective(List<OutputLine> output, SessionState session)
         {
             // Keep it minimal: one line, only when it helps.
-            var line = ObjectiveLine.Get(session, ContextRoute.Terminal);
-            if (string.IsNullOrWhiteSpace(line))
+            if (!ObjectiveLine.TryGet(session, ContextRoute.Terminal, out var line))
                 return;
 
             output.Add(new OutputLine(OutputType.System, line));

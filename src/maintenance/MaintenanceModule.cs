@@ -37,7 +37,8 @@ public sealed class MaintenanceModule : IContextModule
             if (!string.IsNullOrWhiteSpace(state.MaintenanceMachineId))
                 AddLine(output, $"{state.MaintenanceMachineId} is loading...");
             AddLine(output, string.Empty);
-            AddLine(output, ObjectiveLine.Get(state, ContextRoute.Maintenance));
+            if (ObjectiveLine.TryGet(state, ContextRoute.Maintenance, out var objectiveLine))
+                AddLine(output, objectiveLine);
             AddLine(output, string.Empty);
             AppendAutomationUpdate(output, automationDelta);
             AddPrompt(output);
@@ -88,7 +89,8 @@ public sealed class MaintenanceModule : IContextModule
                 {
                     AddLine(output, "Exit is locked. Complete a batch first.");
                     AddLine(output, string.Empty);
-                    AddLine(output, ObjectiveLine.Get(state, ContextRoute.Maintenance));
+                    if (ObjectiveLine.TryGet(state, ContextRoute.Maintenance, out var objectiveLocked))
+                        AddLine(output, objectiveLocked);
                     AddLine(output, string.Empty);
                     AddPrompt(output);
                     return output;
@@ -106,7 +108,8 @@ public sealed class MaintenanceModule : IContextModule
                 break;
         }
 
-        AddLine(output, ObjectiveLine.Get(state, ContextRoute.Maintenance));
+        if (ObjectiveLine.TryGet(state, ContextRoute.Maintenance, out var objectivePost))
+            AddLine(output, objectivePost);
         AddLine(output, string.Empty);
         AddPrompt(output);
         return output;

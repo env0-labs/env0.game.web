@@ -4,29 +4,54 @@ namespace Env0.Core.Objectives;
 
 public static class ObjectiveLine
 {
-    public static string Get(SessionState state, ContextRoute route)
+    public static bool TryGet(SessionState state, ContextRoute route, out string line)
     {
+        line = string.Empty;
         if (state == null)
-            return string.Empty;
+            return false;
 
-        // Early-game: teach the core loop explicitly.
+        var key = BuildKey(state, route);
+
+        // Throttle: print only when objective meaningfully changes, or occasionally.
+        var shouldRepeat = (state.InputTicks - state.LastObjectiveAtTick) >= 8;
+        if (string.Equals(state.LastObjectiveKey, key, StringComparison.OrdinalIgnoreCase) && !shouldRepeat)
+            return false;
+
+        state.LastObjectiveKey = key;
+        state.LastObjectiveAtTick = state.InputTicks;
+
+        line = BuildLine(state, route);
+        return !string.IsNullOrWhiteSpace(line);
+    }
+
+    private static string BuildKey(SessionState state, ContextRoute route)
+    {
+        if (!state.MaintenanceExitUnlocked)
+            return $"phase:bootstrap|route:{route}|batches:{state.BatchesCompleted}|manual:{state.ManualCompletions}";
+
+        return $"phase:post_unlock|route:{route}|batches:{state.BatchesCompleted}";
+    }
+
+    private static string BuildLine(SessionState state, ContextRoute route)
+    {
+        // Corporate/diegetic phrasing, still explicit.
         if (!state.MaintenanceExitUnlocked)
         {
-            // Maintenance is the start route in the Avalonia runner.
             return route switch
             {
-                ContextRoute.Maintenance => "Objective: process containers. Record a batch to unlock exit.",
-                ContextRoute.Terminal => "Objective: follow maintenance instructions. Return when ready.",
-                ContextRoute.Records => "Objective: return to Maintenance. Record your first batch.",
-                _ => "Objective: process containers. Record a batch to unlock exit."
+                ContextRoute.Maintenance => "Directive: process containers. Record a batch to unlock exit.",
+                ContextRoute.Terminal => "Directive: follow maintenance instructions. Exit CLI when complete.",
+                ContextRoute.Records => "Directive: return to Maintenance. Your first batch is still missing.",
+                _ => "Directive: process containers. Record a batch to unlock exit."
             };
         }
 
-        // Once exit is unlocked, push the player back into Records.
         if (route == ContextRoute.Maintenance)
-            return "Objective: exit maintenance. Return to Records for the next instruction.";
+            return "Directive: exit maintenance. Return to Records for the next instruction.";
 
-        return "Objective: follow Records. Keep work traceable."
-            + (state.BatchesCompleted > 0 ? $" (batches: {state.BatchesCompleted})" : string.Empty);
+        if (route == ContextRoute.Terminal)
+            return "Directive: run only what you can justify. Return when the machine state matches the record.";
+
+        return "Directive: follow Records. Keep work traceable.";
     }
 }

@@ -232,7 +232,8 @@ public sealed class RecordsModule : IContextModule
 
         AddLine(output, scene.Text);
         AppendWorkStatus(output, state);
-        AddLine(output, ObjectiveLine.Get(state, ContextRoute.Records));
+        if (ObjectiveLine.TryGet(state, ContextRoute.Records, out var obj))
+            AddLine(output, obj);
         AddLine(output, string.Empty);
 
         if (scene.IsEnd)

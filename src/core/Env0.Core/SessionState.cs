@@ -22,5 +22,9 @@ public sealed class SessionState
     public int AutomationBatchesCreated { get; set; }
     public int NextBatchId { get; set; }
     public List<MaintenanceBatch> MaintenanceBatches { get; } = new List<MaintenanceBatch>();
+
+    // Cross-context UX: avoid reprinting the same objective line every input.
+    public string? LastObjectiveKey { get; set; }
+    public int LastObjectiveAtTick { get; set; }
 }
 
