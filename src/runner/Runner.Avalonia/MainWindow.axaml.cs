@@ -4,6 +4,7 @@ using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Threading;
 using Env0.Core;
 using env0.maintenance;
 using env0.records;
@@ -28,6 +29,12 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+
+        Terminal.StreamDrained += () =>
+        {
+            // Once streaming finishes, ensure a prompt and inline input exist.
+            Dispatcher.UIThread.Post(() => EnsurePromptAndInput());
+        };
 
         _originalDirectory = Environment.CurrentDirectory;
         // Match the console runner: contexts expect AppContext.BaseDirectory as cwd.
@@ -175,6 +182,11 @@ public partial class MainWindow : Window
         // Commit the line visually.
         Terminal.CommitInlineInput(text);
 
+        // Records/Maintenance are scene-based: clear each turn.
+        // Terminal keeps scrollback like a real terminal.
+        if (_route != ContextRoute.Terminal)
+            Terminal.Clear();
+
         // Save history if non-empty.
         if (!string.IsNullOrWhiteSpace(text))
         {
@@ -238,6 +250,10 @@ public partial class MainWindow : Window
 
     private void EnsurePromptAndInput()
     {
+        // Don't inject prompts while output is still streaming.
+        if (Terminal.IsStreaming)
+            return;
+
         // If the module ended with a non-newline output (likely a prompt), we can start input immediately.
         // If not, inject a default prompt for this context.
         if (!Terminal.InlineInputActive)
@@ -302,16 +318,25 @@ public partial class MainWindow : Window
 
         foreach (var line in lines)
         {
-            // Word-wrap context output at word boundaries.
-            Terminal.Append(line.Text ?? string.Empty, newLine: line.NewLine, wordWrap: true);
-            endedWithPromptCandidate = line.NewLine == false;
+            var text = line.Text ?? string.Empty;
+
+            // Prompts should appear instantly (and not be typed out).
+            if (line.NewLine == false)
+            {
+                Terminal.Append(text, newLine: false, wordWrap: false);
+                endedWithPromptCandidate = true;
+                continue;
+            }
+
+            // Stream content lines.
+            Terminal.EnqueueStream(text, newLine: true);
+            endedWithPromptCandidate = false;
         }
 
         // If the module ended with a prompt-like line, immediately enter inline input.
-        if (endedWithPromptCandidate)
-        {
+        // Otherwise: StreamDrained event will re-arm input.
+        if (endedWithPromptCandidate && !Terminal.IsStreaming)
             Terminal.BeginInlineInput();
-        }
     }
 
     private void RouteIfNeeded()

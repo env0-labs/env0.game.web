@@ -51,8 +51,22 @@ public sealed partial class CrtTerminalControl : Control
     private const double PadX = 18;
     private const double PadY = 18;
 
+    public event Action? StreamDrained;
+
+    public bool IsStreaming => _streamCurrent != null || _streamQueue.Count > 0;
+
+    private readonly Queue<StreamOp> _streamQueue = new();
+    private StreamOp? _streamCurrent;
+
     private readonly DispatcherTimer _timer;
     private long _ticks;
+
+    private sealed class StreamOp
+    {
+        public required string Text { get; init; }
+        public required bool NewLine { get; init; }
+        public int Index { get; set; }
+    }
 
     public CrtTerminalControl()
     {
@@ -65,6 +79,7 @@ public sealed partial class CrtTerminalControl : Control
         _timer.Tick += (_, _) =>
         {
             _ticks++;
+            PumpStream();
             InvalidateVisual();
         };
         _timer.Start();
@@ -79,6 +94,10 @@ public sealed partial class CrtTerminalControl : Control
         _inlineLineIndex = 0;
         _inlineStartCol = 0;
         _inlineLastLen = 0;
+
+        _streamQueue.Clear();
+        _streamCurrent = null;
+
         EnsureAtLeastOneLine();
         InvalidateVisual();
     }
@@ -120,6 +139,69 @@ public sealed partial class CrtTerminalControl : Control
 
         TrimScrollback();
         InvalidateVisual();
+    }
+
+    public void EnqueueStream(string text, bool newLine)
+    {
+        // Streaming output should feel like a device typing.
+        // Keep wrapping simple: the fixed-grid PutChar() already hard-wraps at Columns.
+        if (text == null)
+            text = string.Empty;
+
+        // If the engine is producing output, cancel any inline editor.
+        _inlineActive = false;
+        _inlineLastLen = 0;
+
+        _streamQueue.Enqueue(new StreamOp { Text = text, NewLine = newLine, Index = 0 });
+        InvalidateVisual();
+    }
+
+    private void PumpStream()
+    {
+        // Draw a few chars per tick.
+        const int charsPerTick = 14;
+
+        var didWork = false;
+        for (int i = 0; i < charsPerTick; i++)
+        {
+            if (_streamCurrent == null)
+            {
+                if (_streamQueue.Count == 0)
+                    break;
+                _streamCurrent = _streamQueue.Dequeue();
+            }
+
+            EnsureAtLeastOneLine();
+
+            if (_streamCurrent.Index >= _streamCurrent.Text.Length)
+            {
+                if (_streamCurrent.NewLine)
+                    NewLine();
+
+                _streamCurrent = null;
+                didWork = true;
+                continue;
+            }
+
+            var ch = _streamCurrent.Text[_streamCurrent.Index++];
+            if (ch == '\r')
+                continue;
+            if (ch == '\n')
+            {
+                NewLine();
+                didWork = true;
+                continue;
+            }
+
+            PutChar(ch);
+            didWork = true;
+        }
+
+        if (didWork)
+            TrimScrollback();
+
+        if (_streamCurrent == null && _streamQueue.Count == 0 && didWork)
+            StreamDrained?.Invoke();
     }
 
     private void AppendWordWrapped(string text)
