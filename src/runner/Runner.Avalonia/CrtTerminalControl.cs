@@ -20,6 +20,7 @@ namespace Runner.Avalonia;
 /// </summary>
 public sealed partial class CrtTerminalControl : Control
 {
+    // Target grid. Actual visible grid is derived from Bounds at render time.
     public int Columns { get; set; } = 100;
     public int Rows { get; set; } = 40;
 
@@ -45,6 +46,10 @@ public sealed partial class CrtTerminalControl : Control
 
     private double _cellW;
     private double _cellH;
+
+    // Inner padding so rounded corners don't clip glyphs.
+    private const double PadX = 18;
+    private const double PadY = 18;
 
     private readonly DispatcherTimer _timer;
     private long _ticks;
@@ -245,9 +250,12 @@ public sealed partial class CrtTerminalControl : Control
         _cellW = ft.Width;
         _cellH = ft.Height * 1.2; // a bit of line spacing
 
-        // Compute visible region
-        var rows = Rows;
-        var cols = Columns;
+        // Compute visible region from Bounds (prevents bottom cut-off when font/cell height changes).
+        var maxRows = Math.Max(1, (int)Math.Floor((Bounds.Height - (PadY * 2)) / _cellH));
+        var maxCols = Math.Max(1, (int)Math.Floor((Bounds.Width - (PadX * 2)) / _cellW));
+
+        var rows = Math.Min(Rows, maxRows);
+        var cols = Math.Min(Columns, maxCols);
 
         var startLine = Math.Max(0, _lines.Count - rows);
         var now = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
@@ -285,8 +293,8 @@ public sealed partial class CrtTerminalControl : Control
 
                 var brush = new SolidColorBrush(Color.FromArgb((byte)(intensity * 255), 0x7d, 0xff, 0xb5));
 
-                var x = c * _cellW;
-                var y = r * _cellH;
+                var x = PadX + (c * _cellW);
+                var y = PadY + (r * _cellH);
 
                 // Optional barrel distortion (very subtle) by warping draw positions.
                 if (EnableBarrelDistortion)
@@ -379,6 +387,10 @@ public sealed partial class CrtTerminalControl : Control
         // border glow-ish
         var borderPen = new Pen(new SolidColorBrush(Color.FromArgb(80, 0x0f, 0x2a, 0x1b)), 1);
         context.DrawRectangle(borderPen, new Rect(0.5, 0.5, Bounds.Width - 1, Bounds.Height - 1));
+
+        // inner safe area guide (very subtle) to sell the curved mask
+        var innerPen = new Pen(new SolidColorBrush(Color.FromArgb(40, 0x1f, 0x6b, 0x45)), 1);
+        context.DrawRectangle(innerPen, new Rect(PadX - 6, PadY - 6, Bounds.Width - (PadX * 2) + 12, Bounds.Height - (PadY * 2) + 12));
     }
 
     private static (double x, double y) DistortPoint(double x, double y, double w, double h, double k)
