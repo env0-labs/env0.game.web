@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Env0.Terminal.API_DTOs;
 using Env0.Core;
+using Env0.Core.Objectives;
 
 namespace Env0.Terminal
 {
@@ -61,6 +62,7 @@ namespace Env0.Terminal
 
                 var loginState = _api.Execute(string.Empty);
                 AppendOutputLines(output, loginState);
+                AppendObjective(output, state);
                 AppendPrompt(output, loginState);
 
                 _bootSequenceComplete = true;
@@ -69,6 +71,7 @@ namespace Env0.Terminal
 
             var renderState = _api.Execute(input ?? string.Empty);
             AppendOutputLines(output, renderState);
+            AppendObjective(output, state);
             AppendPrompt(output, renderState);
             return output;
         }
@@ -82,6 +85,16 @@ namespace Env0.Terminal
             {
                 output.Add(new OutputLine(MapOutputType(line.Type), line.Text ?? string.Empty));
             }
+        }
+
+        private static void AppendObjective(List<OutputLine> output, SessionState session)
+        {
+            // Keep it minimal: one line, only when it helps.
+            var line = ObjectiveLine.Get(session, ContextRoute.Terminal);
+            if (string.IsNullOrWhiteSpace(line))
+                return;
+
+            output.Add(new OutputLine(OutputType.System, line));
         }
 
         private static void AppendPrompt(List<OutputLine> output, TerminalRenderState state)

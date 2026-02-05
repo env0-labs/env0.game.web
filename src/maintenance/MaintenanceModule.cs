@@ -1,4 +1,5 @@
 using Env0.Core;
+using Env0.Core.Objectives;
 
 namespace env0.maintenance;
 
@@ -35,6 +36,8 @@ public sealed class MaintenanceModule : IContextModule
             AddLine(output, "env0.maintenance booting");
             if (!string.IsNullOrWhiteSpace(state.MaintenanceMachineId))
                 AddLine(output, $"{state.MaintenanceMachineId} is loading...");
+            AddLine(output, string.Empty);
+            AddLine(output, ObjectiveLine.Get(state, ContextRoute.Maintenance));
             AddLine(output, string.Empty);
             AppendAutomationUpdate(output, automationDelta);
             AddPrompt(output);
@@ -85,6 +88,8 @@ public sealed class MaintenanceModule : IContextModule
                 {
                     AddLine(output, "Exit is locked. Complete a batch first.");
                     AddLine(output, string.Empty);
+                    AddLine(output, ObjectiveLine.Get(state, ContextRoute.Maintenance));
+                    AddLine(output, string.Empty);
                     AddPrompt(output);
                     return output;
                 }
@@ -101,6 +106,8 @@ public sealed class MaintenanceModule : IContextModule
                 break;
         }
 
+        AddLine(output, ObjectiveLine.Get(state, ContextRoute.Maintenance));
+        AddLine(output, string.Empty);
         AddPrompt(output);
         return output;
     }

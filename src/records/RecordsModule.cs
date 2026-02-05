@@ -1,6 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Env0.Core;
+using Env0.Core.Objectives;
 using env0.records.Engine;
 using env0.records.Model;
 using env0.records.Runtime;
@@ -231,6 +232,7 @@ public sealed class RecordsModule : IContextModule
 
         AddLine(output, scene.Text);
         AppendWorkStatus(output, state);
+        AddLine(output, ObjectiveLine.Get(state, ContextRoute.Records));
         AddLine(output, string.Empty);
 
         if (scene.IsEnd)
