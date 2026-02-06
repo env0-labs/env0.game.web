@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Env0.Terminal;
 using Env0.Core;
 using env0.maintenance;
 using env0.records;
@@ -58,7 +57,6 @@ namespace Env0.Runner
             {
                 ContextRoute.Maintenance => new MaintenanceModule(),
                 ContextRoute.Records => RecordsModuleInstance,
-                ContextRoute.Terminal => new TerminalModule(),
                 _ => throw new InvalidOperationException($"Unknown route: {route}")
             };
         }
@@ -85,6 +83,3 @@ namespace Env0.Runner
         }
     }
 }
-
-
-

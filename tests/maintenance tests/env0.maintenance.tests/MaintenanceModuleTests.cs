@@ -94,7 +94,7 @@ public sealed class MaintenanceModuleTests
     }
 
     [Fact]
-    public void Handle_LoadCli_SetsTerminalRoutingAndClearsMaintenanceFields()
+    public void Handle_LoadCli_PrintsUnavailableMessage_AndKeepsMaintenanceContext()
     {
         var module = new MaintenanceModule();
         var session = new SessionState
@@ -106,14 +106,13 @@ public sealed class MaintenanceModuleTests
 
         var output = module.Handle("load cli", session).ToList();
 
-        Assert.Contains(output, line => line.Text == "Loading CLI...");
-        Assert.True(session.IsComplete);
-        Assert.Equal(ContextRoute.Terminal, session.NextContext);
-        Assert.Equal(ContextRoute.Maintenance, session.TerminalReturnContext);
-        Assert.Equal("Filesystem_1.json", session.TerminalStartFilesystem);
-        Assert.Null(session.MaintenanceMachineId);
-        Assert.Null(session.MaintenanceFilesystem);
+        Assert.Contains(output, line => line.Text != null && line.Text.Contains("CLI removed", StringComparison.Ordinal));
+        Assert.False(session.IsComplete);
+        Assert.Equal(ContextRoute.None, session.NextContext);
+        Assert.Equal("proc.floor01", session.MaintenanceMachineId);
+        Assert.Equal("Filesystem_1.json", session.MaintenanceFilesystem);
     }
+
 
     [Fact]
     public void Handle_Exit_WithReturnScene_SetsResumeRecords()

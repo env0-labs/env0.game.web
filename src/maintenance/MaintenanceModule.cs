@@ -82,14 +82,8 @@ public sealed class MaintenanceModule : IContextModule
                 RenderStatus(output, state);
                 break;
             case "load cli":
-                AddLine(output, "Loading CLI...");
-                state.NextContext = ContextRoute.Terminal;
-                state.TerminalReturnContext = ContextRoute.Maintenance;
-                state.TerminalStartFilesystem = state.MaintenanceFilesystem;
-                state.IsComplete = true;
-                state.MaintenanceMachineId = null;
-                state.MaintenanceFilesystem = null;
-                return output;
+                AddLine(output, "CLI removed in env0.game.web experiment. Command unavailable.");
+                break;
             case "exit":
                 if (!state.MaintenanceExitUnlocked)
                 {
@@ -350,13 +344,8 @@ public sealed class MaintenanceModule : IContextModule
             case "load":
                 if (parts.Length >= 2 && string.Equals(parts[1], "cli", StringComparison.OrdinalIgnoreCase))
                 {
-                    AddLine(output, "Loading CLI...");
-                    state.NextContext = ContextRoute.Terminal;
-                    state.TerminalReturnContext = ContextRoute.Maintenance;
-                    state.TerminalStartFilesystem = state.MaintenanceFilesystem;
-                    state.IsComplete = true;
-                    state.MaintenanceMachineId = null;
-                    state.MaintenanceFilesystem = null;
+                    AddLine(output, "CLI removed in env0.game.web experiment. Command unavailable.");
+                    AddPrompt(output);
                     return;
                 }
                 RenderRetentionInvalidCommand(output);

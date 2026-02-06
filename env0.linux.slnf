@@ -5,11 +5,9 @@
       "src/core/Env0.Core/Env0.Core.csproj",
       "src/maintenance/env0.maintenance.csproj",
       "src/records/env0.records.csproj",
-      "src/terminal/env0.terminal/Env0.Terminal.csproj",
-      "src/terminal/env0.terminal.playground/Env0.Terminal.Playground.csproj",
+      "src/runner/env0.runner.csproj",
       "tests/maintenance tests/env0.maintenance.tests/Env0.Maintenance.Tests.csproj",
-      "tests/records tests/env0.records.tests/Env0.Records.Tests.csproj",
-      "tests/terminal tests/env0.terminal.tests/Env0.Terminal.Tests.csproj"
+      "tests/records tests/env0.records.tests/Env0.Records.Tests.csproj"
     ]
   }
 }
