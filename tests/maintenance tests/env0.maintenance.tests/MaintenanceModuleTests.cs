@@ -17,7 +17,7 @@ public sealed class MaintenanceModuleTests
         var output = module.Handle(string.Empty, session).ToList();
 
         Assert.Contains(output, line => line.Text == "env0.maintenance booting");
-        Assert.Contains(output, line => line.Text == "> " && line.NewLine == false);
+        Assert.Contains(output, line => line.Text == "> (process | status) " && line.NewLine == false);
         Assert.DoesNotContain(output, line => line.Text == "STATUS");
         Assert.False(session.IsComplete);
     }
@@ -34,7 +34,7 @@ public sealed class MaintenanceModuleTests
         Assert.Contains(output, line => line.Text == "PROCESSING");
         Assert.Contains(output, line => line.Text == "[kill-child] start");
         Assert.Contains(output, line => line.Text == "[kill-child] done");
-        Assert.Contains(output, line => line.Text == "> " && line.NewLine == false);
+        Assert.Contains(output, line => line.Text == "> (process | status) " && line.NewLine == false);
     }
 
     [Fact]
@@ -150,7 +150,7 @@ public sealed class MaintenanceModuleTests
         var response = module.Handle("maybe", session).ToList();
 
         Assert.Contains(response, line => line.Text == "Unrecognised input. Accepted input: y / n");
-        Assert.Contains(response, line => line.Text == "> " && line.NewLine == false);
+        Assert.Contains(response, line => line.Text == "> (process | status) " && line.NewLine == false);
         Assert.False(session.IsComplete);
     }
 

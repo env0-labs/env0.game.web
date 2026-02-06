@@ -37,6 +37,12 @@ public sealed class MaintenanceModule : IContextModule
             if (!string.IsNullOrWhiteSpace(state.MaintenanceMachineId))
                 AddLine(output, $"{state.MaintenanceMachineId} is loading...");
             AddLine(output, string.Empty);
+
+            // Orientation without explanation.
+            AddLine(output, "Backlog pending.");
+            AddLine(output, "Input: process | status");
+
+            AddLine(output, string.Empty);
             if (ObjectiveLine.TryGet(state, ContextRoute.Maintenance, out var objectiveLine))
                 AddLine(output, objectiveLine);
             AddLine(output, string.Empty);
@@ -210,7 +216,8 @@ public sealed class MaintenanceModule : IContextModule
 
     private static void AddPrompt(List<OutputLine> output)
     {
-        output.Add(new OutputLine(OutputType.Standard, "> ", newLine: false));
+        // Orientation without explanation: show what the system will accept.
+        output.Add(new OutputLine(OutputType.Standard, "> (process | status) ", newLine: false));
     }
 
     private void HandleBatchPrompt(string input, SessionState state, List<OutputLine> output)
