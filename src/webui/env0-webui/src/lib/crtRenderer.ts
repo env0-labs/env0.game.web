@@ -7,14 +7,13 @@ export type CrtParams = {
   glow: string;
   bg: string;
   scanlineAlpha: number;
-  noiseAlpha: number;
-  ghostAlpha: number; // 0..1
   glitchChance: number; // 0..1
   wobbleAmpPx: number;
   wobbleSpeed: number;
 };
 
-const GLYPH_SET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~!@#$%^&*()_+-={}[]|:;\"'<>,.?/\\";
+const GLYPH_SET =
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~!@#$%^&*()_+-={}[]|:;\"'<>,.?/\\";
 
 function rand01(seed: number) {
   // xorshift-ish
@@ -22,7 +21,6 @@ function rand01(seed: number) {
   x ^= x << 13;
   x ^= x >> 17;
   x ^= x << 5;
-  // map to 0..1
   return ((x >>> 0) % 100000) / 100000;
 }
 
@@ -35,9 +33,8 @@ export function renderCrt(
   ctx: CanvasRenderingContext2D,
   buf: TextBuffer,
   tMs: number,
-  params: CrtParams,
-  ghost?: ImageData | null
-): ImageData {
+  params: CrtParams
+) {
   const { fontPx, lineHeight } = params;
 
   const w = ctx.canvas.width;
@@ -53,7 +50,7 @@ export function renderCrt(
   const cellW = Math.max(1, Math.floor(fontPx * 0.6));
   const cellH = Math.floor(fontPx * lineHeight);
 
-  // subtle glow pass via shadow
+  // subtle glow via shadow
   ctx.fillStyle = params.fg;
   ctx.shadowColor = params.glow;
   ctx.shadowBlur = 10;
@@ -72,18 +69,17 @@ export function renderCrt(
 
       // per-char glitch: occasionally swap character for a frame
       let ch = ch0;
-      const age = tMs - cell.touchedAt;
       const glitchBase = cell.glitch;
       const p = params.glitchChance * 0.15 + glitchBase * 0.02;
       const gSeed = (r * 1000003 + c * 9176 + ((tMs / 33) | 0) * 13) | 0;
-      if (age < 250 && rand01(gSeed) < p) {
+      if (rand01(gSeed) < p) {
         ch = pickGlitchChar(gSeed ^ 0x9e3779b9);
       }
 
       const x = 16 + c * cellW + wobble;
       const y = 16 + r * cellH;
 
-      // faint chromatic aberration hack: draw offset shadow copies
+      // faint chromatic aberration hack
       ctx.globalAlpha = 0.14;
       ctx.fillStyle = "#46f2ff";
       ctx.shadowBlur = 0;
@@ -102,9 +98,12 @@ export function renderCrt(
   ctx.shadowBlur = 0;
 
   // cursor (block-ish)
-  const cx = 16 + buf.cursorCol * cellW + Math.sin(wobbleT + buf.cursorRow * 0.35) * params.wobbleAmpPx;
+  const cx =
+    16 +
+    buf.cursorCol * cellW +
+    Math.sin(wobbleT + buf.cursorRow * 0.35) * params.wobbleAmpPx;
   const cy = 16 + buf.cursorRow * cellH;
-  const blink = (Math.floor(tMs / 500) % 2) === 0;
+  const blink = Math.floor(tMs / 500) % 2 === 0;
   if (blink) {
     ctx.globalAlpha = 0.9;
     ctx.fillStyle = "rgba(200,255,220,0.35)";
@@ -112,37 +111,11 @@ export function renderCrt(
     ctx.globalAlpha = 1;
   }
 
-  // screen-space overlays: scanlines + noise
+  // scanlines
   ctx.globalAlpha = params.scanlineAlpha;
   ctx.fillStyle = "rgba(0,0,0,1)";
   for (let y = 0; y < h; y += 4) {
     ctx.fillRect(0, y, w, 1);
   }
   ctx.globalAlpha = 1;
-
-  // noise (cheap)
-  const img = ctx.getImageData(0, 0, w, h);
-  const d = img.data;
-  const nAlpha = params.noiseAlpha;
-  for (let i = 0; i < d.length; i += 4) {
-    const n = (Math.random() - 0.5) * 30;
-    d[i] = Math.max(0, Math.min(255, d[i] + n * nAlpha));
-    d[i + 1] = Math.max(0, Math.min(255, d[i + 1] + n * nAlpha));
-    d[i + 2] = Math.max(0, Math.min(255, d[i + 2] + n * nAlpha));
-  }
-
-  // ghosting: blend previous frame into this frame (after noise)
-  if (ghost) {
-    const gd = ghost.data;
-    const a = params.ghostAlpha;
-    for (let i = 0; i < d.length; i += 4) {
-      d[i] = d[i] * (1 - a) + gd[i] * a;
-      d[i + 1] = d[i + 1] * (1 - a) + gd[i + 1] * a;
-      d[i + 2] = d[i + 2] * (1 - a) + gd[i + 2] * a;
-    }
-  }
-
-  ctx.putImageData(img, 0, 0);
-
-  return img;
 }

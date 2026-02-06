@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { ServerMessage } from "@/lib/types";
 import { applyOutputLines, createBuffer } from "@/lib/textBuffer";
 import { renderCrt, type CrtParams } from "@/lib/crtRenderer";
@@ -14,8 +14,10 @@ export default function Home() {
   const hiddenInputRef = useRef<HTMLInputElement | null>(null);
 
   const bufRef = useRef(createBuffer(90, 26));
-  const ghostRef = useRef<ImageData | null>(null);
   const inputLineRef = useRef("");
+
+  const offscreenRef = useRef<HTMLCanvasElement | null>(null);
+  const ghostCanvasRef = useRef<HTMLCanvasElement | null>(null);
 
   const wsUrl = useMemo(() => {
     // Avoid touching window during SSR/static build.
@@ -26,19 +28,45 @@ export default function Home() {
     return `${proto}://${host}/ws`;
   }, []);
 
-  const params: CrtParams = useMemo(() => ({
-    fontPx: 22,
-    lineHeight: 1.25,
-    fg: "#b7ffd1",
-    glow: "rgba(80,255,160,0.45)",
-    bg: "#040807",
-    scanlineAlpha: 0.09,
-    noiseAlpha: 0.22,
-    ghostAlpha: 0.12,
-    glitchChance: 0.35,
-    wobbleAmpPx: 1.4,
-    wobbleSpeed: 1.2,
-  }), []);
+  const params: CrtParams = useMemo(
+    () => ({
+      fontPx: 22,
+      lineHeight: 1.25,
+      fg: "#b7ffd1",
+      glow: "rgba(80,255,160,0.45)",
+      bg: "#040807",
+      scanlineAlpha: 0.09,
+      glitchChance: 0.35,
+      wobbleAmpPx: 1.4,
+      wobbleSpeed: 1.2,
+    }),
+    []
+  );
+
+  const renderInputLine = useCallback(() => {
+    const buf = bufRef.current;
+    const now = performance.now();
+
+    const row = buf.rows - 1;
+    const prefix = "$ ";
+    const text = prefix + inputLineRef.current;
+    const padded = text.padEnd(buf.cols, " ");
+
+    for (let i = 0; i < buf.cols; i++) {
+      const cell = buf.cells[row * buf.cols + i];
+      if (!cell) continue;
+      cell.ch = padded[i] ?? " ";
+      cell.touchedAt = now;
+    }
+
+    buf.cursorRow = row;
+    buf.cursorCol = Math.min(buf.cols - 1, prefix.length + inputLineRef.current.length);
+  }, []);
+
+  useEffect(() => {
+    // initialize the input line once
+    renderInputLine();
+  }, [renderInputLine]);
 
   useEffect(() => {
     if (!wsUrl) return;
@@ -64,6 +92,8 @@ export default function Home() {
 
       if (msg.type === "output") {
         applyOutputLines(bufRef.current, msg.data.lines);
+        // keep input line stable after output
+        renderInputLine();
         return;
       }
     };
@@ -71,11 +101,29 @@ export default function Home() {
     return () => {
       ws.close();
     };
-  }, [wsUrl]);
+  }, [wsUrl, renderInputLine]);
 
-  // Render loop
+  // Render loop (keep it lightweight to avoid input latency)
   useEffect(() => {
     let raf = 0;
+
+    function ensureCanvases(canvas: HTMLCanvasElement) {
+      if (!offscreenRef.current) offscreenRef.current = document.createElement("canvas");
+      if (!ghostCanvasRef.current) ghostCanvasRef.current = document.createElement("canvas");
+
+      const off = offscreenRef.current;
+      const ghost = ghostCanvasRef.current;
+      if (!off || !ghost) return;
+
+      if (off.width !== canvas.width || off.height !== canvas.height) {
+        off.width = canvas.width;
+        off.height = canvas.height;
+      }
+      if (ghost.width !== canvas.width || ghost.height !== canvas.height) {
+        ghost.width = canvas.width;
+        ghost.height = canvas.height;
+      }
+    }
 
     function resize() {
       const canvas = canvasRef.current;
@@ -85,29 +133,55 @@ export default function Home() {
       const rect = canvas.getBoundingClientRect();
       canvas.width = Math.floor(rect.width * dpr);
       canvas.height = Math.floor(rect.height * dpr);
+      ensureCanvases(canvas);
     }
 
     function frame(t: number) {
       const canvas = canvasRef.current;
-      if (canvas) {
-        const ctx = canvas.getContext("2d");
-        if (ctx) {
-          ctx.setTransform(1, 0, 0, 1, 0, 0);
-          const dpr = window.devicePixelRatio || 1;
-          ctx.scale(dpr, dpr);
-
-          // draw at CSS pixel resolution by using a temp canvas state
-          const off = document.createElement("canvas");
-          off.width = canvas.width;
-          off.height = canvas.height;
-          const offCtx = off.getContext("2d");
-          if (offCtx) {
-            const img = renderCrt(offCtx, bufRef.current, t, params, ghostRef.current);
-            ghostRef.current = img;
-            ctx.drawImage(off, 0, 0, canvas.width / dpr, canvas.height / dpr);
-          }
-        }
+      if (!canvas) {
+        raf = requestAnimationFrame(frame);
+        return;
       }
+
+      ensureCanvases(canvas);
+      const off = offscreenRef.current;
+      const ghost = ghostCanvasRef.current;
+      if (!off || !ghost) {
+        raf = requestAnimationFrame(frame);
+        return;
+      }
+
+      const ctx = canvas.getContext("2d");
+      const offCtx = off.getContext("2d");
+      const ghostCtx = ghost.getContext("2d");
+      if (!ctx || !offCtx || !ghostCtx) {
+        raf = requestAnimationFrame(frame);
+        return;
+      }
+
+      const dpr = window.devicePixelRatio || 1;
+
+      // Build the next frame on offscreen.
+      // Ghosting: blend previous frame in first.
+      offCtx.globalAlpha = 0.16;
+      offCtx.drawImage(ghost, 0, 0);
+      offCtx.globalAlpha = 1;
+
+      renderCrt(offCtx, bufRef.current, t, params);
+
+      // Copy offscreen to visible canvas (scaled back to CSS pixels)
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(off, 0, 0);
+
+      // Update ghost buffer (store the full rendered frame)
+      ghostCtx.setTransform(1, 0, 0, 1, 0, 0);
+      ghostCtx.clearRect(0, 0, ghost.width, ghost.height);
+      ghostCtx.drawImage(off, 0, 0);
+
+      // scale back to CSS pixels (when canvas uses DPR)
+      // note: we draw at device pixels already; CSS sizing handles display.
+      void dpr;
 
       raf = requestAnimationFrame(frame);
     }
@@ -129,60 +203,30 @@ export default function Home() {
   }
 
   function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
-    // We keep the DOM input empty and manage our own input line.
     if (e.key === "Enter") {
       e.preventDefault();
       const toSend = inputLineRef.current;
       inputLineRef.current = "";
       applyOutputLines(bufRef.current, [{ text: `> ${toSend}`, newLine: true, type: 0 }]);
       sendInput(toSend);
+      renderInputLine();
       return;
     }
 
     if (e.key === "Backspace") {
       e.preventDefault();
       inputLineRef.current = inputLineRef.current.slice(0, -1);
+      renderInputLine();
       return;
     }
 
     if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
       e.preventDefault();
       inputLineRef.current += e.key;
+      renderInputLine();
       return;
     }
   }
-
-  // Periodically re-render the current input line into the buffer bottom.
-  useEffect(() => {
-    const id = window.setInterval(() => {
-      const buf = bufRef.current;
-      // redraw last line: simple hack for now, later we’ll do proper prompt + caret in buffer
-      const savedRow = buf.cursorRow;
-      const savedCol = buf.cursorCol;
-
-      // move cursor to last row and clear it
-      buf.cursorRow = buf.rows - 1;
-      buf.cursorCol = 0;
-      // overwrite the line
-      const line = (`$ ${inputLineRef.current}`).padEnd(buf.cols, " ");
-      for (let i = 0; i < buf.cols; i++) {
-        const cell = buf.cells[(buf.rows - 1) * buf.cols + i];
-        if (!cell) continue;
-        cell.ch = line[i] ?? " ";
-        cell.touchedAt = performance.now();
-      }
-
-      // restore cursor position to visual caret position
-      buf.cursorRow = buf.rows - 1;
-      buf.cursorCol = Math.min(buf.cols - 1, 2 + inputLineRef.current.length);
-
-      // keep scroll behavior stable by not restoring (cursor is the caret)
-      void savedRow;
-      void savedCol;
-    }, 33);
-
-    return () => window.clearInterval(id);
-  }, []);
 
   return (
     <main
@@ -203,12 +247,12 @@ export default function Home() {
         </div>
 
         <div className="relative overflow-hidden rounded border border-neutral-800 bg-black">
-          {/* CSS overlays for vibe */}
-          <div className="pointer-events-none absolute inset-0 opacity-30 mix-blend-screen"
-               style={{
-                 background:
-                   "radial-gradient(ellipse at center, rgba(80,255,160,0.12) 0%, rgba(0,0,0,0) 55%), radial-gradient(ellipse at center, rgba(0,0,0,0) 0%, rgba(0,0,0,0.85) 75%)",
-               }}
+          <div
+            className="pointer-events-none absolute inset-0 opacity-30 mix-blend-screen"
+            style={{
+              background:
+                "radial-gradient(ellipse at center, rgba(80,255,160,0.12) 0%, rgba(0,0,0,0) 55%), radial-gradient(ellipse at center, rgba(0,0,0,0) 0%, rgba(0,0,0,0.85) 75%)",
+            }}
           />
 
           <canvas ref={canvasRef} className="block h-[70vh] w-full" />
