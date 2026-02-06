@@ -13,7 +13,7 @@ export default function Home() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const hiddenInputRef = useRef<HTMLInputElement | null>(null);
 
-  const bufRef = useRef(createBuffer(110, 34));
+  const bufRef = useRef(createBuffer(90, 26));
   const ghostRef = useRef<ImageData | null>(null);
   const inputLineRef = useRef("");
 
@@ -27,7 +27,7 @@ export default function Home() {
   }, []);
 
   const params: CrtParams = useMemo(() => ({
-    fontPx: 16,
+    fontPx: 22,
     lineHeight: 1.25,
     fg: "#b7ffd1",
     glow: "rgba(80,255,160,0.45)",
