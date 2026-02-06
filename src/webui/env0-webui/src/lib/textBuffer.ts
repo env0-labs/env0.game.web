@@ -14,6 +14,7 @@ export type TextBuffer = {
   cursorRow: number;
   cursorCol: number;
   scrollback: string[]; // plain for future copy/export
+  version: number; // increment on any content change
 };
 
 export function createBuffer(cols: number, rows: number): TextBuffer {
@@ -32,6 +33,7 @@ export function createBuffer(cols: number, rows: number): TextBuffer {
     cursorRow: 0,
     cursorCol: 0,
     scrollback: [],
+    version: 1,
   };
 }
 
@@ -50,6 +52,7 @@ export function clearBuffer(buf: TextBuffer) {
   buf.cursorRow = 0;
   buf.cursorCol = 0;
   buf.scrollback = [];
+  buf.version++;
 }
 
 export function writeText(buf: TextBuffer, text: string, glitchSeed = 0) {
@@ -83,6 +86,8 @@ export function writeText(buf: TextBuffer, text: string, glitchSeed = 0) {
 
     buf.cursorCol++;
   }
+
+  buf.version++;
 }
 
 export function newLine(buf: TextBuffer) {
@@ -94,6 +99,8 @@ export function newLine(buf: TextBuffer) {
     scrollUp(buf, 1);
     buf.cursorRow = buf.rows - 1;
   }
+
+  buf.version++;
 }
 
 function readLine(buf: TextBuffer, row: number): string {
@@ -122,6 +129,8 @@ function scrollUp(buf: TextBuffer, lines: number) {
       buf.cells[idx(buf, r, c)] = { ch: " ", bornAt: now, touchedAt: now, glitch: 0 };
     }
   }
+
+  buf.version++;
 }
 
 export function applyOutputLines(buf: TextBuffer, lines: OutputLine[]) {

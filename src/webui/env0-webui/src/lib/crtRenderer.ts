@@ -16,7 +16,6 @@ const GLYPH_SET =
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~!@#$%^&*()_+-={}[]|:;\"'<>,.?/\\";
 
 function rand01(seed: number) {
-  // xorshift-ish
   let x = seed | 0;
   x ^= x << 13;
   x ^= x >> 17;
@@ -29,11 +28,21 @@ function pickGlitchChar(seed: number) {
   return GLYPH_SET[i] ?? "?";
 }
 
+export type RenderCache = {
+  version: number;
+  rows: string[];
+};
+
+export function createRenderCache(): RenderCache {
+  return { version: -1, rows: [] };
+}
+
 export function renderCrt(
   ctx: CanvasRenderingContext2D,
   buf: TextBuffer,
   tMs: number,
-  params: CrtParams
+  params: CrtParams,
+  cache: RenderCache
 ) {
   const { fontPx, lineHeight } = params;
 
@@ -50,54 +59,72 @@ export function renderCrt(
   const cellW = Math.max(1, Math.floor(fontPx * 0.6));
   const cellH = Math.floor(fontPx * lineHeight);
 
-  // subtle glow via shadow
+  // Cache row strings when buffer changes.
+  if (cache.version !== buf.version) {
+    cache.rows = [];
+    for (let r = 0; r < buf.rows; r++) {
+      const start = r * buf.cols;
+      const end = start + buf.cols;
+      cache.rows.push(
+        buf.cells
+          .slice(start, end)
+          .map((c) => c.ch)
+          .join("")
+      );
+    }
+    cache.version = buf.version;
+  }
+
+  // glow via shadow
   ctx.fillStyle = params.fg;
   ctx.shadowColor = params.glow;
-  ctx.shadowBlur = 10;
+  ctx.shadowBlur = 8;
 
   const wobbleT = tMs * 0.001 * params.wobbleSpeed;
 
-  // Draw glyphs
+  // Draw each row as a single string (fast) + sparse glitch overlays.
   for (let r = 0; r < buf.rows; r++) {
     const wobble = Math.sin(wobbleT + r * 0.35) * params.wobbleAmpPx;
+    const x = 16 + wobble;
+    const y = 16 + r * cellH;
 
-    for (let c = 0; c < buf.cols; c++) {
-      const cell = buf.cells[r * buf.cols + c];
-      if (!cell) continue;
-      const ch0 = cell.ch;
-      if (ch0 === " ") continue;
+    const rowText = cache.rows[r] ?? "";
+    ctx.fillText(rowText, x, y);
+  }
 
-      // per-char glitch: occasionally swap character for a frame
-      let ch = ch0;
-      const glitchBase = cell.glitch;
-      const p = params.glitchChance * 0.15 + glitchBase * 0.02;
-      const gSeed = (r * 1000003 + c * 9176 + ((tMs / 33) | 0) * 13) | 0;
-      if (rand01(gSeed) < p) {
-        ch = pickGlitchChar(gSeed ^ 0x9e3779b9);
-      }
+  // Sparse per-char glitch overlays (keeps the vibe without per-glyph draw cost)
+  const glitchCount = Math.floor(buf.cols * buf.rows * 0.004);
+  for (let k = 0; k < glitchCount; k++) {
+    const seed = ((tMs / 33) | 0) * 1337 + k * 97;
+    if (rand01(seed) > params.glitchChance) continue;
 
-      const x = 16 + c * cellW + wobble;
-      const y = 16 + r * cellH;
+    const r = Math.floor(rand01(seed ^ 0xabc) * buf.rows);
+    const c = Math.floor(rand01(seed ^ 0xdef) * buf.cols);
+    const cell = buf.cells[r * buf.cols + c];
+    if (!cell || cell.ch === " ") continue;
 
-      // faint chromatic aberration hack
-      ctx.globalAlpha = 0.14;
-      ctx.fillStyle = "#46f2ff";
-      ctx.shadowBlur = 0;
-      ctx.fillText(ch, x + 1, y);
-      ctx.fillStyle = "#ff4bd8";
-      ctx.fillText(ch, x - 1, y);
+    const wobble = Math.sin(wobbleT + r * 0.35) * params.wobbleAmpPx;
+    const x = 16 + c * cellW + wobble;
+    const y = 16 + r * cellH;
 
-      ctx.globalAlpha = 1;
-      ctx.fillStyle = params.fg;
-      ctx.shadowColor = params.glow;
-      ctx.shadowBlur = 10;
-      ctx.fillText(ch, x, y);
-    }
+    // chromatic pop for glitch only
+    const ch = pickGlitchChar(seed ^ 0x9e3779b9);
+    ctx.shadowBlur = 0;
+    ctx.globalAlpha = 0.6;
+    ctx.fillStyle = "#46f2ff";
+    ctx.fillText(ch, x + 1, y);
+    ctx.fillStyle = "#ff4bd8";
+    ctx.fillText(ch, x - 1, y);
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = params.fg;
+    ctx.shadowColor = params.glow;
+    ctx.shadowBlur = 8;
+    ctx.fillText(ch, x, y);
   }
 
   ctx.shadowBlur = 0;
 
-  // cursor (block-ish)
+  // cursor
   const cx =
     16 +
     buf.cursorCol * cellW +

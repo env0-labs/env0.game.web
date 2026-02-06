@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { ServerMessage } from "@/lib/types";
 import { applyOutputLines, createBuffer } from "@/lib/textBuffer";
-import { renderCrt, type CrtParams } from "@/lib/crtRenderer";
+import { createRenderCache, renderCrt, type CrtParams } from "@/lib/crtRenderer";
 
 export default function Home() {
   const [connected, setConnected] = useState(false);
@@ -18,6 +18,7 @@ export default function Home() {
 
   const offscreenRef = useRef<HTMLCanvasElement | null>(null);
   const ghostCanvasRef = useRef<HTMLCanvasElement | null>(null);
+  const renderCacheRef = useRef(createRenderCache());
 
   const wsUrl = useMemo(() => {
     // Avoid touching window during SSR/static build.
@@ -129,7 +130,7 @@ export default function Home() {
       const canvas = canvasRef.current;
       if (!canvas) return;
 
-      const dpr = window.devicePixelRatio || 1;
+      const dpr = Math.min(1.25, window.devicePixelRatio || 1);
       const rect = canvas.getBoundingClientRect();
       canvas.width = Math.floor(rect.width * dpr);
       canvas.height = Math.floor(rect.height * dpr);
@@ -167,7 +168,7 @@ export default function Home() {
       offCtx.drawImage(ghost, 0, 0);
       offCtx.globalAlpha = 1;
 
-      renderCrt(offCtx, bufRef.current, t, params);
+      renderCrt(offCtx, bufRef.current, t, params, renderCacheRef.current);
 
       // Copy offscreen to visible canvas (scaled back to CSS pixels)
       ctx.setTransform(1, 0, 0, 1, 0, 0);
